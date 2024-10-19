@@ -8,6 +8,7 @@ import LoginPage from "./LoginPage.jsx";
 import SignupPage from "./SignupPage.jsx";
 import Profil from "./Profil.jsx";
 import AddRecipe from "./AddRecipe.jsx";
+import Logout from "./Logout.jsx";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/createRecette" element={<AddRecipe />} />
                 <Route path="/profil" element={<Profil />} />
+                <Route path="/logout" element={<Logout />} />
 
             </Routes>
         </div>

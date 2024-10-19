@@ -20,6 +20,9 @@ function Menu() {
                 <li>
                     <Link to="/profil">Profil</Link>
                 </li>
+                <li>
+                    <Link to="/logout">Deconnexion</Link>
+                </li>
 
 
             </ul>
