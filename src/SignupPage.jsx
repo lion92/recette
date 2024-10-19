@@ -1,63 +1,28 @@
+// src/pages/Register.jsx
 import React, { useState } from 'react';
-import '../src/css/inscription.css'
+import axios from 'axios';
+import './css/inscription.css'
 function SignupPage() {
-    const [nom, setNom] = useState('');
-    const [prenom, setPrenom] = useState('');
-    const [email, setEmail] = useState('');
-    const [dateNaissance, setDateNaissance] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleSignup = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Nom:", nom, "Prénom:", prenom, "Email:", email, "Date de naissance:", dateNaissance);
-        // Ajoutez ici la logique pour gérer l'inscription
+        try {
+            await axios.post('http://localhost:3012/auth/register', { username, password });
+            alert('Inscription réussie');
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
-        <div className="signup-container">
+        <form onSubmit={handleSubmit}>
             <h2>Inscription</h2>
-            <form onSubmit={handleSignup}>
-                <div className="form-group">
-                    <label>Nom :</label>
-                    <input
-                        type="text"
-                        value={nom}
-                        onChange={(e) => setNom(e.target.value)}
-                        required
-                        placeholder="Entrez votre nom"
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Prénom :</label>
-                    <input
-                        type="text"
-                        value={prenom}
-                        onChange={(e) => setPrenom(e.target.value)}
-                        required
-                        placeholder="Entrez votre prénom"
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Email :</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder="Entrez votre email"
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Date de naissance :</label>
-                    <input
-                        type="date"
-                        value={dateNaissance}
-                        onChange={(e) => setDateNaissance(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Inscription</button>
-            </form>
-        </div>
+            <input type="text" placeholder="Nom d'utilisateur" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <button type="submit">S'inscrire</button>
+        </form>
     );
 }
 

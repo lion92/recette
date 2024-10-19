@@ -1,42 +1,47 @@
+// src/pages/Login.jsx
 import React, { useState } from 'react';
-import '../src/css/inscription.css'
-function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-    const handleLogin = (e) => {
+function LoginPage() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Email:", email, "Password:", password);
-        // Ajoutez ici la logique pour gérer la connexion
+        try {
+            const res = await axios.post('http://localhost:3012/auth/login', { username, password });
+            const token = res.data.jwt;
+
+            // Stocker le token JWT dans le localStorage
+            localStorage.setItem('jwt', token);
+
+            alert('Connexion réussie');
+            navigate('/recipes');  // Rediriger vers la page des recettes après la connexion
+        } catch (error) {
+            console.error(error);
+            alert('Échec de la connexion');
+        }
     };
 
     return (
-        <div className="login-container">
+        <form onSubmit={handleSubmit}>
             <h2>Connexion</h2>
-            <form onSubmit={handleLogin}>
-                <div className="form-group">
-                    <label>Email :</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder="Entrez votre email"
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Mot de passe :</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        placeholder="Entrez votre mot de passe"
-                    />
-                </div>
-                <button type="submit">Connexion</button>
-            </form>
-        </div>
+            <input
+                type="text"
+                placeholder="Nom d'utilisateur"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit">Se connecter</button>
+        </form>
     );
 }
 
