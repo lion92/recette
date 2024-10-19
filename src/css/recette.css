@@ -1,0 +1,106 @@
+/* Style général de l'application */
+body {
+    font-family: 'Roboto', sans-serif; /* Police moderne et lisible */
+    background-color: #fdf5e6; /* Couleur crème pour un fond doux et chaleureux */
+    margin: 0;
+    padding: 0;
+}
+
+.App {
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+h1 {
+    font-size: 3rem;
+    color: #d35400; /* Couleur orange chaleureux */
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Style des cartes de recettes */
+.recettes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.recette {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recette:hover {
+    transform: translateY(-5px); /* Légère élévation au survol */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.recette h2 {
+    font-size: 1.8rem;
+    color: #e67e22; /* Couleur orange doux pour le titre des recettes */
+    margin-bottom: 15px;
+}
+
+.recette h3 {
+    font-size: 1.2rem;
+    color: #c0392b; /* Rouge pour les sous-titres */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}
+
+li:before {
+    content: '🍴'; /* Ajout d'une icône d'ustensile pour chaque ingrédient */
+    margin-right: 10px;
+}
+
+p {
+    color: #34495e; /* Couleur sombre pour une bonne lisibilité */
+    background-color: #fafafa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    line-height: 1.6;
+}
+
+/* Style des boutons (pour extensions futures comme l'ajout de recettes) */
+button {
+    background-color: #e74c3c; /* Rouge chaleureux */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #c0392b; /* Rouge plus foncé au survol */
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+}

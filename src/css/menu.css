@@ -1,0 +1,42 @@
+/* Styles globaux pour le body */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    padding-top: 60px; /* Ajustez ce padding à la hauteur du menu */
+}
+
+/* Menu fixe en haut */
+nav {
+    position: relative;
+    width: 100%;
+}
+
+/* Style pour le conteneur des liens du menu */
+.menu {
+    display: flex;
+    justify-content: space-around; /* Distribution égale des liens */
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    align-items: center; /* Centrer les éléments verticalement */
+    height: 100%; /* Les liens prennent la hauteur totale du menu */
+    background-color: #535bf2;
+}
+
+/* Liens du menu */
+.menu li {
+    display: inline;
+}
+
+.menu a {
+    color: #6ed3d0;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease; /* Animation au survol */
+}
+
+.menu a:hover {
+    background-color: #2980b9; /* Couleur au survol */
+    border-radius: 5px;
+}
