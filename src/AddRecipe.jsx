@@ -67,7 +67,9 @@ function AddRecipe() {
             isPublished,
         };
 
-        await updateRecipe(recipeId, updatedRecipeData, token); // Appeler updateRecipe avec l'ID et les nouvelles données
+        await updateRecipe(recipeId, updatedRecipeData, token);
+        await fetchRecipes();
+        // Appeler updateRecipe avec l'ID et les nouvelles données
         alert('Recette mise à jour avec succès !');
     };
 
