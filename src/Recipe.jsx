@@ -2,33 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import RecipeList from './RecipeList.jsx';
 import './css/recette.css';
+import useRecipeStore from "./RecipeStore.js";
 
 function Recipes() {
-    const [recipes, setRecipes] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
+    const { recipes, fetchRecipes } = useRecipeStore();
     useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const res = await axios.get('http://localhost:3012/recipes/all');
-                setRecipes(res.data);
-            } catch (err) {
-                setError('Erreur lors de la récupération des recettes');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchRecipes();
+        fetchRecipes()
     }, []);
-
-    if (loading) {
-        return <p>Chargement des recettes...</p>;
-    }
-
-    if (error) {
-        return <p>{error}</p>;
-    }
 
     return (
         <div className="recipes-container">
