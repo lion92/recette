@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import useRecipeStore from './recipeStore';
 import './css/addRecette.css';
-import Recipes from './Recipe.jsx';
-import RecipeAll from "./RecipeAll.jsx";
+import RecipeAll from './RecipeAll.jsx';
+import useRecipeIdStore from './RecipeIdStore.js';
 
 function AddRecipe() {
     // Définition des états pour les champs du formulaire
-    const [recipeId, setRecipeId] = useState(''); // Ajout de l'état pour l'ID de la recette
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [ingredients, setIngredients] = useState('');
@@ -14,7 +13,8 @@ function AddRecipe() {
     const [isPublished, setIsPublished] = useState(false);
 
     // Récupérer les actions et l'état du store Zustand
-    const { recipes, fetchRecipes, addRecipe, updateRecipe, deleteRecipe } = useRecipeStore();
+    const { recipes, fetchRecipes, addRecipe, updateRecipe } = useRecipeStore();
+    const { selectedRecipeId, selectRecipe } = useRecipeIdStore();
 
     // Charger la liste des recettes au montage du composant
     useEffect(() => {
@@ -48,6 +48,7 @@ function AddRecipe() {
         setIngredients('');
         setInstructions('');
         setIsPublished(false);
+        fetchRecipes(); // Recharger la liste des recettes
     };
 
     // Fonction pour gérer la mise à jour de la recette
@@ -59,6 +60,11 @@ function AddRecipe() {
             return;
         }
 
+        if(!selectedRecipeId) {
+            alert('Aucune recette sélectionnée pour mise à jour.');
+            return;
+        }
+
         const updatedRecipeData = {
             title,
             description,
@@ -67,26 +73,16 @@ function AddRecipe() {
             isPublished,
         };
 
-        await updateRecipe(recipeId, updatedRecipeData, token);
-        await fetchRecipes();
-        // Appeler updateRecipe avec l'ID et les nouvelles données
+        await updateRecipe(selectedRecipeId, updatedRecipeData, token);
         alert('Recette mise à jour avec succès !');
+        await fetchRecipes(); // Recharger la liste des recettes après mise à jour
     };
 
     return (
         <div className="container">
             <form onSubmit={handleSubmit}>
+                <h1>Id Recette sélectionnée: {selectedRecipeId || 'Aucune sélectionnée'}</h1>
                 <h2>Ajouter une nouvelle recette</h2>
-
-                <div>
-                    <label>ID de la recette (pour mise à jour) :</label>
-                    <input
-                        type="text"
-                        value={recipeId}
-                        onChange={(e) => setRecipeId(e.target.value)}
-                        placeholder="Entrez l'ID de la recette si vous souhaitez la mettre à jour"
-                    />
-                </div>
 
                 <div>
                     <label>Titre :</label>
@@ -124,7 +120,7 @@ function AddRecipe() {
                     <textarea
                         value={instructions}
                         onChange={(e) => setInstructions(e.target.value)}
-                        placeholder="Entrez les instructions"
+                        placeholder="Indiquez les instructions"
                         required
                     />
                 </div>

@@ -6,6 +6,7 @@ import ReceipeItemAll from "./ReceipeItemAll.jsx";
 const RecipeListAll = ({ recipesFromProps }) => {
     const { recipes, deleteRecipe } = useRecipeStore();
 
+
     const handleDelete = async (recipeId) => {
         const token = localStorage.getItem('jwt'); // Récupérer le token JWT
         if (!token) {
