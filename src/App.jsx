@@ -13,10 +13,9 @@ import Logout from "./Logout.jsx";
 
 function App() {
     return (
-        <>
+        <div className="container">
             <Menu></Menu>
         <div className="app-container">
-
             <Routes>
                 <Route path="/" element={<Recipes />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -27,7 +26,7 @@ function App() {
 
             </Routes>
         </div>
-        </>
+        </div>
     );
 }
 

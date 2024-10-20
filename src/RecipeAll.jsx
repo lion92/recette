@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
-import RecipeList from './RecipeList.jsx';
 import './css/recette.css';
 import useRecipeStore from "./RecipeStore.js";
+import RecipeListAll from "./RecipeListAll.jsx";
 
 function Recipes() {
     const { recipes, fetchRecipes } = useRecipeStore();
@@ -13,7 +13,7 @@ function Recipes() {
         <div className="recipes-container">
             <h2>Liste des recettes</h2>
             {recipes.length > 0 ? (
-                <RecipeList recipes={recipes} />
+                <RecipeListAll recipes={recipes} />
             ) : (
                 <p>Aucune recette disponible</p>
             )}

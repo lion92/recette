@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useRecipeStore from './recipeStore';
 import './css/addRecette.css';
 import Recipes from './Recipe.jsx';
+import RecipeAll from "./RecipeAll.jsx";
 
 function AddRecipe() {
     // Définition des états pour les champs du formulaire
@@ -71,7 +72,7 @@ function AddRecipe() {
     };
 
     return (
-        <>
+        <div className="container">
             <form onSubmit={handleSubmit}>
                 <h2>Ajouter une nouvelle recette</h2>
 
@@ -142,8 +143,8 @@ function AddRecipe() {
             </form>
 
             {/* Affichage de la liste des recettes */}
-            <Recipes recipes={recipes} />
-        </>
+            <RecipeAll recipes={recipes} />
+        </div>
     );
 }
 
