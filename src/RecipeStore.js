@@ -52,7 +52,7 @@ const useRecipeStore = create((set) => ({
                 recipes: state.recipes.filter((recipe) => recipe.id !== recipeId)
             }));
         } catch (error) {
-            console.error('Erreur lors de la suppression de la recette', error);
+           alert("Une erreur s'est produite")
         }
     }
 }));
