@@ -2,12 +2,10 @@
 .app-container {
     justify-content: center;
     align-items: center;
-    background-color: #f5f5f5;
 }
 
 /* Conteneur de la boîte de connexion/inscription */
 .auth-container {
-    background-color: #fff;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);

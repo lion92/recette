@@ -1,41 +1,51 @@
 /* Styles globaux pour le body */
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
     padding-top: 60px; /* Ajustez ce padding à la hauteur du menu */
     height: 100vh;
-}
+    background-image: url('../asset/images/fond.png'); /* Chemin vers l'image */
+    background-size: cover; /* L'image couvre tout l'écran */
+    background-position: center; /* L'image est centrée */
+    background-repeat: no-repeat; /* Pas de répétition de l'image */
+    background-attachment: fixed; /* L'image reste fixe même lors du scroll */
+    font-family: 'Arial', sans-serif;
+    /* E
+   }
 
-/* Menu fixe en haut */
-nav {
-    position: relative;
-    width: 100%;
-}
+   /* Menu fixe en haut */
 
-/* Style pour le conteneur des liens du menu */
-.menu {
-    display: flex;
-    justify-content: space-around; /* Distribution égale des liens */
-    list-style-type: none;
-    align-items: center; /* Centrer les éléments verticalement */
-    height: 100%; /* Les liens prennent la hauteur totale du menu */
-    background-color: #535bf2;
-}
+    nav {
+        position: relative;
+        width: 100%;
+    }
 
-/* Liens du menu */
-.menu li {
-    display: inline;
-}
+    /* Style pour le conteneur des liens du menu */
 
-.menu a {
-    color: #6ed3d0;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 10px 15px;
-    transition: background-color 0.3s ease; /* Animation au survol */
-}
+    .menu {
+        display: flex;
+        justify-content: space-around; /* Distribution égale des liens */
+        list-style-type: none;
+        align-items: center; /* Centrer les éléments verticalement */
+        height: 3em; /* Les liens prennent la hauteur totale du menu */
+        background-color: #535bf2;
+    }
 
-.menu a:hover {
-    background-color: #2980b9; /* Couleur au survol */
-    border-radius: 5px;
+    /* Liens du menu */
+
+    .menu li {
+        display: inline;
+    }
+
+    .menu a {
+        color: #6ed3d0;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px 15px;
+        transition: background-color 0.3s ease; /* Animation au survol */
+    }
+
+    .menu a:hover {
+        background-color: #2980b9; /* Couleur au survol */
+        border-radius: 5px;
+    }
 }
