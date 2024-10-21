@@ -12,6 +12,12 @@ function Menu() {
                     <Link to="/signup">Inscription</Link>
                 </li>
                 <li>
+                    <Link to="/addCategory">Categorie de Recette</Link>
+                </li>
+                <li>
+                    <Link to="/addIngredient">Ingredient</Link>
+                </li>
+                <li>
                     <Link to="/">Recettes</Link>
                 </li>
                 <li>
@@ -23,8 +29,6 @@ function Menu() {
                 <li>
                     <Link to="/logout">Deconnexion</Link>
                 </li>
-
-
             </ul>
         </nav>
     );

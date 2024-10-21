@@ -9,6 +9,8 @@ import SignupPage from "./SignupPage.jsx";
 import Profil from "./Profil.jsx";
 import AddRecipe from "./AddRecipe.jsx";
 import Logout from "./Logout.jsx";
+import CategoryManager from "./CategoryManager.jsx";
+import IngredientManager from "./IngredientManager.jsx";
 
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
                 <Route path="/createRecette" element={<AddRecipe />} />
                 <Route path="/profil" element={<Profil />} />
                 <Route path="/logout" element={<Logout />} />
+                <Route path="/addCategory" element={<CategoryManager />} />
+                <Route path="/addIngredient" element={<IngredientManager />} />
 
             </Routes>
         </div>
