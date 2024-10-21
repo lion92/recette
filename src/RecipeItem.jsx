@@ -28,7 +28,7 @@ const RecipeItem = ({ recipe }) => {
                 {recipe.ingredients && recipe.ingredients.length > 0 ? (
                     recipe.ingredients.map((ingredient) => (
                         <li key={ingredient.id}>
-                            Nom: {ingredient.id || 'Non spécifié'}, Prix: {ingredient.price}€
+                            Nom: {ingredient?.name || 'Non spécifié'}, Prix: {ingredient.price}€
                         </li>
                     ))
                 ) : (
