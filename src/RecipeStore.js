@@ -9,6 +9,7 @@ const useRecipeStore = create((set) => ({
         try {
             const response = await axios.get('http://localhost:3012/recipes/all');
             set({ recipes: response.data });
+            console.log(response.data)
         } catch (error) {
             console.error('Erreur lors du chargement des recettes', error);
         }

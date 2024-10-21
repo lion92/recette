@@ -1,99 +1,73 @@
 import React, { useState, useEffect } from 'react';
-import useRecipeStore from './recipeStore';
-import './css/addRecette.css';
-import RecipeAll from './RecipeAll.jsx';
-import useRecipeIdStore from './RecipeIdStore.js';
-import useCategoryStore from '../src/UseCategoryStore.js'; // Store pour les catégories
-import useIngredientStore from './ingredientStore'; // Store pour les ingrédients
+import Select from 'react-select'; // Sélecteur multiple pour catégories et ingrédients
+import useRecipeStore from './recipeStore'; // Store pour les recettes
+import useCategoryStore from './useCategoryStore'; // Store pour les catégories
+import useIngredientStore from '../src/IngredientStore.jsx'; // Store pour les ingrédients
+import './css/addRecette.css'; // CSS pour styliser le formulaire
 
 function AddRecipe() {
-    // Définition des états pour les champs du formulaire
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [selectedIngredients, setSelectedIngredients] = useState([]); // Sélectionner les ingrédients
-    const [selectedCategories, setSelectedCategories] = useState([]); // Sélectionner les catégories
     const [instructions, setInstructions] = useState('');
     const [isPublished, setIsPublished] = useState(false);
+    const [selectedIngredients, setSelectedIngredients] = useState([]); // Sélection d'ingrédients
+    const [selectedCategories, setSelectedCategories] = useState([]); // Sélection de catégories
 
-    // Récupérer les recettes, catégories et ingrédients via les stores Zustand
-    const { recipes, fetchRecipes, addRecipe, updateRecipe } = useRecipeStore();
-    const { categories, fetchCategories } = useCategoryStore(); // Store pour les catégories
-    const { ingredients, fetchIngredients } = useIngredientStore(); // Store pour les ingrédients
-    const { selectedRecipeId } = useRecipeIdStore();
+    // Récupération des recettes, catégories et ingrédients depuis les stores
+    const { addRecipe, fetchRecipes } = useRecipeStore();
+    const { categories, fetchCategories } = useCategoryStore();
+    const { ingredients, fetchIngredients } = useIngredientStore();
 
-    // Charger les données au montage du composant
+    // Chargement des catégories et ingrédients lorsque le composant est monté
     useEffect(() => {
-        fetchRecipes();
-        fetchCategories(); // Charger les catégories depuis l'API
-        fetchIngredients(); // Charger les ingrédients depuis l'API
-    }, [fetchRecipes, fetchCategories, fetchIngredients]);
+        fetchCategories();
+        fetchIngredients();
+    }, [fetchCategories, fetchIngredients]);
 
-    // Fonction pour gérer l'ajout de la recette
+    // Soumission du formulaire pour ajouter une recette
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const token = localStorage.getItem('jwt'); // Récupérer le token JWT
 
+        const token = localStorage.getItem('jwt'); // Récupérer le token JWT pour l'authentification
         if (!token) {
             alert('Vous devez être connecté pour ajouter une recette.');
             return;
         }
 
-        // Créer un objet recette avec les données du formulaire
+        // Log pour vérifier les valeurs sélectionnées avant de soumettre
+        console.log('Selected Category IDs:', selectedCategories);
+        console.log('Selected Ingredient IDs:', selectedIngredients);
+
         const recipeData = {
             title,
             description,
-            ingredients: selectedIngredients, // Utiliser les ingrédients sélectionnés
-            categories: selectedCategories,   // Utiliser les catégories sélectionnées
             instructions,
             isPublished,
+            ingredients: selectedIngredients.map((ingredient) => ingredient.value), // IDs des ingrédients
+            categories: selectedCategories.map((category) => category.value), // IDs des catégories
         };
 
-        await addRecipe(recipeData, token); // Appeler addRecipe avec les données du formulaire
-        alert('Recette ajoutée avec succès !');
-        // Réinitialiser le formulaire après ajout
-        setTitle('');
-        setDescription('');
-        setSelectedIngredients([]);
-        setSelectedCategories([]);
-        setInstructions('');
-        setIsPublished(false);
-        fetchRecipes(); // Recharger la liste des recettes
-    };
-
-    // Fonction pour gérer la mise à jour de la recette
-    const handleUpdate = async () => {
-        const token = localStorage.getItem('jwt'); // Récupérer le token JWT
-
-        if (!token) {
-            alert('Vous devez être connecté pour modifier une recette.');
-            return;
+        try {
+            await addRecipe(recipeData, token); // Ajouter la recette via le store
+            alert('Recette ajoutée avec succès !');
+            // Réinitialiser les champs après l'ajout
+            setTitle('');
+            setDescription('');
+            setInstructions('');
+            setSelectedIngredients([]);
+            setSelectedCategories([]);
+            setIsPublished(false);
+            fetchRecipes(); // Actualiser la liste des recettes
+        } catch (error) {
+            console.error('Erreur lors de l’ajout de la recette', error);
+            alert('Erreur lors de l’ajout de la recette');
         }
-
-        if (!selectedRecipeId) {
-            alert('Aucune recette sélectionnée pour mise à jour.');
-            return;
-        }
-
-        const updatedRecipeData = {
-            title,
-            description,
-            ingredients: selectedIngredients,
-            categories: selectedCategories,
-            instructions,
-            isPublished,
-        };
-
-        await updateRecipe(selectedRecipeId, updatedRecipeData, token);
-        alert('Recette mise à jour avec succès !');
-        fetchRecipes(); // Recharger la liste des recettes après mise à jour
     };
 
     return (
-        <div className="container">
+        <div className="recipe-form-container">
+            <h2>Ajouter une nouvelle recette</h2>
             <form onSubmit={handleSubmit}>
-                <h1>Id Recette sélectionnée: {selectedRecipeId || 'Aucune sélectionnée'}</h1>
-                <h2>Ajouter une nouvelle recette</h2>
-
                 <div>
                     <label>Titre :</label>
                     <input
@@ -115,38 +89,6 @@ function AddRecipe() {
                     />
                 </div>
 
-                {/* Sélection des catégories */}
-                <div>
-                    <label>Catégories :</label>
-                    <select
-                        multiple
-                        value={selectedCategories}
-                        onChange={(e) => setSelectedCategories([...e.target.selectedOptions].map(option => option.value))}
-                    >
-                        {Array.isArray(categories) && categories.length > 0? categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                                {category.name}
-                            </option>
-                        )):""}
-                    </select>
-                </div>
-
-                {/* Sélection des ingrédients */}
-                <div>
-                    <label>Ingrédients :</label>
-                    <select
-                        multiple
-                        value={selectedIngredients}
-                        onChange={(e) => setSelectedIngredients([...e.target.selectedOptions].map(option => option.value))}
-                    >
-                        {Array.isArray(ingredients) && ingredients.length > 0? ingredients.map((ingredient) => (
-                            <option key={ingredient.id} value={ingredient.id}>
-                                {ingredient.name}
-                            </option>
-                        )):""}
-                    </select>
-                </div>
-
                 <div>
                     <label>Instructions :</label>
                     <textarea
@@ -154,6 +96,36 @@ function AddRecipe() {
                         onChange={(e) => setInstructions(e.target.value)}
                         placeholder="Indiquez les instructions"
                         required
+                    />
+                </div>
+
+                {/* Sélection des catégories avec react-select */}
+                <div>
+                    <label>Catégories :</label>
+                    <Select
+                        isMulti
+                        value={selectedCategories}
+                        onChange={setSelectedCategories}
+                        options={categories.map((category) => ({
+                            value: category.id, // Utiliser l'ID de la catégorie
+                            label: category.name, // Afficher le nom de la catégorie
+                        }))}
+                        placeholder="Sélectionnez les catégories"
+                    />
+                </div>
+
+                {/* Sélection des ingrédients avec react-select */}
+                <div>
+                    <label>Ingrédients :</label>
+                    <Select
+                        isMulti
+                        value={selectedIngredients}
+                        onChange={setSelectedIngredients}
+                        options={ingredients.map((ingredient) => ({
+                            value: ingredient.id, // Utiliser l'ID de l'ingrédient
+                            label: ingredient.name, // Afficher le nom de l'ingrédient
+                        }))}
+                        placeholder="Sélectionnez les ingrédients"
                     />
                 </div>
 
@@ -169,11 +141,7 @@ function AddRecipe() {
                 </div>
 
                 <button type="submit">Ajouter la recette</button>
-                <button type="button" onClick={handleUpdate}>Mettre à jour la recette</button>
             </form>
-
-            {/* Affichage de la liste des recettes */}
-            <RecipeAll recipes={recipes} />
         </div>
     );
 }
