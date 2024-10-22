@@ -61,7 +61,6 @@ function IngredientManager() {
         <div style={{maxWidth:500, margin:"auto"}}>
             <h2>Gestion des Ingrédients</h2>
 
-            <div>
                 <input
                     type="text"
                     value={newIngredient}
@@ -75,8 +74,6 @@ function IngredientManager() {
                     placeholder="Prix"
                 />
                 <button onClick={handleAddIngredient}>Ajouter</button>
-            </div>
-
             <ul>
                 {Array.isArray(ingredients) && ingredients.length > 0 ? (
                     ingredients.map((ingredient) => (
@@ -94,20 +91,26 @@ function IngredientManager() {
                                         onChange={(e) => setEditIngredientPrice(e.target.value)}
                                         placeholder="Prix"
                                     />
-                                    <button onClick={() => handleUpdateIngredient(ingredient.id)}>Mettre à jour</button>
+                                    <button onClick={() => handleUpdateIngredient(ingredient.id)}>Mettre à jour
+                                    </button>
                                 </div>
                             ) : (
-                                <div>
-                                    {ingredient.name} - {ingredient.price} €
-                                    <button onClick={() => {
-                                        setEditIngredientId(ingredient.id);
-                                        setEditIngredientName(ingredient.name);
-                                        setEditIngredientPrice(ingredient.price);
-                                    }}>
-                                        Modifier
-                                    </button>
-                                    <button onClick={() => handleDeleteIngredient(ingredient.id)}>Supprimer</button>
-                                </div>
+                                <div style={{display: "flex", alignItems: "center", justifyContent: "center", backgroundColor:"wheat", gap:1}}>
+                                   <span>
+                                       {ingredient.name} - {ingredient.price} €
+                                   </span>
+
+                                        <button onClick={() => {
+
+                                            setEditIngredientId(ingredient.id);
+                                            setEditIngredientName(ingredient.name);
+                                            setEditIngredientPrice(ingredient.price);
+                                        }}>
+                                            Modifier
+
+                                        </button>
+                                        <button onClick={() => handleDeleteIngredient(ingredient.id)}>Supprimer</button>
+                                    </div>
                             )}
                         </li>
                     ))
@@ -115,6 +118,8 @@ function IngredientManager() {
                     <p>La liste des ingrédients est vide.</p>
                 )}
             </ul>
+
+
         </div>
     );
 }
