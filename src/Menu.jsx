@@ -6,29 +6,48 @@ function Menu() {
         <nav>
             <ul className="menu">
                 <li>
-                    <Link to="/login">Connexion</Link>
+                    <ul>
+                        <li>
+                            <Link to="/login">Connexion</Link>
+                        </li>
+                        <li>
+                            <Link to="/signup">Inscription</Link>
+                        </li>
+                    </ul>
+
                 </li>
                 <li>
-                    <Link to="/signup">Inscription</Link>
+                    <ul>
+                        <li>
+                            <Link to="/addCategory">Categorie de Recette</Link>
+                        </li>
+                        <li>
+                            <Link to="/addIngredient">Ingredient</Link>
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                    <Link to="/addCategory">Categorie de Recette</Link>
+                    <ul>
+                        <li>
+                            <Link to="/">Recettes</Link>
+                        </li>
+                        <li>
+                            <Link to="/createRecette">Créer une recette</Link>
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                    <Link to="/addIngredient">Ingredient</Link>
+                    <ul>
+                        <li>
+                            <Link to="/profil">Profil</Link>
+                        </li>
+                        <li>
+                            <Link to="/logout">Deconnexion</Link>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <Link to="/">Recettes</Link>
-                </li>
-                <li>
-                    <Link to="/createRecette">Créer une recette</Link>
-                </li>
-                <li>
-                    <Link to="/profil">Profil</Link>
-                </li>
-                <li>
-                    <Link to="/logout">Deconnexion</Link>
-                </li>
+
+
             </ul>
         </nav>
     );

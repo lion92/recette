@@ -10,7 +10,7 @@ function Recipes() {
     }, []);
 
     return (
-        <div className="recipes-container">
+        <div style={{maxWidth:600, margin:"auto"}}>
             <h2>Liste des recettes</h2>
             {recipes.length > 0 ? (
                 <RecipeList recipes={recipes} />
