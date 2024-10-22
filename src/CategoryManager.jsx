@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import useCategoryStore from '../src/UseCategoryStore.js';
 import "./css/addRecette.css"
+import Toast from "./Toast.jsx";
+
 function CategoryManager() {
     // Récupération des actions et de l'état depuis le store Zustand
-    const { categories, fetchCategories, addCategory, updateCategory, deleteCategory } = useCategoryStore();
+    const {categories, fetchCategories, addCategory, updateCategory, deleteCategory} = useCategoryStore();
     const [newCategory, setNewCategory] = useState('');
     const [editCategoryId, setEditCategoryId] = useState(null);
     const [editCategoryName, setEditCategoryName] = useState('');
-
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('');
     const token = localStorage.getItem('jwt'); // Récupérer le token JWT pour authentification
 
     // Charger les catégories depuis l'API lors du montage du composant
@@ -18,7 +21,13 @@ function CategoryManager() {
     // Fonction pour ajouter une nouvelle catégorie
     const handleAddCategory = async () => {
         if (newCategory.trim()) {
-            await addCategory(newCategory, token);
+            await addCategory(newCategory, token).catch(() => {
+                setToastType("error");
+                setToastMessage("Une erreur s'est produite")
+            }).then(() => {
+                setToastType("success")
+                setToastMessage("Ajout crée")
+            });
             setNewCategory(''); // Réinitialiser le champ de saisie
         }
     };
@@ -26,7 +35,13 @@ function CategoryManager() {
     // Fonction pour mettre à jour une catégorie existante
     const handleUpdateCategory = async (id) => {
         if (editCategoryName.trim()) {
-            await updateCategory(id, editCategoryName, token);
+            await updateCategory(id, editCategoryName, token).catch(() => {
+                setToastType("error");
+                setToastMessage("Une erreur s'est produite")
+            }).then(() => {
+                setToastType("success")
+                setToastMessage("Ajout crée");
+            })
             setEditCategoryId(null); // Sortir du mode édition
             setEditCategoryName('');
         }
@@ -38,21 +53,27 @@ function CategoryManager() {
     };
 
     return (
-        <div style={{maxWidth:500, margin:"auto"}}>
+        <div style={{maxWidth: 500, margin: "auto"}}>
             <h2>Gestion des Catégories</h2>
 
 
-                <input
-                    type="text"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    placeholder="Ajouter une catégorie"
-                />
-                <button style={{textAlign:"center", margin:"auto"}} onClick={handleAddCategory}>Ajouter</button>
+            <input
+                type="text"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="Ajouter une catégorie"
+            />
+            <button style={{textAlign: "center", margin: "auto"}} onClick={handleAddCategory}>Ajouter</button>
 
 
-            <ul style={{display:"flex", flexDirection:"column",alignItems:"center", justifyContent:"center", gap:2}}>
-                {Array.isArray(categories) && categories.length > 0? categories?.map((category) => (
+            <ul style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 2
+            }}>
+                {Array.isArray(categories) && categories.length > 0 ? categories?.map((category) => (
                     <li key={category?.id}>
                         {editCategoryId === category?.id ? (
                             <div>
@@ -66,15 +87,23 @@ function CategoryManager() {
                         ) : (
                             <div>
                                 {category?.name}
-                                <button onClick={() => { setEditCategoryId(category.id); setEditCategoryName(category.name); }}>
+                                <button onClick={() => {
+                                    setEditCategoryId(category.id);
+                                    setEditCategoryName(category.name);
+                                }}>
                                     Modifier
                                 </button>
                                 <button onClick={() => handleDeleteCategory(category.id)}>Supprimer</button>
                             </div>
                         )}
                     </li>
-                )):""}
+                )) : ""}
             </ul>
+            <Toast
+                message={toastMessage}
+                type={toastType}
+                onClose={() => setToastMessage('')}
+            />
         </div>
     );
 }
