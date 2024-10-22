@@ -3,7 +3,8 @@ import Select from 'react-select'; // Sélecteur multiple pour catégories et in
 import useRecipeStore from './recipeStore'; // Store pour les recettes
 import useCategoryStore from './useCategoryStore'; // Store pour les catégories
 import useIngredientStore from '../src/IngredientStore.jsx'; // Store pour les ingrédients
-import './css/addRecette.css'; // CSS pour styliser le formulaire
+import './css/addRecette.css';
+import Toast from "./Toast.jsx"; // CSS pour styliser le formulaire
 
 function AddRecipe() {
     const [title, setTitle] = useState('');
@@ -12,7 +13,8 @@ function AddRecipe() {
     const [isPublished, setIsPublished] = useState(false);
     const [selectedIngredients, setSelectedIngredients] = useState([]); // Sélection d'ingrédients
     const [selectedCategories, setSelectedCategories] = useState([]); // Sélection de catégories
-
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState('');
     // Récupération des recettes, catégories et ingrédients depuis les stores
     const { addRecipe, fetchRecipes } = useRecipeStore();
     const { categories, fetchCategories } = useCategoryStore();
@@ -30,13 +32,11 @@ function AddRecipe() {
 
         const token = localStorage.getItem('jwt'); // Récupérer le token JWT pour l'authentification
         if (!token) {
-            alert('Vous devez être connecté pour ajouter une recette.');
+            setToastType("error")
+            setToastMessage('Vous devez être connecté pour ajouter une recette')
             return;
         }
 
-        // Log pour vérifier les valeurs sélectionnées avant de soumettre
-        console.log('Selected Category IDs:', selectedCategories);
-        console.log('Selected Ingredient IDs:', selectedIngredients);
 
         const recipeData = {
             title,
@@ -48,8 +48,22 @@ function AddRecipe() {
         };
 
         try {
-            await addRecipe(recipeData, token); // Ajouter la recette via le store
-            alert('Recette ajoutée avec succès !');
+            if(recipeData.ingredients.length===0){
+                setToastType("error")
+                setToastMessage('Veuillez ajouter des ingredients')
+                return
+            }
+            if(recipeData.categories.length===0){
+                setToastType("error")
+                setToastMessage('Veuillez ajouter des catégories')
+                return
+            }
+            await addRecipe(recipeData, token).catch(()=>{setToastType("error")
+            setToastMessage('Erreur lors de l’ajout de la recette')}).then(()=>{
+                setToastType("succes")
+                setToastMessage('Recette ajoutée avec succes')
+            }); // Ajouter la recette via le store
+
             // Réinitialiser les champs après l'ajout
             setTitle('');
             setDescription('');
@@ -58,14 +72,16 @@ function AddRecipe() {
             setSelectedCategories([]);
             setIsPublished(false);
             fetchRecipes(); // Actualiser la liste des recettes
+
+
         } catch (error) {
-            console.error('Erreur lors de l’ajout de la recette', error);
-            alert('Erreur lors de l’ajout de la recette');
+            setToastType("error")
+            setToastMessage('Erreur lors de l’ajout de la recette')
         }
     };
 
     return (
-        <div className="recipe-form-container">
+        <div style={{display:"flex", alignItems:"center", justifyContent:"center",flexDirection:"column"}}>
             <h2>Ajouter une nouvelle recette</h2>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -142,6 +158,11 @@ function AddRecipe() {
 
                 <button type="submit">Ajouter la recette</button>
             </form>
+            <Toast
+                message={toastMessage}
+                type={toastType}
+                onClose={() => setToastMessage('')}
+            />
         </div>
     );
 }

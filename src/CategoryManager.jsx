@@ -51,7 +51,7 @@ function CategoryManager() {
                 <button style={{textAlign:"center", margin:"auto"}} onClick={handleAddCategory}>Ajouter</button>
 
 
-            <ul>
+            <ul style={{display:"flex", flexDirection:"column",alignItems:"center", justifyContent:"center", gap:2}}>
                 {Array.isArray(categories) && categories.length > 0? categories?.map((category) => (
                     <li key={category?.id}>
                         {editCategoryId === category?.id ? (

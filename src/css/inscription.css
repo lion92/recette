@@ -22,7 +22,7 @@ h2 {
 
 .form-group {
     margin-bottom: 20px;
-    text-align: left;
+    text-align: center;
 }
 
 label {
@@ -43,13 +43,14 @@ input {
 button {
     width: 150px;
     padding: 12px;
-    background-color: #3498db;
+    background-color: rgba(6, 50, 56, 0.68);
     border: none;
     color: white;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin: auto;
 }
 
 button:hover {

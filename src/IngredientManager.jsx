@@ -58,7 +58,7 @@ function IngredientManager() {
     };
 
     return (
-        <div style={{maxWidth:500, margin:"auto"}}>
+        <div style={{maxWidth:500, margin:"auto",flexDirection:"column", display:"flex", alignItems:"center", justifyContent:"center"}}>
             <h2>Gestion des Ingrédients</h2>
 
                 <input
@@ -74,7 +74,7 @@ function IngredientManager() {
                     placeholder="Prix"
                 />
                 <button onClick={handleAddIngredient}>Ajouter</button>
-            <ul>
+            <ul style={{display:"flex", flexDirection:"column",alignItems:"center", justifyContent:"center", gap:2}}>
                 {Array.isArray(ingredients) && ingredients.length > 0 ? (
                     ingredients.map((ingredient) => (
                         <li key={ingredient.id}>
