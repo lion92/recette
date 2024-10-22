@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useIngredientStore from './IngredientStore.jsx';
-
+import "./css/addRecette.css"
 function IngredientManager() {
     // Récupération des actions et de l'état depuis le store Zustand
     const { ingredients, fetchIngredients, addIngredient, updateIngredient, deleteIngredient } = useIngredientStore();
@@ -58,7 +58,7 @@ function IngredientManager() {
     };
 
     return (
-        <div>
+        <div style={{maxWidth:500, margin:"auto"}}>
             <h2>Gestion des Ingrédients</h2>
 
             <div>

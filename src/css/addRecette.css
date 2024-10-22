@@ -1,5 +1,4 @@
 .container {
-    width: 80%;
     margin: 0 auto;
     padding: 20px;
     border-radius: 8px;
@@ -82,4 +81,11 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+ul{
+    list-style-type: none;
+}
+
+div{
+    font-size: 20px;
 }

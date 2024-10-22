@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useCategoryStore from '../src/UseCategoryStore.js';
-
+import "./css/addRecette.css"
 function CategoryManager() {
     // Récupération des actions et de l'état depuis le store Zustand
     const { categories, fetchCategories, addCategory, updateCategory, deleteCategory } = useCategoryStore();
@@ -38,18 +38,18 @@ function CategoryManager() {
     };
 
     return (
-        <div>
+        <div style={{maxWidth:500, margin:"auto"}}>
             <h2>Gestion des Catégories</h2>
 
-            <div>
+
                 <input
                     type="text"
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
                     placeholder="Ajouter une catégorie"
                 />
-                <button onClick={handleAddCategory}>Ajouter</button>
-            </div>
+                <button style={{textAlign:"center", margin:"auto"}} onClick={handleAddCategory}>Ajouter</button>
+
 
             <ul>
                 {Array.isArray(categories) && categories.length > 0? categories?.map((category) => (
