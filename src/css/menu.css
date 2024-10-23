@@ -10,63 +10,58 @@ body {
 
 /* Menu fixe en haut */
 nav {
-    position: relative;
-    width: 100%;
+    background-color: #007BFF; /* Bleu */
+    padding: 10px;
 }
 
-/* Style pour le conteneur des liens du menu */
 .menu {
     display: flex;
+    flex-wrap: wrap;
+    list-style: none;
     justify-content: space-around;
-    align-items: center; /* Permet de passer à la ligne si nécessaire */
-    list-style-type: none;
-    background-color: #535bf2;
-    padding: 10px;
-    transition: max-height 0.3s ease-out;
+    padding: 0;
+    margin: 0;
 }
 
 .menu li {
-    margin: 10px; /* Ajout d'un espacement entre les éléments */
+    margin: 10px;
 }
 
-/* Liens du menu */
+.menu ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
 .menu a {
-    color: #6ed3d0;
     text-decoration: none;
+    color: white;
     font-weight: bold;
     padding: 10px 15px;
+    display: block;
     transition: background-color 0.3s ease;
 }
 
 .menu a:hover {
-    background-color: #2980b9;
+    background-color: #0056b3; /* Bleu foncé au survol */
     border-radius: 5px;
 }
 
-/* Menu hamburger caché pour les grands écrans */
-.menu-toggle {
-    display: none;
-}
-
-/* Styles responsives */
-@media (max-width: 400px) {
+/* Responsive pour les petits écrans */
+@media (max-width: 768px) {
     .menu {
-        display: flex;
-        flex-direction: column; /* Organise les éléments en colonne (verticalement) */
-        align-items: center;
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
+        flex-direction: column;
     }
 
-    /* Affiche le menu hamburger */
-    .menu-toggle {
-        display: block;
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 1.5em;
-        color: #6ed3d0;
-        cursor: pointer;
+    .menu ul {
+        text-align: center;
+    }
+
+    .menu li {
+        width: 100%;
+    }
+
+    .menu a {
+        padding: 15px;
     }
 }
