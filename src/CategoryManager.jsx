@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import useCategoryStore from '../src/UseCategoryStore.js';
-import "./css/addRecette.css"
 import Toast from "./Toast.jsx";
 
 function CategoryManager() {
@@ -85,8 +84,14 @@ function CategoryManager() {
                                 <button onClick={() => handleUpdateCategory(category.id)}>Mettre à jour</button>
                             </div>
                         ) : (
-                            <div>
-                                {category?.name}
+                            <div style={{
+                                color:"blue",
+                                display: "flex",
+                                gap: 4,
+                                backgroundColor:"wheat",
+                                padding:"12px"
+                            }}>
+                                <p style={{ fontWeight:400,fontSize:"30px"}}>{category?.name}</p>
                                 <button onClick={() => {
                                     setEditCategoryId(category.id);
                                     setEditCategoryName(category.name);

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import useIngredientStore from './IngredientStore.jsx';
-import "./css/addRecette.css"
 import Toast from "./Toast.jsx";
 
 function IngredientManager() {
@@ -126,15 +125,18 @@ function IngredientManager() {
                                 </div>
                             ) : (
                                 <div style={{
+                                    color:"blue",
                                     display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    backgroundColor: "wheat",
-                                    gap: 1
+                                    gap: 4,
+                                    backgroundColor:"wheat",
+                                    padding:"12px"
                                 }}>
-                                   <span>
-                                       {ingredient.name} - {ingredient.price} €
-                                   </span>
+
+                                    <p style={{fontWeight:'400',fontSize:"30px",
+                                        color: "blue",
+                                    }}>
+                                        {ingredient.name} - {ingredient.price} €
+                                    </p>
 
                                     <button onClick={() => {
 

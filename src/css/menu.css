@@ -18,12 +18,10 @@ nav {
 .menu {
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap; /* Permet de passer à la ligne si nécessaire */
+    align-items: center; /* Permet de passer à la ligne si nécessaire */
     list-style-type: none;
     background-color: #535bf2;
     padding: 10px;
-
     transition: max-height 0.3s ease-out;
 }
 

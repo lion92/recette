@@ -25,8 +25,7 @@ function LoginPage() {
             navigate('/recipes');  // Rediriger vers la page des recettes après la connexion
         } catch (error) {
             console.error(error);
-            setToastType("error")
-            setToastMessage('Échec de la connexion')
+          $
         }
     };
 

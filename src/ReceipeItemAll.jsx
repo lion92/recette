@@ -11,44 +11,55 @@ const RecipeItemAll = ({ recipe }) => {
     };
 
     return (
-        <li className="recipe-item" onClick={handleSelect}>
-            <h3>ID recette: {recipe.id}</h3>
-            <h4>Titre: {recipe.title}</h4>
-            <p>Description: {recipe.description}</p>
-            <p>Instructions: {recipe.instructions}</p>
+        <div className="card" onClick={handleSelect}>
+            <div className="card--image-wrapper">
+                <div className="card--view">
+                    <p>View Recipe</p>
+                </div>
+                <div className="card--image"></div>
+            </div>
+            <div className="card--content-wrapper">
+                <h1 className="card--title">{recipe.title}</h1>
+                <div className="card--recipe-info">
+                    <h2 className="card--recipe-category">
+                        {recipe.categories && recipe.categories.length > 0
+                            ? recipe.categories.map((category) => category.id).join(", ")
+                            : 'Aucune catégorie'}
+                    </h2>
+                    <p className="card--recipe-time">
+                        <i className="fa fa-clock-o" aria-hidden="true"></i> {recipe.time || 'Non spécifié'} minutes
+                    </p>
+                </div>
+                <p className="card--description">{recipe.description}</p>
 
-            {/* Affichage des ingrédients */}
-            <h5>Ingrédients:</h5>
-            <ul>
-                {recipe.ingredients && recipe.ingredients.length > 0 ? (
-                    recipe.ingredients.map((ingredient) => (
-                        <li key={ingredient.id}>
-                            Nom: {ingredient.name || 'Non spécifié'}, Prix: {ingredient.price}€
-                        </li>
-                    ))
-                ) : (
-                    <li>Aucun ingrédient spécifié</li>
-                )}
-            </ul>
+                {/* Affichage des ingrédients */}
+                <div className="card--ingredients">
+                    <h5>Ingrédients:</h5>
+                    <ul>
+                        {recipe.ingredients && recipe.ingredients.length > 0 ? (
+                            recipe.ingredients.map((ingredient) => (
+                                <li key={ingredient.id}>
+                                    {ingredient.name || 'Non spécifié'} - {ingredient.price}€
+                                </li>
+                            ))
+                        ) : (
+                            <li>Aucun ingrédient spécifié</li>
+                        )}
+                    </ul>
+                </div>
 
-            {/* Affichage des catégories */}
-            <h5>Catégories:</h5>
-            <ul>
-                {recipe.categories && recipe.categories.length > 0 ? (
-
-                    recipe.categories.map((category) => (
-                        <li key={category.id}>
-                            {category.id || 'Non spécifié'}
-                        </li>
-                    ))
-                ) : (
-                    <li>Aucune catégorie spécifiée</li>
-                )}
-            </ul>
-
-            {/* Affichage des informations utilisateur */}
-            <p>Créé par: {recipe.user.username}</p>
-        </li>
+                <div className="card--rating-wrapper">
+                    <div className="card--rating-stars--wrapper">
+                        {[...Array(5)].map((star, index) => (
+                            <div key={index} className={`card--rating-star ${index < (recipe.rating || 0) ? 'filled' : ''}`}>
+                                ☆
+                            </div>
+                        ))}
+                    </div>
+                    <span className="card--rating-count">{recipe.reviewsCount || 'Aucune review'} reviews</span>
+                </div>
+            </div>
+        </div>
     );
 };
 
