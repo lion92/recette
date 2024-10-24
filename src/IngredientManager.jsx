@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import useIngredientStore from './IngredientStore.jsx';
 import Toast from "./Toast.jsx";
+import { Card, CardActions, CardContent, Button, Typography, TextField, Box } from '@mui/material';
 
 function IngredientManager() {
-    // Récupération des actions et de l'état depuis le store Zustand
-    const {ingredients, fetchIngredients, addIngredient, updateIngredient, deleteIngredient} = useIngredientStore();
+    const { ingredients, fetchIngredients, addIngredient, updateIngredient, deleteIngredient } = useIngredientStore();
     const [newIngredient, setNewIngredient] = useState('');
     const [newIngredientPrice, setNewIngredientPrice] = useState(''); // État pour le prix
     const [editIngredientId, setEditIngredientId] = useState(null);
@@ -23,49 +23,47 @@ function IngredientManager() {
     // Fonction pour ajouter un nouvel ingrédient
     const handleAddIngredient = async () => {
         if (!newIngredient.trim()) {
-            setToastType("error")
-            setToastMessage('Le nom de l\'ingrédient ne peut pas être vide.')
+            setToastType("error");
+            setToastMessage('Le nom de l\'ingrédient ne peut pas être vide.');
             return;
         }
 
         if (!newIngredientPrice || parseFloat(newIngredientPrice) <= 0) {
-            setToastType("error")
-            setToastMessage('Le prix de l\'ingrédient doit être un nombre positif.')
+            setToastType("error");
+            setToastMessage('Le prix de l\'ingrédient doit être un nombre positif.');
             return;
         }
 
         await addIngredient(newIngredient, parseFloat(newIngredientPrice), token).catch(() => {
-            setToastType("error")
-            setToastMessage('Une erreur s\'produite')
+            setToastType("error");
+            setToastMessage('Une erreur s\'est produite');
         }).then(() => {
-            setToastType("success")
-            setToastMessage('Ingredient Ajouté')
-        }); // Ajoute le prix
+            setToastType("success");
+            setToastMessage('Ingrédient ajouté');
+        });
 
-
-        setNewIngredient(''); // Réinitialiser le champ de saisie
-        setNewIngredientPrice(''); // Réinitialiser le champ de prix
+        setNewIngredient('');
+        setNewIngredientPrice('');
     };
 
     // Fonction pour mettre à jour un ingrédient existant
     const handleUpdateIngredient = async (id) => {
         if (!editIngredientName.trim()) {
-
-            setToastType("error")
-            setToastMessage("Le nom de l\'ingrédient ne peut pas être vide.")
+            setToastType("error");
+            setToastMessage("Le nom de l'ingrédient ne peut pas être vide.");
             return;
         }
 
         if (!editIngredientPrice || parseFloat(editIngredientPrice) <= 0) {
-            setToastType("error")
-            setToastMessage('Le prix de l\'ingrédient doit être un nombre positif.')
+            setToastType("error");
+            setToastMessage('Le prix de l\'ingrédient doit être un nombre positif.');
             return;
         }
 
-        await updateIngredient(id, editIngredientName, parseFloat(editIngredientPrice), token); // Ajoute le prix
-        setEditIngredientId(null); // Sortir du mode édition
+        await updateIngredient(id, editIngredientName, parseFloat(editIngredientPrice), token);
+        setEditIngredientId(null);
         setEditIngredientName('');
-        setEditIngredientPrice(''); // Réinitialiser le champ de prix
+        setEditIngredientPrice('');
     };
 
     // Fonction pour supprimer un ingrédient
@@ -74,95 +72,101 @@ function IngredientManager() {
     };
 
     return (
-        <div style={{
-            maxWidth: 500,
-            margin: "auto",
-            flexDirection: "column",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-        }}>
+        <Box sx={{ maxWidth: 500, margin: "auto", textAlign: "center" }}>
             <h2>Gestion des Ingrédients</h2>
 
-            <input
-                type="text"
+            <TextField
+                label="Ajouter un ingrédient"
                 value={newIngredient}
                 onChange={(e) => setNewIngredient(e.target.value)}
-                placeholder="Ajouter un ingrédient"
+                fullWidth
+                margin="normal"
             />
-            <input
+            <TextField
+                label="Prix"
                 type="number"
                 value={newIngredientPrice}
                 onChange={(e) => setNewIngredientPrice(e.target.value)}
-                placeholder="Prix"
+                fullWidth
+                margin="normal"
             />
-            <button onClick={handleAddIngredient}>Ajouter</button>
-            <ul style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 2
-            }}>
-                {Array.isArray(ingredients) && ingredients.length > 0 ? (
-                    ingredients.map((ingredient) => (
-                        <li key={ingredient.id}>
+            <Button variant="contained" color="primary" onClick={handleAddIngredient} sx={{ mb: 2 }}>
+                Ajouter
+            </Button>
+
+            {Array.isArray(ingredients) && ingredients.length > 0 ? (
+                ingredients.map((ingredient) => (
+                    <Card key={ingredient.id} sx={{ mb: 2, boxShadow: 3 }}>
+                        <CardContent>
                             {editIngredientId === ingredient.id ? (
                                 <div>
-                                    <input
-                                        type="text"
+                                    <TextField
+                                        label="Nom"
                                         value={editIngredientName}
                                         onChange={(e) => setEditIngredientName(e.target.value)}
+                                        fullWidth
+                                        margin="normal"
                                     />
-                                    <input
+                                    <TextField
+                                        label="Prix"
                                         type="number"
                                         value={editIngredientPrice}
                                         onChange={(e) => setEditIngredientPrice(e.target.value)}
-                                        placeholder="Prix"
+                                        fullWidth
+                                        margin="normal"
                                     />
-                                    <button onClick={() => handleUpdateIngredient(ingredient.id)}>Mettre à jour
-                                    </button>
                                 </div>
                             ) : (
-                                <div style={{
-                                    color:"blue",
-                                    display: "flex",
-                                    gap: 4,
-                                    backgroundColor:"wheat",
-                                    padding:"12px"
-                                }}>
-
-                                    <p style={{fontWeight:'400',fontSize:"30px",
-                                        color: "blue",
-                                    }}>
-                                        {ingredient.name} - {ingredient.price} €
-                                    </p>
-
-                                    <button onClick={() => {
-
+                                <Typography variant="h6">
+                                    {ingredient.name} - {ingredient.price} €
+                                </Typography>
+                            )}
+                        </CardContent>
+                        <CardActions>
+                            {editIngredientId === ingredient.id ? (
+                                <Button
+                                    size="small"
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => handleUpdateIngredient(ingredient.id)}
+                                >
+                                    Mettre à jour
+                                </Button>
+                            ) : (
+                                <Button
+                                    size="small"
+                                    variant="outlined"
+                                    color="primary"
+                                    onClick={() => {
                                         setEditIngredientId(ingredient.id);
                                         setEditIngredientName(ingredient.name);
                                         setEditIngredientPrice(ingredient.price);
-                                    }}>
-                                        Modifier
-
-                                    </button>
-                                    <button onClick={() => handleDeleteIngredient(ingredient.id)}>Supprimer</button>
-                                </div>
+                                    }}
+                                >
+                                    Modifier
+                                </Button>
                             )}
-                        </li>
-                    ))
-                ) : (
-                    <p>La liste des ingrédients est vide.</p>
-                )}
-            </ul>
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => handleDeleteIngredient(ingredient.id)}
+                            >
+                                Supprimer
+                            </Button>
+                        </CardActions>
+                    </Card>
+                ))
+            ) : (
+                <Typography variant="body1">La liste des ingrédients est vide.</Typography>
+            )}
 
             <Toast
                 message={toastMessage}
                 type={toastType}
                 onClose={() => setToastMessage('')}
             />
-        </div>
+        </Box>
     );
 }
 

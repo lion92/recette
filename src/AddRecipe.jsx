@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select'; // Sélecteur multiple pour catégories et ingrédients
+import {
+    TextField,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Typography,
+    Box,
+    FormGroup,
+} from '@mui/material';
+import Select from 'react-select'; // Pour la sélection multiple
 import useRecipeStore from './recipeStore'; // Store pour les recettes
 import useCategoryStore from './useCategoryStore'; // Store pour les catégories
 import useIngredientStore from '../src/IngredientStore.jsx'; // Store pour les ingrédients
-import './css/addRecette.css';
-import Toast from "./Toast.jsx"; // CSS pour styliser le formulaire
+import Toast from "./Toast.jsx"; // Toast pour les notifications
 
 function AddRecipe() {
     const [title, setTitle] = useState('');
@@ -32,11 +40,10 @@ function AddRecipe() {
 
         const token = localStorage.getItem('jwt'); // Récupérer le token JWT pour l'authentification
         if (!token) {
-            setToastType("error")
-            setToastMessage('Vous devez être connecté pour ajouter une recette')
+            setToastType("error");
+            setToastMessage('Vous devez être connecté pour ajouter une recette');
             return;
         }
-
 
         const recipeData = {
             title,
@@ -48,21 +55,23 @@ function AddRecipe() {
         };
 
         try {
-            if(recipeData.ingredients.length===0){
-                setToastType("error")
-                setToastMessage('Veuillez ajouter des ingredients')
-                return
+            if (recipeData.ingredients.length === 0) {
+                setToastType("error");
+                setToastMessage('Veuillez ajouter des ingrédients');
+                return;
             }
-            if(recipeData.categories.length===0){
-                setToastType("error")
-                setToastMessage('Veuillez ajouter des catégories')
-                return
+            if (recipeData.categories.length === 0) {
+                setToastType("error");
+                setToastMessage('Veuillez ajouter des catégories');
+                return;
             }
-            await addRecipe(recipeData, token).catch(()=>{setToastType("error")
-            setToastMessage('Erreur lors de l’ajout de la recette')}).then(()=>{
-                setToastType("succes")
-                setToastMessage('Recette ajoutée avec succes')
-            }); // Ajouter la recette via le store
+            await addRecipe(recipeData, token).catch(() => {
+                setToastType("error");
+                setToastMessage('Erreur lors de l’ajout de la recette');
+            }).then(() => {
+                setToastType("success");
+                setToastMessage('Recette ajoutée avec succès');
+            });
 
             // Réinitialiser les champs après l'ajout
             setTitle('');
@@ -73,97 +82,100 @@ function AddRecipe() {
             setIsPublished(false);
             fetchRecipes(); // Actualiser la liste des recettes
 
-
         } catch (error) {
-            setToastType("error")
-            setToastMessage('Erreur lors de l’ajout de la recette')
+            setToastType("error");
+            setToastMessage('Erreur lors de l’ajout de la recette');
         }
     };
 
     return (
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center",flexDirection:"column"}}>
-            <h2>Ajouter une nouvelle recette</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Titre :</label>
-                    <input
-                        type="text"
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+            <Typography variant="h4" gutterBottom>Ajouter une nouvelle recette</Typography>
+            <form onSubmit={handleSubmit} style={{ maxWidth: 600, width: '100%' }}>
+                <FormGroup>
+                    <TextField
+                        label="Titre"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Entrez le titre"
+                        variant="outlined"
+                        fullWidth
                         required
+                        margin="normal"
                     />
-                </div>
-
-                <div>
-                    <label>Description :</label>
-                    <textarea
+                    <TextField
+                        label="Description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Entrez la description"
+                        variant="outlined"
+                        fullWidth
                         required
+                        margin="normal"
+                        multiline
+                        rows={4}
                     />
-                </div>
-
-                <div>
-                    <label>Instructions :</label>
-                    <textarea
+                    <TextField
+                        label="Instructions"
                         value={instructions}
                         onChange={(e) => setInstructions(e.target.value)}
-                        placeholder="Indiquez les instructions"
+                        variant="outlined"
+                        fullWidth
                         required
+                        margin="normal"
+                        multiline
+                        rows={4}
                     />
-                </div>
-
-                {/* Sélection des catégories avec react-select */}
-                <div>
-                    <label>Catégories :</label>
-                    <Select
-                        isMulti
-                        value={selectedCategories}
-                        onChange={setSelectedCategories}
-                        options={categories.map((category) => ({
-                            value: category.id, // Utiliser l'ID de la catégorie
-                            label: category.name, // Afficher le nom de la catégorie
-                        }))}
-                        placeholder="Sélectionnez les catégories"
-                    />
-                </div>
-
-                {/* Sélection des ingrédients avec react-select */}
-                <div>
-                    <label>Ingrédients :</label>
-                    <Select
-                        isMulti
-                        value={selectedIngredients}
-                        onChange={setSelectedIngredients}
-                        options={ingredients.map((ingredient) => ({
-                            value: ingredient.id, // Utiliser l'ID de l'ingrédient
-                            label: ingredient.name, // Afficher le nom de l'ingrédient
-                        }))}
-                        placeholder="Sélectionnez les ingrédients"
-                    />
-                </div>
-
-                <div>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={isPublished}
-                            onChange={() => setIsPublished(!isPublished)}
+                    <div style={{ margin: '16px 0' }}>
+                        <label>Catégories :</label>
+                        <Select
+                            isMulti
+                            value={selectedCategories}
+                            onChange={setSelectedCategories}
+                            options={categories.map((category) => ({
+                                value: category.id,
+                                label: category.name,
+                            }))}
+                            placeholder="Sélectionnez les catégories"
                         />
-                        Publier la recette ?
-                    </label>
-                </div>
-
-                <button type="submit">Ajouter la recette</button>
+                    </div>
+                    <div style={{ margin: '16px 0' }}>
+                        <label>Ingrédients :</label>
+                        <Select
+                            isMulti
+                            value={selectedIngredients}
+                            onChange={setSelectedIngredients}
+                            options={ingredients.map((ingredient) => ({
+                                value: ingredient.id,
+                                label: ingredient.name,
+                            }))}
+                            placeholder="Sélectionnez les ingrédients"
+                        />
+                    </div>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={isPublished}
+                                onChange={() => setIsPublished(!isPublished)}
+                            />
+                        }
+                        label="Publier la recette ?"
+                    />
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        style={{ marginTop: 16 }}
+                    >
+                        Ajouter la recette
+                    </Button>
+                </FormGroup>
             </form>
             <Toast
                 message={toastMessage}
                 type={toastType}
                 onClose={() => setToastMessage('')}
             />
-        </div>
+        </Box>
     );
 }
 

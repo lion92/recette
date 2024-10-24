@@ -1,55 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './css/menu.css'
+import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+
 function Menu() {
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    // Fonction pour ouvrir/fermer le menu drawer
+    const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setDrawerOpen(open);
+    };
+
+    const menuItems = [
+        { text: 'Connexion', to: '/login' },
+        { text: 'Inscription', to: '/signup' },
+        { text: 'Catégorie de Recette', to: '/addCategory' },
+        { text: 'Ingrédient', to: '/addIngredient' },
+        { text: 'Recettes', to: '/' },
+        { text: 'Créer une Recette', to: '/createRecette' },
+        { text: 'Profil', to: '/profil' },
+        { text: 'Déconnexion', to: '/logout' },
+    ];
+
+    const drawerList = () => (
+        <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}
+        >
+            <List>
+                {menuItems.map((item) => (
+                    <ListItem button key={item.text} component={Link} to={item.to}>
+                        <ListItemText primary={item.text} />
+                    </ListItem>
+                ))}
+            </List>
+        </Box>
+    );
+
     return (
-        <nav>
-            <ul className="menu">
-                <li>
-                    <ul>
-                        <li>
-                            <Link to="/login">Connexion</Link>
-                        </li>
-                        <li>
-                            <Link to="/signup">Inscription</Link>
-                        </li>
-                    </ul>
+        <>
+            <AppBar position="static" color="primary">
+                <Toolbar>
+                    {/* Icone du menu pour les petits écrans */}
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ display: { xs: 'block', md: 'none' } }}
+                        onClick={toggleDrawer(true)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
 
-                </li>
-                <li>
-                    <ul>
-                        <li>
-                            <Link to="/addCategory">Categorie de Recette</Link>
-                        </li>
-                        <li>
-                            <Link to="/addIngredient">Ingredient</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li>
-                            <Link to="/">Recettes</Link>
-                        </li>
-                        <li>
-                            <Link to="/createRecette">Créer une recette</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li>
-                            <Link to="/profil">Profil</Link>
-                        </li>
-                        <li>
-                            <Link to="/logout">Deconnexion</Link>
-                        </li>
-                    </ul>
-                </li>
+                    {/* Menu pour les grands écrans */}
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        flexGrow={1}
+                        sx={{ display: { xs: 'none', md: 'flex' } }}
+                    >
+                        {menuItems.map((item) => (
+                            <Button
+                                key={item.text}
+                                color="inherit"
+                                component={Link}
+                                to={item.to}
+                            >
+                                {item.text}
+                            </Button>
+                        ))}
+                    </Box>
+                </Toolbar>
+            </AppBar>
 
-
-            </ul>
-        </nav>
+            {/* Drawer pour les petits écrans */}
+            <Drawer
+                anchor="left"
+                open={drawerOpen}
+                onClose={toggleDrawer(false)}
+            >
+                {drawerList()}
+            </Drawer>
+        </>
     );
 }
 

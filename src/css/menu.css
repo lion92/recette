@@ -6,12 +6,19 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* Menu fixe en haut */
 nav {
     background-color: #007BFF; /* Bleu */
     padding: 10px;
+    position: relative;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
 }
 
 .menu {
@@ -24,7 +31,7 @@ nav {
 }
 
 .menu li {
-    margin: 10px;
+    margin: 4px;
 }
 
 .menu ul {
@@ -51,6 +58,7 @@ nav {
 @media (max-width: 768px) {
     .menu {
         flex-direction: column;
+        align-items: center;
     }
 
     .menu ul {
@@ -63,5 +71,21 @@ nav {
 
     .menu a {
         padding: 15px;
+    }
+}
+
+/* Responsive pour les très petits écrans */
+@media (max-width: 480px) {
+    .menu a {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+/* Ajustements pour les très grands écrans */
+@media (min-width: 1200px) {
+    .menu a {
+        padding: 15px 20px;
+        font-size: 18px;
     }
 }

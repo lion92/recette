@@ -1,45 +1,75 @@
-// src/pages/Register.jsx
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import './css/inscription.css'
-import Toast from "./Toast.jsx";
+import { TextField, Button, Typography, Box } from '@mui/material';
+import Toast from './Toast.jsx';
 
 function SignupPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3012/auth/register', {username, password});
-            setToastType("success")
-            setToastMessage("Inscription réussie")
+            await axios.post('http://localhost:3012/auth/register', { username, password });
+            setToastType('success');
+            setToastMessage('Inscription réussie');
         } catch (error) {
             console.error(error);
-            setToastType("error")
-            setToastMessage("Une erreur s'est produite.")
+            setToastType('error');
+            setToastMessage("Une erreur s'est produite.");
         }
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <h2>Inscription</h2>
-                <input type="text" placeholder="Nom d'utilisateur" value={username}
-                       onChange={(e) => setUsername(e.target.value)}/>
-                <input type="password" placeholder="Mot de passe" value={password}
-                       onChange={(e) => setPassword(e.target.value)}/>
-                <button type="submit">S'inscrire</button>
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ height: '100vh' }}
+        >
+            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400 }}>
+                <Typography variant="h4" gutterBottom>
+                    Inscription
+                </Typography>
+                <TextField
+                    label="Nom d'utilisateur"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+                <TextField
+                    label="Mot de passe"
+                    type="password"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                >
+                    S'inscrire
+                </Button>
             </form>
             <Toast
                 message={toastMessage}
                 type={toastType}
                 onClose={() => setToastMessage('')}
             />
-        </>
+        </Box>
     );
-
 }
 
 export default SignupPage;

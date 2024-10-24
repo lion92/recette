@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../src/css/profil.css'; // Importer les styles pour le profil
+import { Box, Typography, CircularProgress, Alert, Card, CardContent, CardHeader, Avatar } from '@mui/material';
+import { deepPurple } from '@mui/material/colors';
 
 function Profil() {
     const [user, setUser] = useState(null); // État pour stocker les informations de l'utilisateur
@@ -35,21 +36,58 @@ function Profil() {
     }, []); // Le tableau vide signifie que l'effet est exécuté seulement lors du montage du composant
 
     if (loading) {
-        return <p>Chargement des informations utilisateur...</p>;
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <CircularProgress />
+                <Typography variant="h6" sx={{ ml: 2 }}>
+                    Chargement des informations utilisateur...
+                </Typography>
+            </Box>
+        );
     }
 
     if (error) {
-        return <p>{error}</p>; // Afficher l'erreur s'il y en a une
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <Alert severity="error">{error}</Alert>
+            </Box>
+        );
     }
 
     if (!user) {
-        return <p>Utilisateur non trouvé</p>;
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <Typography variant="h6">Utilisateur non trouvé</Typography>
+            </Box>
+        );
     }
 
     return (
-        <div className="profil-container">
-            <p>Nom : {user.username}</p>
-        </div>
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            height="100vh"
+            sx={{ p: 2 }}
+        >
+            <Card sx={{ maxWidth: 400, width: '100%' }}>
+                <CardHeader
+                    avatar={
+                        <Avatar sx={{ bgcolor: deepPurple[500] }}>
+                            {user.username.charAt(0).toUpperCase()}
+                        </Avatar>
+                    }
+                    title={user.username}
+                    subheader="Utilisateur enregistré"
+                />
+                <CardContent>
+                    <Typography variant="body1">
+                        Bienvenue, {user.username}! Vous êtes maintenant connecté à votre profil.
+                    </Typography>
+                </CardContent>
+            </Card>
+        </Box>
     );
 }
 

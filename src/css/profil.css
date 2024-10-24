@@ -1,29 +1,46 @@
-/* Conteneur du profil */
+/* Conteneur principal pour le profil */
 .profil-container {
+    max-width: 400px;
+    margin: 50px auto;
     padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Avatar du profil */
-.profil-avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-}
-
-/* Nom de l'utilisateur */
-.profil-container h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-/* Email de l'utilisateur */
+/* Style du texte pour les informations utilisateur */
 .profil-container p {
-    font-size: 1.2rem;
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+    margin: 10px 0;
+}
+
+/* Style du texte de chargement */
+.profil-container p.loading {
+    font-size: 16px;
     color: #777;
+    font-style: italic;
+}
+
+/* Style pour les erreurs */
+.profil-container p.error {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Ajout de petites animations pour rendre le profil plus dynamique */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Appliquer l'animation de fade-in */
+.profil-container {
+    animation: fadeIn 0.5s ease-in-out;
 }
