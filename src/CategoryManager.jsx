@@ -53,21 +53,33 @@ function CategoryManager() {
     };
 
     return (
-        <Box sx={{ maxWidth: 500, margin: "auto", textAlign: "center" }}>
-            <h2>Gestion des Catégories</h2>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh', // Occupe toute la hauteur de l'écran
+                textAlign: 'center',
+                padding: 2,
+                backgroundColor:"white"
+            }}
+        >
+            <Typography variant="h4" gutterBottom>
+                Gestion des Catégories
+            </Typography>
 
             <TextField
                 label="Ajouter une catégorie"
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                fullWidth
-                margin="normal"
+                sx={{ width: '80%', maxWidth: 400, marginBottom: 2 }} // Limite la taille à 400px maximum
             />
-            <Button variant="contained" color="primary" onClick={handleAddCategory} sx={{ mb: 2 }}>
+            <Button variant="contained" color="primary" onClick={handleAddCategory} sx={{ mb: 4 }}>
                 Ajouter
             </Button>
 
-            <Box>
+            <Box sx={{ width: '100%', maxWidth: 500 }}>
                 {Array.isArray(categories) && categories.length > 0 ? (
                     categories.map((category) => (
                         <Card key={category.id} sx={{ mb: 2, boxShadow: 3 }}>
@@ -77,8 +89,7 @@ function CategoryManager() {
                                         label="Nom"
                                         value={editCategoryName}
                                         onChange={(e) => setEditCategoryName(e.target.value)}
-                                        fullWidth
-                                        margin="normal"
+                                        sx={{ width: '100%' }} // Prend toute la largeur de la carte
                                     />
                                 ) : (
                                     <Typography variant="h6">

@@ -89,7 +89,7 @@ function AddRecipe() {
     };
 
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+        <Box display="flex" sx={{backgroundColor:"white", padding:"10px", width:"50%", margin:"auto", marginTop:"20px"}} flexDirection="column" alignItems="center" justifyContent="center">
             <Typography variant="h4" gutterBottom>Ajouter une nouvelle recette</Typography>
             <form onSubmit={handleSubmit} style={{ maxWidth: 600, width: '100%' }}>
                 <FormGroup>

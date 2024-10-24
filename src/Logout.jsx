@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Box } from '@mui/material';
 
 function Logout() {
     const navigate = useNavigate();
@@ -14,13 +14,22 @@ function Logout() {
     };
 
     return (
-        <Button
-            variant="contained"
-            onClick={handleLogout}
-            sx={{ margin: '20px', padding: '10px 20px' }}
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh', // Pour occuper toute la hauteur de la fenêtre
+            }}
         >
-            Se déconnecter
-        </Button>
+            <Button
+                variant="contained"
+                onClick={handleLogout}
+                sx={{ padding: '10px 20px', backgroundColor:"red" }}
+            >
+                Se déconnecter
+            </Button>
+        </Box>
     );
 }
 

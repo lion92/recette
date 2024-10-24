@@ -72,23 +72,32 @@ function IngredientManager() {
     };
 
     return (
-        <Box sx={{ maxWidth: 500, margin: "auto", textAlign: "center" }}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh', // Occuper toute la hauteur de l'écran
+                textAlign: 'center',
+                padding: 2,
+                backgroundColor:"white"
+            }}
+        >
             <h2>Gestion des Ingrédients</h2>
 
             <TextField
                 label="Ajouter un ingrédient"
                 value={newIngredient}
                 onChange={(e) => setNewIngredient(e.target.value)}
-                fullWidth
-                margin="normal"
+                sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
             />
             <TextField
                 label="Prix"
                 type="number"
                 value={newIngredientPrice}
                 onChange={(e) => setNewIngredientPrice(e.target.value)}
-                fullWidth
-                margin="normal"
+                sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
             />
             <Button variant="contained" color="primary" onClick={handleAddIngredient} sx={{ mb: 2 }}>
                 Ajouter
@@ -96,7 +105,7 @@ function IngredientManager() {
 
             {Array.isArray(ingredients) && ingredients.length > 0 ? (
                 ingredients.map((ingredient) => (
-                    <Card key={ingredient.id} sx={{ mb: 2, boxShadow: 3 }}>
+                    <Card key={ingredient.id} sx={{ mb: 2, boxShadow: 3, width: '100%', maxWidth: 400 }}>
                         <CardContent>
                             {editIngredientId === ingredient.id ? (
                                 <div>
@@ -104,16 +113,14 @@ function IngredientManager() {
                                         label="Nom"
                                         value={editIngredientName}
                                         onChange={(e) => setEditIngredientName(e.target.value)}
-                                        fullWidth
-                                        margin="normal"
+                                        sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
                                     />
                                     <TextField
                                         label="Prix"
                                         type="number"
                                         value={editIngredientPrice}
                                         onChange={(e) => setEditIngredientPrice(e.target.value)}
-                                        fullWidth
-                                        margin="normal"
+                                        sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
                                     />
                                 </div>
                             ) : (

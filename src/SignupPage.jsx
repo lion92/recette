@@ -30,7 +30,7 @@ function SignupPage() {
             justifyContent="center"
             sx={{ height: '100vh' }}
         >
-            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400 }}>
+            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor:"white", textAlign:"center", padding:"10px"}}>
                 <Typography variant="h4" gutterBottom>
                     Inscription
                 </Typography>

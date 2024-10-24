@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-
+import '../src/css/menu.css'
 function Menu() {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -27,7 +27,7 @@ function Menu() {
 
     const drawerList = () => (
         <Box
-            sx={{ width: 250 }}
+            sx={{ width: 250}}
             role="presentation"
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
@@ -62,7 +62,7 @@ function Menu() {
                         display="flex"
                         justifyContent="center"
                         flexGrow={1}
-                        sx={{ display: { xs: 'none', md: 'flex' } }}
+                        sx={{ display: { xs: 'none', md: 'flex', marginTop:"50px" } }}
                     >
                         {menuItems.map((item) => (
                             <Button
