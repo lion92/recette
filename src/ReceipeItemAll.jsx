@@ -31,6 +31,7 @@ const RecipeItemAll = ({ recipe }) => {
                     </p>
                 </div>
                 <p className="card--description">{recipe.description}</p>
+                <p className="card--description">{recipe.instructions}</p>
 
                 {/* Affichage des ingrédients */}
                 <div className="card--ingredients">
@@ -51,7 +52,8 @@ const RecipeItemAll = ({ recipe }) => {
                 <div className="card--rating-wrapper">
                     <div className="card--rating-stars--wrapper">
                         {[...Array(5)].map((star, index) => (
-                            <div key={index} className={`card--rating-star ${index < (recipe.rating || 0) ? 'filled' : ''}`}>
+                            <div key={index}
+                                 className={`card--rating-star ${index < (recipe.rating || 0) ? 'filled' : ''}`}>
                                 ☆
                             </div>
                         ))}

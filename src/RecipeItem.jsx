@@ -1,6 +1,7 @@
 import React from 'react';
 import './css/recette.css';
-import useRecipeIdStore from "./RecipeIdStore.js"; // Assurez-vous que le chemin est correct
+import useRecipeIdStore from "./RecipeIdStore.js";
+import {Button} from "@mui/material"; // Assurez-vous que le chemin est correct
 
 const RecipeItem = ({ recipe }) => {
     const { selectedRecipeId, selectRecipe } = useRecipeIdStore();
@@ -12,6 +13,7 @@ const RecipeItem = ({ recipe }) => {
 
     return (
         <div className="card" onClick={handleSelect}>
+            <Button color="primary" onClick={() => deleteRecipe(recipe.id, ""+localStorage.getItem('jwt'))}>Supprimer</Button>
             <div className="card--image-wrapper">
                 <div className="card--view">
                     <p>View Recipe</p>
@@ -28,6 +30,9 @@ const RecipeItem = ({ recipe }) => {
                     </h2>
                 </div>
                 <p className="card--description">{recipe.description}</p>
+
+                <p className="card--description">{recipe.instructions}</p>
+
 
                 {/* Affichage des ingrédients */}
                 <div className="card--ingredients">

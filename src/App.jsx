@@ -11,26 +11,30 @@ import AddRecipe from "./AddRecipe.jsx";
 import Logout from "./Logout.jsx";
 import CategoryManager from "./CategoryManager.jsx";
 import IngredientManager from "./IngredientManager.jsx";
+import Footer from "./Footer.jsx";
 
 
 function App() {
     return (
-        <div className="container">
-            <Menu></Menu>
-        <div className="app-container">
-            <Routes>
-                <Route path="/" element={<Recipes />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/createRecette" element={<AddRecipe />} />
-                <Route path="/profil" element={<Profil />} />
-                <Route path="/logout" element={<Logout />} />
-                <Route path="/addCategory" element={<CategoryManager />} />
-                <Route path="/addIngredient" element={<IngredientManager />} />
+        <>
+            <div className="container">
+                <Menu></Menu>
+                <div className="app-container">
+                    <Routes>
+                        <Route path="/" element={<Recipes/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/signup" element={<SignupPage/>}/>
+                        <Route path="/createRecette" element={<AddRecipe/>}/>
+                        <Route path="/profil" element={<Profil/>}/>
+                        <Route path="/logout" element={<Logout/>}/>
+                        <Route path="/addCategory" element={<CategoryManager/>}/>
+                        <Route path="/addIngredient" element={<IngredientManager/>}/>
 
-            </Routes>
-        </div>
-        </div>
+                    </Routes>
+                </div>
+            </div>
+            <Footer></Footer>
+        </>
     );
 }
 

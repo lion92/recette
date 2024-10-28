@@ -2,12 +2,12 @@
 .card {
     position: relative;
     width: 350px;
-    margin: 0px auto;
     border-radius: 3px;
     overflow: hidden;
     background-color: white;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    margin: 0 20px 0 auto;
 }
 
 .card--image-wrapper {
@@ -59,7 +59,7 @@
 
 .card--title {
     font-family: 'Vesper Libre', serif;
-    margin-top: 0px;
+    margin-top: 0;
     margin-bottom: 5px;
     line-height: 100%;
 }
@@ -68,7 +68,7 @@
     align-items: baseline;
 }
 .card--recipe-category {
-    margin-top: 0px;
+    margin-top: 0;
     margin-bottom: 15px;
     font-size: 12px;
     color: #D99525;
@@ -76,7 +76,7 @@
     margin-right: 15px;
 }
 .card--recipe-time {
-    margin: 0px;
+    margin: 0;
     font-size: 12px;
     color: #ccc;
 }

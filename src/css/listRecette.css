@@ -1,0 +1,24 @@
+.recipe-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.recipe-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}

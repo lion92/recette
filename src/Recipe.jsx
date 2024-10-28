@@ -10,7 +10,7 @@ function Recipes() {
     }, []);
 
     return (
-        <div style={{maxWidth:600, margin:"auto"}}>
+        <div style={{display:"flex", flexWrap:"wrap", justifyContent:"start", alignItems:"stretch", margin:10, flexDirection:"row"}}>
             <h2>Liste des recettes</h2>
             {recipes.length > 0 ? (
                 <RecipeList recipes={recipes} />

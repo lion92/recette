@@ -9,3 +9,14 @@ body {
 
     box-sizing: border-box;
 }
+
+.menu-logo {
+    margin: auto;
+}
+
+.logo-image {
+    height: 100px; /* Ajustez selon votre besoin */
+    width: auto;
+    position: relative;
+    margin: 0.1em;
+}

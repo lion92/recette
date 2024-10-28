@@ -27,15 +27,16 @@ function Menu() {
 
     const drawerList = () => (
         <Box
-            sx={{ width: 250}}
+            sx={{width: 250}}
             role="presentation"
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
+
             <List>
                 {menuItems.map((item) => (
                     <ListItem button key={item.text} component={Link} to={item.to}>
-                        <ListItemText primary={item.text} />
+                        <ListItemText primary={item.text}/>
                     </ListItem>
                 ))}
             </List>
@@ -43,18 +44,21 @@ function Menu() {
     );
 
     return (
-        <>
+        <div>
             <AppBar position="static" color="primary">
+                <div className="menu-logo">
+                    <img src="../src/asset/images/logo.png" alt="Just Recipes Logo" className="logo-image"/>
+                </div>
                 <Toolbar>
                     {/* Icone du menu pour les petits écrans */}
                     <IconButton
                         edge="start"
                         color="inherit"
                         aria-label="menu"
-                        sx={{ display: { xs: 'block', md: 'none' } }}
+                        sx={{display: {xs: 'block', md: 'none'}}}
                         onClick={toggleDrawer(true)}
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
 
                     {/* Menu pour les grands écrans */}
@@ -62,7 +66,7 @@ function Menu() {
                         display="flex"
                         justifyContent="center"
                         flexGrow={1}
-                        sx={{ display: { xs: 'none', md: 'flex', marginTop:"50px" } }}
+                        sx={{display: {xs: 'none', md: 'flex', marginTop: "50px"}}}
                     >
                         {menuItems.map((item) => (
                             <Button
@@ -86,7 +90,7 @@ function Menu() {
             >
                 {drawerList()}
             </Drawer>
-        </>
+        </div>
     );
 }
 
