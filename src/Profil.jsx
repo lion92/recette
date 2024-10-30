@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { Box, Typography, CircularProgress, Alert, Card, CardContent, CardHeader, Avatar } from '@mui/material';
-import { deepPurple } from '@mui/material/colors';
+import {Alert, Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Typography} from '@mui/material';
+import {deepPurple} from '@mui/material/colors';
 
 function Profil() {
     const [user, setUser] = useState(null); // État pour stocker les informations de l'utilisateur
@@ -22,7 +22,7 @@ function Profil() {
         const fetchUserProfile = async () => {
             try {
                 const response = await axios.get('http://localhost:3012/auth/me', {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: {Authorization: `Bearer ${token}`},
                 });
                 setUser(response.data); // Mettre à jour l'état avec les informations utilisateur
                 setLoading(false); // Fin du chargement
@@ -38,8 +38,8 @@ function Profil() {
     if (loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                <CircularProgress />
-                <Typography variant="h6" sx={{ ml: 2 }}>
+                <CircularProgress/>
+                <Typography variant="h6" sx={{ml: 2}}>
                     Chargement des informations utilisateur...
                 </Typography>
             </Box>
@@ -68,13 +68,16 @@ function Profil() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            height="100vh"
-            sx={{ p: 2 }}
+            sx={{
+                p: 2,
+                maxWidth: "400px",
+                margin: "20px auto",
+            }}
         >
-            <Card sx={{ maxWidth: 400, width: '100%' }}>
+            <Card sx={{maxWidth: 400, width: '100%'}}>
                 <CardHeader
                     avatar={
-                        <Avatar sx={{ bgcolor: deepPurple[500] }}>
+                        <Avatar sx={{bgcolor: deepPurple[500]}}>
                             {user.username.charAt(0).toUpperCase()}
                         </Avatar>
                     }

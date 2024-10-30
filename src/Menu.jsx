@@ -23,6 +23,7 @@ function Menu() {
         { text: 'Créer une Recette', to: '/createRecette' },
         { text: 'Profil', to: '/profil' },
         { text: 'Déconnexion', to: '/logout' },
+        { text: 'google', to: '/google' },
     ];
 
     const drawerList = () => (

@@ -12,6 +12,7 @@ import Logout from "./Logout.jsx";
 import CategoryManager from "./CategoryManager.jsx";
 import IngredientManager from "./IngredientManager.jsx";
 import Footer from "./Footer.jsx";
+import LoginGoogle from "./LoginGoogle.jsx";
 
 
 function App() {
@@ -29,11 +30,11 @@ function App() {
                         <Route path="/logout" element={<Logout/>}/>
                         <Route path="/addCategory" element={<CategoryManager/>}/>
                         <Route path="/addIngredient" element={<IngredientManager/>}/>
+                        <Route path="/google" element={<LoginGoogle/>}/>
 
                     </Routes>
                 </div>
             </div>
-            <Footer></Footer>
         </>
     );
 }

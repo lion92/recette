@@ -59,10 +59,12 @@ function CategoryManager() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100vh', // Occupe toute la hauteur de l'écran
                 textAlign: 'center',
                 padding: 2,
-                backgroundColor:"white"
+                backgroundColor:"white",
+
+                maxWidth:"400px",
+                margin:"20px auto",
             }}
         >
             <Typography variant="h4" gutterBottom>

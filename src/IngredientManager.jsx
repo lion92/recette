@@ -78,10 +78,12 @@ function IngredientManager() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100vh', // Occuper toute la hauteur de l'écran
                 textAlign: 'center',
                 padding: 2,
-                backgroundColor:"white"
+                backgroundColor:"white",
+                marginTop:"20px",
+                maxWidth:"400px",
+                margin:"20px auto",
             }}
         >
             <h2>Gestion des Ingrédients</h2>

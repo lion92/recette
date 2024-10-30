@@ -19,7 +19,8 @@ function Logout() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100vh', // Pour occuper toute la hauteur de la fenêtre
+                maxWidth:"400px",
+                margin:"20px auto", // Pour occuper toute la hauteur de la fenêtre
             }}
         >
             <Button
