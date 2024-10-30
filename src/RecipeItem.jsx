@@ -25,13 +25,14 @@ const RecipeItem = ({ recipe }) => {
                 <div className="card--recipe-info">
                     <h2 className="card--recipe-category">
                         {recipe.categories && recipe.categories.length > 0
-                            ? recipe.categories.map((category) => "Categorie : " +category.name).join(", ")
+                            ? recipe.categories.map((category) => "Categorie : " + category.name).join(", ")
                             : 'Aucune catégorie'}
                     </h2>
                 </div>
                 <p className="card--description">{recipe.description}</p>
 
                 <p className="card--description">{recipe.instructions}</p>
+                <p>prix Total: {recipe.totalCost}</p>
 
 
                 {/* Affichage des ingrédients */}

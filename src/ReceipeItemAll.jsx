@@ -32,7 +32,7 @@ const RecipeItemAll = ({ recipe }) => {
                 </div>
                 <p className="card--description">{recipe.description}</p>
                 <p className="card--description">{recipe.instructions}</p>
-
+                <p>{recipe.totalCost}</p>
                 {/* Affichage des ingrédients */}
                 <div className="card--ingredients">
                     <h5>Ingrédients:</h5>
