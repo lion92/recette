@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Alert, Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Typography} from '@mui/material';
-import {deepPurple} from '@mui/material/colors';
+import { Alert, Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Typography } from '@mui/material';
+import { deepPurple } from '@mui/material/colors';
+
+const API_BASE_URL = 'https://www.krisscode.fr/recette'; // URL de base pour l'API
 
 function Profil() {
     const [user, setUser] = useState(null); // État pour stocker les informations de l'utilisateur
@@ -21,25 +23,27 @@ function Profil() {
         // Récupérer les informations de l'utilisateur à partir de l'API
         const fetchUserProfile = async () => {
             try {
-                const response = await axios.get('http://localhost:3012/auth/me', {
-                    headers: {Authorization: `Bearer ${token}`},
+                const response = await axios.get(`${API_BASE_URL}/auth/me`, {
+                    headers: { Authorization: `Bearer ${token}` },
                 });
                 setUser(response.data); // Mettre à jour l'état avec les informations utilisateur
                 setLoading(false); // Fin du chargement
             } catch (error) {
-                setError('Erreur lors de la récupération des informations utilisateur.');
+                setError(
+                    error.response?.data?.message || 'Erreur lors de la récupération des informations utilisateur.'
+                );
                 setLoading(false);
             }
         };
 
         fetchUserProfile();
-    }, []); // Le tableau vide signifie que l'effet est exécuté seulement lors du montage du composant
+    }, []); // Exécuté seulement lors du montage du composant
 
     if (loading) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                <CircularProgress/>
-                <Typography variant="h6" sx={{ml: 2}}>
+                <CircularProgress />
+                <Typography variant="h6" sx={{ ml: 2 }}>
                     Chargement des informations utilisateur...
                 </Typography>
             </Box>
@@ -74,10 +78,10 @@ function Profil() {
                 margin: "20px auto",
             }}
         >
-            <Card sx={{maxWidth: 400, width: '100%'}}>
+            <Card sx={{ maxWidth: 400, width: '100%' }}>
                 <CardHeader
                     avatar={
-                        <Avatar sx={{bgcolor: deepPurple[500]}}>
+                        <Avatar sx={{ bgcolor: deepPurple[500] }}>
                             {user.username.charAt(0).toUpperCase()}
                         </Avatar>
                     }

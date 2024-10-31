@@ -3,6 +3,8 @@ import axios from 'axios';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import Toast from './Toast.jsx';
 
+const API_BASE_URL = 'https://www.krisscode.fr/recette'; // URL de base pour l'API
+
 function SignupPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -12,7 +14,7 @@ function SignupPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3012/auth/register', { username, password });
+            await axios.post(`${API_BASE_URL}/auth/register`, { username, password });
             setToastType('success');
             setToastMessage('Inscription réussie');
         } catch (error) {
@@ -28,10 +30,9 @@ function SignupPage() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            sx={{     maxWidth:"400px",
-                margin:"20px auto",}}
+            sx={{ maxWidth: "400px", margin: "20px auto" }}
         >
-            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor:"white", textAlign:"center", padding:"10px"}}>
+            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: "white", textAlign: "center", padding: "10px" }}>
                 <Typography variant="h4" gutterBottom>
                     Inscription
                 </Typography>
