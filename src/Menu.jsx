@@ -47,7 +47,6 @@ function Menu() {
         <div>
             <AppBar position="static" color="primary">
                 <div className="menu-logo">
-                    <img src="../src/asset/images/logo.png" alt="Just Recipes Logo" className="logo-image"/>
                 </div>
                 <Toolbar>
                     {/* Icone du menu pour les petits écrans */}

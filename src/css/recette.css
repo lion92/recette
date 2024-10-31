@@ -7,7 +7,8 @@
     background-color: white;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    margin: 20px;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .card--image-wrapper {
@@ -23,7 +24,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-image: url('../asset/images/plat.png');
+    background-image: url('../assets/plat.png');
     background-size: cover;
     background-position: center;
     transition: 0.25s ease transform;
