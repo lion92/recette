@@ -8,7 +8,7 @@ const useIngredientStore = create((set) => ({
             const response = await axios.get('http://localhost:3012/ingredients');
             set({ ingredients: response.data });
         } catch (error) {
-            console.error('Erreur lors de la récupération des ingrédients:', error);
+            alert('Erreur lors de la récupération des ingrédients:', error);
         }
     },
     addIngredient: async (name, price, token) => {
@@ -36,7 +36,7 @@ const useIngredientStore = create((set) => ({
                 ),
             }));
         } catch (error) {
-            console.error("Erreur lors de la mise à jour de l'ingrédient:", error);
+            alert("Erreur lors de la mise à jour de l'ingrédient:", error);
         }
     },
     deleteIngredient: async (id, token) => {
@@ -48,7 +48,7 @@ const useIngredientStore = create((set) => ({
                 ingredients: state.ingredients.filter((ingredient) => ingredient.id !== id),
             }));
         } catch (error) {
-            console.error('Erreur lors de la suppression de l\'ingrédient:', error);
+            alert('Erreur lors de la suppression de l\'ingrédient:', error);
         }
     },
 }));
