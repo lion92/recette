@@ -14,8 +14,8 @@ body {
     background-image: url('../assets/logo.png'); /* Chemin vers votre image de logo */
     background-size: contain; /* Ajuste l'image pour qu'elle soit entièrement visible */
     background-repeat: no-repeat;
-    width: 100px; /* Largeur du logo */
-    height: 50px; /* Hauteur du logo */
+    width: 250px; /* Largeur du logo */
+    height: 250px; /* Hauteur du logo */
     /* Espacement à droite */
-    margin: 20px auto auto;
+    margin: auto;
 }

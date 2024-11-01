@@ -51,7 +51,6 @@ function Menu() {
                 <Toolbar>
                     {/* Icone du menu pour les petits écrans */}
                     <IconButton
-                        edge="start"
                         color="inherit"
                         aria-label="menu"
                         sx={{display: {xs: 'block', md: 'none'}}}

@@ -1,21 +1,24 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import RecipeList from './RecipeList.jsx';
 import './css/recette.css';
 import useRecipeStore from "./RecipeStore.js";
 
 function Recipes() {
     const { recipes, fetchRecipes } = useRecipeStore();
+
     useEffect(() => {
-        fetchRecipes()
-    }, []);
+        fetchRecipes();
+    }, [fetchRecipes]);
 
     return (
-        <div style={{display:"flex", flexWrap:"wrap", justifyContent:"start", alignItems:"stretch", margin:10, flexDirection:"row"}}>
-            <h2>Liste des recettes</h2>
+        <div className="recipes-container">
+            <h2 className="recipes-title">Liste des recettes</h2>
             {recipes.length > 0 ? (
-                <RecipeList recipes={recipes} />
+                <div className="recipes-grid">
+                    <RecipeList recipes={recipes} />
+                </div>
             ) : (
-                <p>Aucune recette disponible</p>
+                <p className="no-recipes-message">Aucune recette disponible</p>
             )}
         </div>
     );
