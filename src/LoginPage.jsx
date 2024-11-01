@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import Toast from './Toast.jsx';
+import HomePage from "./HomePage.jsx";
 
 const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir la constante pour l'URL de base
 
@@ -40,6 +41,7 @@ function LoginPage() {
             justifyContent="center"
             sx={{ maxWidth: "400px", margin:"auto", marginTop:10}}
         >
+            <HomePage></HomePage>
             <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: "white", textAlign: "center", padding: "10px" }}>
                 <Typography variant="h4" gutterBottom>
                     Connexion
