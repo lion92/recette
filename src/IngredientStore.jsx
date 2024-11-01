@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3007'; // Définir la constante pour l'URL de base
+const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir la constante pour l'URL de base
 
 const useIngredientStore = create((set) => ({
     ingredients: [],
@@ -13,11 +13,11 @@ const useIngredientStore = create((set) => ({
             alert('Erreur lors de la récupération des ingrédients:', error);
         }
     },
-    addIngredient: async (name, price, caloriesPerUnit, defaultQuantity, token) => {
+    addIngredient: async (name, price, caloriesPerUnit, defaultQuantity, unit, token) => {
         try {
             const response = await axios.post(
                 `${API_BASE_URL}/ingredients`,
-                { name, price, caloriesPerUnit, defaultQuantity },
+                { name, price, caloriesPerUnit, defaultQuantity, unit },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             set((state) => ({ ingredients: [...state.ingredients, response.data] }));
@@ -25,11 +25,11 @@ const useIngredientStore = create((set) => ({
             console.error("Erreur lors de l'ajout de l'ingrédient:", error);
         }
     },
-    updateIngredient: async (id, name, price, caloriesPerUnit, defaultQuantity, token) => {
+    updateIngredient: async (id, name, price, caloriesPerUnit, defaultQuantity, unit, token) => {
         try {
             const response = await axios.put(
                 `${API_BASE_URL}/ingredients/${id}`,
-                { name, price, caloriesPerUnit, defaultQuantity },
+                { name, price, caloriesPerUnit, defaultQuantity, unit },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             set((state) => ({

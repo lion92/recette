@@ -3,7 +3,7 @@ import axios from 'axios';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import Toast from './Toast.jsx';
 
-const API_BASE_URL = 'http://localhost:3007'; // URL de base pour l'API
+const API_BASE_URL = 'https://www.krisscode.fr/recette'; // URL de base pour l'API
 
 function SignupPage() {
     const [username, setUsername] = useState('');

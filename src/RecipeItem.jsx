@@ -45,7 +45,7 @@ const RecipeItem = ({ recipe }) => {
 
                 <p className="card--description">{recipe.instructions}</p>
                 <p>prix Total: {recipe.totalCost}</p>
-                <p>Calorie Totale: {(recipe.totalCalories / 1000).toFixed(2)} kCal</p>
+                <p>Calorie Totale: {(recipe.totalCalories / 100).toFixed(2)} kCal</p>
 
 
                 {/* Affichage des ingrédients */}
