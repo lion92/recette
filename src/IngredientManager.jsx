@@ -1,40 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import useIngredientStore from './IngredientStore.jsx';
 import Toast from "./Toast.jsx";
-import { Card, CardActions, CardContent, Button, Typography, TextField, Box } from '@mui/material';
+import { Card, CardActions, CardContent, Button, Typography, TextField, Box, Avatar } from '@mui/material';
+import { AttachMoney, LocalFireDepartment, Restaurant } from '@mui/icons-material'; // Import des icônes
 
 function IngredientManager() {
     const { ingredients, fetchIngredients, addIngredient, updateIngredient, deleteIngredient } = useIngredientStore();
-    const [newIngredient, setNewIngredient] = useState('');
-    const [newIngredientPrice, setNewIngredientPrice] = useState(''); // État pour le prix
+    const [newIngredientName, setNewIngredientName] = useState('');
+    const [newIngredientPrice, setNewIngredientPrice] = useState('');
+    const [newIngredientCalories, setNewIngredientCalories] = useState('');
+    const [newIngredientQuantity, setNewIngredientQuantity] = useState('');
+
     const [editIngredientId, setEditIngredientId] = useState(null);
     const [editIngredientName, setEditIngredientName] = useState('');
-    const [editIngredientPrice, setEditIngredientPrice] = useState(''); // État pour le prix en modification
+    const [editIngredientPrice, setEditIngredientPrice] = useState('');
+    const [editIngredientCalories, setEditIngredientCalories] = useState('');
+    const [editIngredientQuantity, setEditIngredientQuantity] = useState('');
+
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
 
-    const token = localStorage.getItem('jwt'); // Récupérer le token JWT pour authentification
+    const token = localStorage.getItem('jwt');
 
-    // Charger les ingrédients depuis l'API lors du montage du composant
     useEffect(() => {
         fetchIngredients();
     }, [fetchIngredients]);
 
-    // Fonction pour ajouter un nouvel ingrédient
     const handleAddIngredient = async () => {
-        if (!newIngredient.trim()) {
+        if (!newIngredientName.trim() || !newIngredientPrice || !newIngredientCalories || !newIngredientQuantity) {
             setToastType("error");
-            setToastMessage('Le nom de l\'ingrédient ne peut pas être vide.');
+            setToastMessage('Veuillez remplir tous les champs correctement.');
             return;
         }
 
-        if (!newIngredientPrice || parseFloat(newIngredientPrice) <= 0) {
-            setToastType("error");
-            setToastMessage('Le prix de l\'ingrédient doit être un nombre positif.');
-            return;
-        }
-
-        await addIngredient(newIngredient, parseFloat(newIngredientPrice), token).catch(() => {
+        await addIngredient(
+            newIngredientName,
+            parseFloat(newIngredientPrice),
+            parseFloat(newIngredientCalories),
+            parseFloat(newIngredientQuantity),
+            token
+        ).catch(() => {
             setToastType("error");
             setToastMessage('Une erreur s\'est produite');
         }).then(() => {
@@ -42,31 +47,35 @@ function IngredientManager() {
             setToastMessage('Ingrédient ajouté');
         });
 
-        setNewIngredient('');
+        setNewIngredientName('');
         setNewIngredientPrice('');
+        setNewIngredientCalories('');
+        setNewIngredientQuantity('');
     };
 
-    // Fonction pour mettre à jour un ingrédient existant
     const handleUpdateIngredient = async (id) => {
-        if (!editIngredientName.trim()) {
+        if (!editIngredientName.trim() || !editIngredientPrice || !editIngredientCalories || !editIngredientQuantity) {
             setToastType("error");
-            setToastMessage("Le nom de l'ingrédient ne peut pas être vide.");
+            setToastMessage('Veuillez remplir tous les champs correctement.');
             return;
         }
 
-        if (!editIngredientPrice || parseFloat(editIngredientPrice) <= 0) {
-            setToastType("error");
-            setToastMessage('Le prix de l\'ingrédient doit être un nombre positif.');
-            return;
-        }
+        await updateIngredient(
+            id,
+            editIngredientName,
+            parseFloat(editIngredientPrice),
+            parseFloat(editIngredientCalories),
+            parseFloat(editIngredientQuantity),
+            token
+        );
 
-        await updateIngredient(id, editIngredientName, parseFloat(editIngredientPrice), token);
         setEditIngredientId(null);
         setEditIngredientName('');
         setEditIngredientPrice('');
+        setEditIngredientCalories('');
+        setEditIngredientQuantity('');
     };
 
-    // Fonction pour supprimer un ingrédient
     const handleDeleteIngredient = async (id) => {
         await deleteIngredient(id, token);
     };
@@ -80,26 +89,44 @@ function IngredientManager() {
                 alignItems: 'center',
                 textAlign: 'center',
                 padding: 2,
-                backgroundColor:"white",
-                marginTop:"20px",
-                maxWidth:"400px",
-                margin:"20px auto",
+                backgroundColor: "#f8f8f8",
+                marginTop: "20px",
+                maxWidth: "600px",
+                margin: "20px auto",
+                borderRadius: 4,
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             }}
         >
-            <h2>Gestion des Ingrédients</h2>
+            <Typography variant="h4" gutterBottom>
+                Gestion des Ingrédients
+            </Typography>
 
             <TextField
-                label="Ajouter un ingrédient"
-                value={newIngredient}
-                onChange={(e) => setNewIngredient(e.target.value)}
-                sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
+                label="Nom de l'ingrédient"
+                value={newIngredientName}
+                onChange={(e) => setNewIngredientName(e.target.value)}
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 2 }}
             />
             <TextField
-                label="Prix"
+                label="Prix (€)"
                 type="number"
                 value={newIngredientPrice}
                 onChange={(e) => setNewIngredientPrice(e.target.value)}
-                sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 2 }}
+            />
+            <TextField
+                label="Calories (kcal)"
+                type="number"
+                value={newIngredientCalories}
+                onChange={(e) => setNewIngredientCalories(e.target.value)}
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 2 }}
+            />
+            <TextField
+                label="Quantité"
+                type="number"
+                value={newIngredientQuantity}
+                onChange={(e) => setNewIngredientQuantity(e.target.value)}
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 2 }}
             />
             <Button variant="contained" color="primary" onClick={handleAddIngredient} sx={{ mb: 2 }}>
                 Ajouter
@@ -107,29 +134,20 @@ function IngredientManager() {
 
             {Array.isArray(ingredients) && ingredients.length > 0 ? (
                 ingredients.map((ingredient) => (
-                    <Card key={ingredient.id} sx={{ mb: 2, boxShadow: 3, width: '100%', maxWidth: 400 }}>
-                        <CardContent>
-                            {editIngredientId === ingredient.id ? (
-                                <div>
-                                    <TextField
-                                        label="Nom"
-                                        value={editIngredientName}
-                                        onChange={(e) => setEditIngredientName(e.target.value)}
-                                        sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
-                                    />
-                                    <TextField
-                                        label="Prix"
-                                        type="number"
-                                        value={editIngredientPrice}
-                                        onChange={(e) => setEditIngredientPrice(e.target.value)}
-                                        sx={{ width: '80%', maxWidth: 300, marginBottom: 2 }} // Limite la largeur à 300px
-                                    />
-                                </div>
-                            ) : (
-                                <Typography variant="h6">
-                                    {ingredient.name} - {ingredient.price} €
+                    <Card key={ingredient.id} sx={{ mb: 2, width: '100%', maxWidth: 500, boxShadow: 3 }}>
+                        <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Avatar
+                                sx={{ bgcolor: "#1976d2", marginRight: 2 }}
+                                alt={ingredient.name}
+                            >
+                                <Restaurant />
+                            </Avatar>
+                            <Box sx={{ flexGrow: 1 }}>
+                                <Typography variant="h6">{ingredient.name}</Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                    <AttachMoney /> {ingredient.price} € - <LocalFireDepartment /> {ingredient.caloriesPerUnit} kcal - {ingredient.defaultQuantity} {ingredient.unit}
                                 </Typography>
-                            )}
+                            </Box>
                         </CardContent>
                         <CardActions>
                             {editIngredientId === ingredient.id ? (
@@ -150,6 +168,8 @@ function IngredientManager() {
                                         setEditIngredientId(ingredient.id);
                                         setEditIngredientName(ingredient.name);
                                         setEditIngredientPrice(ingredient.price);
+                                        setEditIngredientCalories(ingredient.caloriesPerUnit);
+                                        setEditIngredientQuantity(ingredient.defaultQuantity);
                                     }}
                                 >
                                     Modifier

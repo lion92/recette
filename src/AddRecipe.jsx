@@ -21,8 +21,10 @@ function AddRecipe() {
     const [isPublished, setIsPublished] = useState(false);
     const [selectedIngredients, setSelectedIngredients] = useState([]); // Sélection d'ingrédients
     const [selectedCategories, setSelectedCategories] = useState([]); // Sélection de catégories
+    const [totalCalories, setTotalCalories] = useState(0); // Calories totales
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
+
     // Récupération des recettes, catégories et ingrédients depuis les stores
     const { addRecipe, fetchRecipes } = useRecipeStore();
     const { categories, fetchCategories } = useCategoryStore();
@@ -33,6 +35,21 @@ function AddRecipe() {
         fetchCategories();
         fetchIngredients();
     }, [fetchCategories, fetchIngredients]);
+
+    // Calcul des calories totales en fonction des ingrédients sélectionnés
+    useEffect(() => {
+        const calculateTotalCalories = () => {
+            let total = 0;
+            selectedIngredients.forEach((ingredient) => {
+                const ing = ingredients.find((i) => i.id === ingredient.value);
+                if (ing) {
+                    total += ing.caloriesPerUnit * (ing.defaultQuantity || 1);
+                }
+            });
+            setTotalCalories(total);
+        };
+        calculateTotalCalories();
+    }, [selectedIngredients, ingredients]);
 
     // Soumission du formulaire pour ajouter une recette
     const handleSubmit = async (e) => {
@@ -52,6 +69,7 @@ function AddRecipe() {
             isPublished,
             ingredients: selectedIngredients.map((ingredient) => ingredient.value), // IDs des ingrédients
             categories: selectedCategories.map((category) => category.value), // IDs des catégories
+            totalCalories, // Calories totales de la recette
         };
 
         try {
@@ -80,6 +98,7 @@ function AddRecipe() {
             setSelectedIngredients([]);
             setSelectedCategories([]);
             setIsPublished(false);
+            setTotalCalories(0); // Réinitialiser les calories
             fetchRecipes(); // Actualiser la liste des recettes
 
         } catch (error) {
@@ -89,7 +108,7 @@ function AddRecipe() {
     };
 
     return (
-        <Box display="flex" sx={{backgroundColor:"white", padding:"10px", maxWidth:"400px", margin:"auto", marginTop:"20px"}} flexDirection="column" alignItems="center" justifyContent="center">
+        <Box display="flex" sx={{ backgroundColor: "white", padding: "10px", maxWidth: "400px", margin: "auto", marginTop: "20px" }} flexDirection="column" alignItems="center" justifyContent="center">
             <Typography variant="h4" gutterBottom>Ajouter une nouvelle recette</Typography>
             <form onSubmit={handleSubmit} style={{ maxWidth: 600, width: '100%' }}>
                 <FormGroup>
@@ -150,6 +169,9 @@ function AddRecipe() {
                             placeholder="Sélectionnez les ingrédients"
                         />
                     </div>
+                    <Typography variant="body1" color="textSecondary" sx={{ margin: '16px 0' }}>
+                        Calories totales : {totalCalories} kcal
+                    </Typography>
                     <FormControlLabel
                         control={
                             <Checkbox
