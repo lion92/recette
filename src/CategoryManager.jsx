@@ -1,72 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import useCategoryStore from '../src/UseCategoryStore.js';
 import Toast from "./Toast.jsx";
-import { Card, CardContent, CardActions, Button, Typography, TextField, Box } from '@mui/material';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Typography,
+    TextField,
+    Button,
+    Box,
+    Pagination,
+} from '@mui/material';
 
 function CategoryManager() {
-    // Récupération des actions et de l'état depuis le store Zustand
     const { categories, fetchCategories, addCategory, updateCategory, deleteCategory } = useCategoryStore();
     const [newCategory, setNewCategory] = useState('');
     const [editCategoryId, setEditCategoryId] = useState(null);
     const [editCategoryName, setEditCategoryName] = useState('');
+    const [filterText, setFilterText] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
-    const token = localStorage.getItem('jwt'); // Récupérer le token JWT pour authentification
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5; // Nombre d'éléments par page
 
-    // Charger les catégories depuis l'API lors du montage du composant
+    const token = localStorage.getItem('jwt');
+
     useEffect(() => {
         fetchCategories();
     }, [fetchCategories]);
 
-    // Fonction pour ajouter une nouvelle catégorie
+    // Calculer les catégories filtrées et paginées
+    const filteredCategories = categories.filter((category) =>
+        category.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+    const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
+    const displayedCategories = filteredCategories.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
     const handleAddCategory = async () => {
         if (newCategory.trim()) {
-            await addCategory(newCategory, token).catch(() => {
-                setToastType("error");
-                setToastMessage("Une erreur s'est produite");
-            }).then(() => {
-                setToastType("success");
-                setToastMessage("Ajout créé");
-            });
-            setNewCategory(''); // Réinitialiser le champ de saisie
+            await addCategory(newCategory, token)
+                .catch(() => {
+                    setToastType("error");
+                    setToastMessage("Une erreur s'est produite");
+                })
+                .then(() => {
+                    setToastType("success");
+                    setToastMessage("Ajout réussi");
+                });
+            setNewCategory('');
         }
     };
 
-    // Fonction pour mettre à jour une catégorie existante
     const handleUpdateCategory = async (id) => {
         if (editCategoryName.trim()) {
-            await updateCategory(id, editCategoryName, token).catch(() => {
-                setToastType("error");
-                setToastMessage("Une erreur s'est produite");
-            }).then(() => {
-                setToastType("success");
-                setToastMessage("Mise à jour réussie");
-            });
-            setEditCategoryId(null); // Sortir du mode édition
+            await updateCategory(id, editCategoryName, token)
+                .catch(() => {
+                    setToastType("error");
+                    setToastMessage("Une erreur s'est produite");
+                })
+                .then(() => {
+                    setToastType("success");
+                    setToastMessage("Mise à jour réussie");
+                });
+            setEditCategoryId(null);
             setEditCategoryName('');
         }
     };
 
-    // Fonction pour supprimer une catégorie
     const handleDeleteCategory = async (id) => {
         await deleteCategory(id, token);
     };
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
-                padding: 2,
-                backgroundColor:"white",
-
-                maxWidth:"400px",
-                margin:"20px auto",
-            }}
-        >
+        <Box sx={{ padding: 2, backgroundColor: "white", maxWidth: "800px", margin: "20px auto" }}>
             <Typography variant="h4" gutterBottom>
                 Gestion des Catégories
             </Typography>
@@ -75,68 +88,93 @@ function CategoryManager() {
                 label="Ajouter une catégorie"
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                sx={{ width: '80%', maxWidth: 400, marginBottom: 2 }} // Limite la taille à 400px maximum
+                fullWidth
+                margin="normal"
             />
-            <Button variant="contained" color="primary" onClick={handleAddCategory} sx={{ mb: 4 }}>
+            <Button variant="contained" color="primary" onClick={handleAddCategory} sx={{ mb: 2 }}>
                 Ajouter
             </Button>
 
-            <Box sx={{ width: '100%', maxWidth: 500 }}>
-                {Array.isArray(categories) && categories.length > 0 ? (
-                    categories.map((category) => (
-                        <Card key={category.id} sx={{ mb: 2, boxShadow: 3 }}>
-                            <CardContent>
-                                {editCategoryId === category.id ? (
-                                    <TextField
-                                        label="Nom"
-                                        value={editCategoryName}
-                                        onChange={(e) => setEditCategoryName(e.target.value)}
-                                        sx={{ width: '100%' }} // Prend toute la largeur de la carte
+            <TextField
+                label="Filtrer les catégories"
+                value={filterText}
+                onChange={(e) => setFilterText(e.target.value)}
+                fullWidth
+                margin="normal"
+            />
+
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Logo</TableCell>
+                            <TableCell>Nom</TableCell>
+                            <TableCell>Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {displayedCategories.map((category) => (
+                            <TableRow key={category.id}>
+                                <TableCell>
+                                    <img
+                                        src={`https://via.placeholder.com/50?text=${category.name[0]}`}
+                                        alt={`${category.name} Logo`}
+                                        style={{ width: '50px', height: '50px' }}
                                     />
-                                ) : (
-                                    <Typography variant="h6">
-                                        {category.name}
-                                    </Typography>
-                                )}
-                            </CardContent>
-                            <CardActions>
-                                {editCategoryId === category.id ? (
+                                </TableCell>
+                                <TableCell>
+                                    {editCategoryId === category.id ? (
+                                        <TextField
+                                            value={editCategoryName}
+                                            onChange={(e) => setEditCategoryName(e.target.value)}
+                                            fullWidth
+                                        />
+                                    ) : (
+                                        <Typography>{category.name}</Typography>
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    {editCategoryId === category.id ? (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => handleUpdateCategory(category.id)}
+                                        >
+                                            Mettre à jour
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            onClick={() => {
+                                                setEditCategoryId(category.id);
+                                                setEditCategoryName(category.name);
+                                            }}
+                                        >
+                                            Modifier
+                                        </Button>
+                                    )}
                                     <Button
-                                        size="small"
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => handleUpdateCategory(category.id)}
-                                    >
-                                        Mettre à jour
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        size="small"
                                         variant="outlined"
-                                        color="primary"
-                                        onClick={() => {
-                                            setEditCategoryId(category.id);
-                                            setEditCategoryName(category.name);
-                                        }}
+                                        color="secondary"
+                                        onClick={() => handleDeleteCategory(category.id)}
+                                        sx={{ ml: 1 }}
                                     >
-                                        Modifier
+                                        Supprimer
                                     </Button>
-                                )}
-                                <Button
-                                    size="small"
-                                    variant="outlined"
-                                    color="secondary"
-                                    onClick={() => handleDeleteCategory(category.id)}
-                                >
-                                    Supprimer
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    ))
-                ) : (
-                    <Typography variant="body1">La liste des catégories est vide.</Typography>
-                )}
-            </Box>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={(event, value) => setCurrentPage(value)}
+                sx={{ mt: 2 }}
+            />
 
             <Toast
                 message={toastMessage}
