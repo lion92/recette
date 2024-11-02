@@ -20,6 +20,13 @@ function SignupPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Vérifier que l'email n'est pas vide
+        if (!email) {
+            setToastType('error');
+            setToastMessage("L'email ne peut pas être vide");
+            return;
+        }
+
         // Vérifier que l'email est valide
         if (!isValidEmail(email)) {
             setToastType('error');
@@ -27,14 +34,29 @@ function SignupPage() {
             return;
         }
 
+        // Vérifier que le mot de passe n'est pas vide
+        if (!password) {
+            setToastType('error');
+            setToastMessage('Le mot de passe ne peut pas être vide');
+            return;
+        }
+
         try {
+            // Envoyer la requête de création de compte
             await axios.post(`${API_BASE_URL}/auth/register`, { email, password });
             setToastType('success');
             setToastMessage('Inscription réussie');
         } catch (error) {
             console.error(error);
-            setToastType('error');
-            setToastMessage("Une erreur s'est produite.");
+
+            // Gérer les erreurs spécifiques
+            if (error.response && error.response.data && error.response.data.message) {
+                setToastType('error');
+                setToastMessage(error.response.data.message);
+            } else {
+                setToastType('error');
+                setToastMessage("Une erreur s'est produite.");
+            }
         }
     };
 
