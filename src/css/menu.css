@@ -1,6 +1,6 @@
 /* Styles globaux pour le body */
 body {
-    background-image: url('../assets/fond.png');
+    background-image: url('../assets/fond4.png'); /* fond 4 contient l'url du site en haut en rouge et une meiilleure image 20241102 EFT */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
