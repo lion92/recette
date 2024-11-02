@@ -24,9 +24,6 @@ function Menu() {
         setMenuOpen(!menuOpen);
     };
 
-
-    // Liste des items avec texte et icônes
-
     const menuItems = [
         { text: 'Connexion', to: '/login', icon: <LoginIcon /> },
         { text: 'Inscription', to: '/signup', icon: <PersonAddIcon /> },
@@ -80,6 +77,19 @@ function Menu() {
             
              </Toolbar>
                 </AppBar>
+        <div>
+            <AppBar position="static" color="primary">
+                <div className="menu-logo"></div>
+                <Toolbar>
+                    {/* Icône du menu pour les petits écrans */}
+                    <IconButton
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ display: { xs: 'block', md: 'none' } }}
+                        onClick={toggleDrawer(true)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
 
                 {/* Menu déroulant avec animation en ligne */}
                 <Collapse in={menuOpen} timeout="auto" unmountOnExit >
@@ -87,9 +97,14 @@ function Menu() {
                         display="flex"
                         flexDirection="row" // Menu aligné en ligne
                         justifyContent="center"
+
                         alignItems="left"
                         bgcolor="primary.main"
                         sx={{ padding: 2, width: '100%' }}  // Largeur à 100%
+
+
+                        flexGrow={1}
+                        sx={{ display: { xs: 'none', md: 'flex', marginTop: '50px' } }}
 
                     >
 
@@ -104,8 +119,11 @@ function Menu() {
                                 color="inherit"
                                 component={Link}
                                 to={item.to}
+
                                 onClick={toggleMenu} // Ferme le menu au clic
                                 sx={{ color: 'white', marginX: 1 }}
+
+
                             >
                                 {item.text}
                             </Button>
