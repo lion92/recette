@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import Toast from '../src/Toast.jsx'; // Assurez-vous d'importer votre composant Toast
 
 const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir l'URL de base pour l'API
 
@@ -11,8 +12,9 @@ const useRecipeStore = create((set) => ({
         try {
             const response = await axios.get(`${API_BASE_URL}/recipes/all`);
             set({ recipes: response.data });
-            console.log(response.data);
+            Toast.show('Recettes chargées avec succès !', 'success'); // Utilisation de votre composant Toast
         } catch (error) {
+            Toast.show('Erreur lors du chargement des recettes', 'error');
             console.error('Erreur lors du chargement des recettes', error);
         }
     },
@@ -24,8 +26,10 @@ const useRecipeStore = create((set) => ({
                 headers: { Authorization: `Bearer ${token}` }
             });
             set((state) => ({ recipes: [...state.recipes, response.data] }));
+            Toast.show('Recette ajoutée avec succès !', 'success');
         } catch (error) {
-            console.error('Erreur lors de l\'ajout de la recette', error);
+            Toast.show("Erreur lors de l'ajout de la recette", 'error');
+            console.error("Erreur lors de l'ajout de la recette", error);
         }
     },
 
@@ -40,8 +44,10 @@ const useRecipeStore = create((set) => ({
                     recipe.id === recipeId ? { ...recipe, ...updatedRecipeData } : recipe
                 )
             }));
+            Toast.show('Recette mise à jour avec succès !', 'success');
         } catch (error) {
-            console.error('Erreur lors de la mise à jour de la recette', error);
+            Toast.show("Erreur lors de la mise à jour de la recette", 'error');
+            console.error("Erreur lors de la mise à jour de la recette", error);
         }
     },
 
@@ -54,8 +60,10 @@ const useRecipeStore = create((set) => ({
             set((state) => ({
                 recipes: state.recipes.filter((recipe) => recipe.id !== recipeId)
             }));
+            Toast.show('Recette supprimée avec succès !', 'success');
         } catch (error) {
-            alert("Une erreur s'est produite");
+            Toast.show("Erreur lors de la suppression de la recette", 'error');
+            console.error("Erreur lors de la suppression de la recette", error);
         }
     }
 }));
