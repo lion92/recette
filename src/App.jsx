@@ -20,7 +20,7 @@ function App() {
         <>
             <div className="container">
                 <Menu></Menu>
-                <div className="app-container">
+                <div className="app-container" width="10%">
                     <Routes>
                         <Route path="/" element={<Recipes/>}/>
                         <Route path="/login" element={<LoginPage/>}/>

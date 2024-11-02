@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+
+import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon, Collapse } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login'; // Exemple d'icône
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -11,19 +12,21 @@ import CreateIcon from '@mui/icons-material/Create';
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '../src/css/menu.css';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+
 
 function Menu() {
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
-    // Fonction pour ouvrir/fermer le menu drawer
-    const toggleDrawer = (open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-        setDrawerOpen(open);
+    // Fonction pour basculer l'état d'ouverture du menu déroulant
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
     };
 
+
     // Liste des items avec texte et icônes
+
     const menuItems = [
         { text: 'Connexion', to: '/login', icon: <LoginIcon /> },
         { text: 'Inscription', to: '/signup', icon: <PersonAddIcon /> },
@@ -54,47 +57,54 @@ function Menu() {
     );
 
     return (
-        <div>
-            <AppBar position="static" color="primary" sx={{background:'none'}}>
-                <div className="menu-logo"></div>
-                <Toolbar>
-                    {/* Icône du menu pour les petits écrans */}
-                    <IconButton
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ display: { xs: 'block', md: 'none' } }}
-                        onClick={toggleDrawer(true)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+        <>
+                                {/* Logo menu */}
+                                <div className='menu-logo' style={{ marginRight: '95%' }}></div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', width: '100%' }}>
+                
+                {/* Barre d'application avec l'icône pour dérouler/enrouler */}
+                <AppBar position="static" color="primary">
+                    <Toolbar style={{ justifyContent: 'left' }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="toggle menu"
+                            onClick={toggleMenu}
+                            sx={{ fontSize: '2rem' }}  // Agrandit l'icône
+                        >
+                            {menuOpen ? <ArrowDropUpIcon fontSize="inherit" /> : <ArrowDropDownIcon fontSize="inherit" />}
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
 
-                    {/* Menu pour les grands écrans */}
+                {/* Menu déroulant avec animation en ligne */}
+                <Collapse in={menuOpen} timeout="auto" unmountOnExit>
                     <Box
                         display="flex"
+                        flexDirection="row" // Menu aligné en ligne
                         justifyContent="center"
-                        flexGrow={1}
-                        sx={{ display: { xs: 'none', md: 'flex', marginTop: '50px' } }}
+                        alignItems="center"
+                        bgcolor="primary.main"
+                        sx={{ padding: 2, width: '100%' }}  // Largeur à 100%
                     >
+
+                        
+                        {/* Boutons de menu */}
                         {menuItems.map((item) => (
                             <Button
                                 key={item.text}
                                 color="inherit"
                                 component={Link}
                                 to={item.to}
-                                startIcon={item.icon} // Ajoutez l'icône ici
+                                onClick={toggleMenu} // Ferme le menu au clic
+                                sx={{ color: 'white', marginX: 1 }}
                             >
                                 {item.text}
                             </Button>
                         ))}
                     </Box>
-                </Toolbar>
-            </AppBar>
-
-            {/* Drawer pour les petits écrans */}
-            <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-                {drawerList()}
-            </Drawer>
-        </div>
+                </Collapse>
+            </div>
+        </>
     );
 }
 
