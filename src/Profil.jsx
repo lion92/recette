@@ -82,15 +82,15 @@ function Profil() {
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: deepPurple[500] }}>
-                            {user.username.charAt(0).toUpperCase()}
+                            {user.email.charAt(0).toUpperCase()}
                         </Avatar>
                     }
-                    title={user.username}
+                    title={user.email}
                     subheader="Utilisateur enregistré"
                 />
                 <CardContent>
                     <Typography variant="body1">
-                        Bienvenue, {user.username}! Vous êtes maintenant connecté à votre profil.
+                        Bienvenue, {user.email}! Vous êtes maintenant connecté à votre profil.
                     </Typography>
                 </CardContent>
             </Card>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import Toast from './Toast.jsx';
-import HomePage from "./HomePage.jsx";
+import HomePage from './HomePage.jsx';
 
 const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir la constante pour l'URL de base
 
@@ -14,8 +14,23 @@ function LoginPage() {
     const [toastType, setToastType] = useState('');
     const navigate = useNavigate();
 
+    // Fonction pour valider l'email
+    const isValidEmail = (email) => {
+        // Regex pour vérifier le format d'un email valide
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Vérifier que l'email est valide
+        if (!isValidEmail(username)) {
+            setToastType('error');
+            setToastMessage('Veuillez entrer un email valide');
+            return;
+        }
+
         try {
             const res = await axios.post(`${API_BASE_URL}/auth/login`, { username, password });
             const token = res.data.jwt;
@@ -39,15 +54,15 @@ function LoginPage() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            sx={{ maxWidth: "400px", margin:"auto", marginTop:10}}
+            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 }}
         >
-            <HomePage></HomePage>
-            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: "white", textAlign: "center", padding: "10px" }}>
+            <HomePage />
+            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: 'white', textAlign: 'center', padding: '10px' }}>
                 <Typography variant="h4" gutterBottom>
                     Connexion
                 </Typography>
                 <TextField
-                    label="Nom d'utilisateur"
+                    label="Email"
                     variant="outlined"
                     fullWidth
                     margin="normal"
