@@ -58,40 +58,49 @@ function Menu() {
 
     return (
         <>
-                                {/* Logo menu */}
-                                <div className='menu-logo' style={{ marginRight: '95%' }}></div>
+        
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', width: '100%' }}>
-                
+           
                 {/* Barre d'application avec l'icône pour dérouler/enrouler */}
                 <AppBar position="static" color="primary">
-                    <Toolbar style={{ justifyContent: 'left' }}>
-                        <IconButton
+                
+         
+               <Toolbar style={{ justifyContent: 'center' }}>
+       
+                <IconButton className='menu-logo'
                             color="inherit"
                             aria-label="toggle menu"
                             onClick={toggleMenu}
                             sx={{ fontSize: '2rem' }}  // Agrandit l'icône
-                        >
+                        > 
                             {menuOpen ? <ArrowDropUpIcon fontSize="inherit" /> : <ArrowDropDownIcon fontSize="inherit" />}
+                           
                         </IconButton>
-                    </Toolbar>
+
+            
+             </Toolbar>
                 </AppBar>
 
                 {/* Menu déroulant avec animation en ligne */}
-                <Collapse in={menuOpen} timeout="auto" unmountOnExit>
+                <Collapse in={menuOpen} timeout="auto" unmountOnExit >
                     <Box
                         display="flex"
                         flexDirection="row" // Menu aligné en ligne
                         justifyContent="center"
-                        alignItems="center"
+                        alignItems="left"
                         bgcolor="primary.main"
                         sx={{ padding: 2, width: '100%' }}  // Largeur à 100%
+
                     >
 
-                        
+                    
                         {/* Boutons de menu */}
                         {menuItems.map((item) => (
                             <Button
+                         
                                 key={item.text}
+                          
+                                
                                 color="inherit"
                                 component={Link}
                                 to={item.to}

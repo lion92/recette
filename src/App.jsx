@@ -1,3 +1,4 @@
+
 // App.jsx
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
@@ -20,7 +21,7 @@ function App() {
         <>
             <div className="container">
                 <Menu></Menu>
-                <div className="app-container" width="10%">
+                <div className="app-container">
                     <Routes>
                         <Route path="/" element={<Recipes/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
