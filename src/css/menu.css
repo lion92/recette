@@ -1,11 +1,13 @@
 /* Styles globaux pour le body */
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Roboto:ital@0;1&display=swap');
+
 body {
     background-image: url('../assets/fond4.png'); /* fond 4 contient l'url du site en haut en rouge et une meiilleure image 20241102 EFT */
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     font-family: 'Arial', sans-serif;
-    position : relative;
+    position: relative;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -20,4 +22,11 @@ body {
     /* Espacement à droite */
     margin: auto;
     margin-top: 20px;
+}
+
+.titreSite {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-style: normal;
+    color: #c71f1f;
 }
