@@ -20,12 +20,10 @@ function Menu() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const isMobile = useMediaQuery('(max-width: 600px)'); // Détection de la taille de l'écran
 
-    // Fonction pour basculer l'état d'ouverture du menu déroulant
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
-    // Fonction pour basculer l'état d'ouverture du panneau coulissant
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -45,7 +43,6 @@ function Menu() {
         { text: 'Déconnexion', to: '/logout', icon: <LogoutIcon /> },
     ];
 
-    // Panneau coulissant pour les écrans mobiles
     const drawerList = () => (
         <Box
             sx={{ width: 250 }}
@@ -67,7 +64,7 @@ function Menu() {
     return (
         <>
             <AppBar position="static" color="primary">
-                <h1 className="titreSite" style={{margin:"auto"}}>www.recipe.krissclotilde.com</h1>
+                <h1 className="titreSite" style={{margin:"auto"}}>www.recette.krissclotilde.com</h1>
                 <Toolbar style={{ justifyContent: 'space-between' }}>
                     {/* Bouton pour ouvrir le panneau coulissant sur les écrans mobiles */}
                     {isMobile && (
@@ -103,17 +100,18 @@ function Menu() {
                         display="flex"
                         flexDirection="row" // Menu aligné en ligne
                         justifyContent="center"
-                        alignItems="left"
+                        alignItems="center"
                         bgcolor="primary.main"
                         sx={{ padding: 2, width: '100%' }} // Largeur à 100%
                     >
-                        {/* Boutons de menu */}
+                        {/* Boutons de menu avec icônes */}
                         {menuItems.map((item) => (
                             <Button
                                 key={item.text}
                                 color="inherit"
                                 component={Link}
                                 to={item.to}
+                                startIcon={item.icon} // Affiche l'icône au début du bouton
                                 sx={{ color: 'white', marginX: 1 }}
                             >
                                 {item.text}
