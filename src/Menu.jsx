@@ -1,5 +1,6 @@
+// Menu.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     AppBar,
     Toolbar,
@@ -29,9 +30,10 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import '../src/css/menu.css';
 
 function Menu() {
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(true); // Menu ouvert par défaut
     const [drawerOpen, setDrawerOpen] = useState(false);
     const isMobile = useMediaQuery('(max-width: 600px)');
+    const navigate = useNavigate();
 
     // Vérifiez si l'utilisateur est authentifié en utilisant le token
     const isAuthenticated = !!localStorage.getItem('jwt');
@@ -47,6 +49,12 @@ function Menu() {
         setDrawerOpen(open);
     };
 
+    // Fonction de déconnexion
+    const handleLogout = () => {
+        localStorage.removeItem('jwt'); // Supprimer le token du localStorage
+        navigate('/'); // Rediriger vers la page de connexion
+    };
+
     // Liste des items de menu avec texte et icônes, en fonction de l'authentification
     const menuItems = isAuthenticated
         ? [
@@ -55,7 +63,12 @@ function Menu() {
             { text: 'Catégorie de Recette', to: '/addCategory', icon: <CategoryIcon /> },
             { text: 'Ingrédient', to: '/addIngredient', icon: <IngredientIcon /> },
             { text: 'Profil', to: '/profil', icon: <ProfileIcon /> },
-            { text: 'Déconnexion', to: '/logout', icon: <LogoutIcon /> },
+            {
+                text: 'Déconnexion',
+                to: '/',
+                icon: <LogoutIcon />,
+                action: handleLogout,
+            },
         ]
         : [
             { text: 'Connexion', to: '/', icon: <LoginIcon /> },
@@ -70,12 +83,19 @@ function Menu() {
             onKeyDown={toggleDrawer(false)}
         >
             <List>
-                {menuItems.map((item) => (
-                    <ListItem button key={item.text} component={Link} to={item.to}>
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.text} />
-                    </ListItem>
-                ))}
+                {menuItems.map((item) =>
+                    item.action ? (
+                        <ListItem button key={item.text} onClick={item.action}>
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItem>
+                    ) : (
+                        <ListItem button key={item.text} component={Link} to={item.to}>
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItem>
+                    )
+                )}
             </List>
         </Box>
     );
@@ -87,14 +107,12 @@ function Menu() {
                     www.recette.krissclotilde.com
                 </h1>
                 <Toolbar style={{ justifyContent: 'space-between', padding: '0px' }}>
-                    {/* Bouton pour ouvrir le panneau coulissant sur les écrans mobiles */}
                     {isMobile && (
                         <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
                             <MenuIcon />
                         </IconButton>
                     )}
 
-                    {/* Menu déroulant pour les écrans plus grands */}
                     {!isMobile && (
                         <IconButton
                             className="menu-logo"
@@ -113,7 +131,6 @@ function Menu() {
                 </Toolbar>
             </AppBar>
 
-            {/* Menu déroulant avec animation, pour les écrans plus grands */}
             {!isMobile && (
                 <Collapse in={menuOpen} timeout="auto" unmountOnExit>
                     <Box
@@ -124,24 +141,34 @@ function Menu() {
                         bgcolor="primary.main"
                         sx={{ padding: 0, width: '100%' }}
                     >
-                        {/* Boutons de menu avec icônes */}
-                        {menuItems.map((item) => (
-                            <Button
-                                key={item.text}
-                                color="inherit"
-                                component={Link}
-                                to={item.to}
-                                startIcon={item.icon}
-                                sx={{ color: 'white', marginX: 1 }}
-                            >
-                                {item.text}
-                            </Button>
-                        ))}
+                        {menuItems.map((item) =>
+                            item.action ? (
+                                <Button
+                                    key={item.text}
+                                    color="inherit"
+                                    onClick={item.action}
+                                    startIcon={item.icon}
+                                    sx={{ color: 'white', marginX: 1 }}
+                                >
+                                    {item.text}
+                                </Button>
+                            ) : (
+                                <Button
+                                    key={item.text}
+                                    color="inherit"
+                                    component={Link}
+                                    to={item.to}
+                                    startIcon={item.icon}
+                                    sx={{ color: 'white', marginX: 1 }}
+                                >
+                                    {item.text}
+                                </Button>
+                            )
+                        )}
                     </Box>
                 </Collapse>
             )}
 
-            {/* Drawer pour les écrans mobiles */}
             {isMobile && (
                 <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
                     {drawerList()}
