@@ -32,20 +32,24 @@ function LoginPage() {
 
         try {
             const res = await axios.post(`${API_BASE_URL}/auth/login`, { username, password });
-            const token = res.data.jwt;
+            const { jwt, message } = res.data; // Récupérez le message et le token JWT
 
             // Stocker le token JWT dans le localStorage
-            localStorage.setItem('jwt', token);
+            localStorage.setItem('jwt', jwt);
 
             setToastType('success');
-            setToastMessage('Connexion réussie');
-            navigate('/recipes'); // Rediriger vers la page des recettes après la connexion
+            setToastMessage(message || 'Connexion réussie'); // Affichez le message ou une valeur par défaut
+            navigate('/recipes'); // Redirigez vers la page des recettes après la connexion
         } catch (error) {
             console.error('Erreur de connexion:', error);
+
+            // Récupérez le message d'erreur de la réponse de l'API, ou définissez un message par défaut
+            const errorMessage = error.response?.data?.message || 'Erreur lors de la connexion';
             setToastType('error');
-            setToastMessage('Erreur lors de la connexion');
+            setToastMessage(errorMessage);
         }
     };
+
 
     return (
         <Box
