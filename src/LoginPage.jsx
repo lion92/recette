@@ -54,7 +54,7 @@ function LoginPage() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 }}
+            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 , marginBottom: 40}}
         >
             <HomePage />
             <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: 'white', textAlign: 'center', padding: '10px' }}>

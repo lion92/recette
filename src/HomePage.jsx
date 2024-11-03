@@ -6,18 +6,13 @@ const HomePage = () => {
         <div className="home-page">
             <header className="header">
                 <h1 className="title">Bienvenue sur Just Recipes</h1>
-                <p className="subtitle">Découvrez des centaines de recettes gourmandes pour tous les goûts</p>
-            </header>
-            <main className="main-content">
-                <section className="hero-section">
-                    <div className="hero-text">
-                        <h2>Explorez de nouvelles saveurs</h2>
-                        <p>
+                <p className="subtitle-white">Découvrez des centaines de recettes gourmandes pour tous les goûts</p>
+                <p className="subtitle-white">Explorez de nouvelles saveurs</p>
+                        <p className="subtitle-white">
                             Inspirez-vous de nos recettes pour des repas délicieux et équilibrés. Ajoutez des recettes !!
                         </p>
-                    </div>
-                </section>
-            </main>
+            </header>
+
         </div>
     );
 };
