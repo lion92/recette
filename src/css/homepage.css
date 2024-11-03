@@ -37,6 +37,11 @@ body {
     color: var(--secondary-color);
 }
 
+.subtitle-white {
+    font-size: 1.2em;
+    color: whitesmoke;
+}
+
 .main-content {
     width: 100%;
     max-width: 1200px;
