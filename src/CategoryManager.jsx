@@ -11,10 +11,13 @@ import {
     Paper,
     Typography,
     TextField,
-    Button,
     Box,
     Pagination,
+    IconButton,
+    Button
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function CategoryManager() {
     const { categories, fetchCategories, addCategory, updateCategory, deleteCategory } = useCategoryStore();
@@ -25,7 +28,7 @@ function CategoryManager() {
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5; // Nombre d'éléments par page
+    const itemsPerPage = 5;
 
     const token = localStorage.getItem('jwt');
 
@@ -33,8 +36,8 @@ function CategoryManager() {
         fetchCategories();
     }, [fetchCategories]);
 
-    // Calculer les catégories filtrées et paginées
-    const filteredCategories = categories.filter((category) =>
+    // Filtrage et pagination
+    const filteredCategories = categories.filter(category =>
         category.name.toLowerCase().includes(filterText.toLowerCase())
     );
     const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
@@ -45,45 +48,51 @@ function CategoryManager() {
 
     const handleAddCategory = async () => {
         if (newCategory.trim()) {
-            await addCategory(newCategory, token)
-                .catch(() => {
-                    setToastType("error");
-                    setToastMessage("Une erreur s'est produite");
-                })
-                .then(() => {
-                    setToastType("success");
-                    setToastMessage("Ajout réussi");
-                });
-            setNewCategory('');
+            try {
+                await addCategory(newCategory, token);
+                setToastType("success");
+                setToastMessage("Ajout réussi");
+                setNewCategory('');
+            } catch {
+                setToastType("error");
+                setToastMessage("Une erreur s'est produite");
+            }
         }
     };
 
     const handleUpdateCategory = async (id) => {
         if (editCategoryName.trim()) {
-            await updateCategory(id, editCategoryName, token)
-                .catch(() => {
-                    setToastType("error");
-                    setToastMessage("Une erreur s'est produite");
-                })
-                .then(() => {
-                    setToastType("success");
-                    setToastMessage("Mise à jour réussie");
-                });
-            setEditCategoryId(null);
-            setEditCategoryName('');
+            try {
+                await updateCategory(id, editCategoryName, token);
+                setToastType("success");
+                setToastMessage("Mise à jour réussie");
+                setEditCategoryId(null);
+                setEditCategoryName('');
+            } catch {
+                setToastType("error");
+                setToastMessage("Une erreur s'est produite");
+            }
         }
     };
 
     const handleDeleteCategory = async (id) => {
-        await deleteCategory(id, token);
+        try {
+            await deleteCategory(id, token);
+            setToastType("success");
+            setToastMessage("Suppression réussie");
+        } catch {
+            setToastType("error");
+            setToastMessage("Erreur lors de la suppression");
+        }
     };
 
     return (
-        <Box sx={{ padding: 2, backgroundColor: "white", maxWidth: "800px", margin: "20px auto" }}>
+        <Box sx={{ padding: 2, backgroundColor: "white", maxWidth: "800px", margin: "20px auto", borderRadius: 2 }}>
             <Typography variant="h4" gutterBottom>
                 Gestion des Catégories
             </Typography>
 
+            {/* Ajouter une nouvelle catégorie */}
             <TextField
                 label="Ajouter une catégorie"
                 value={newCategory}
@@ -95,6 +104,7 @@ function CategoryManager() {
                 Ajouter
             </Button>
 
+            {/* Filtrer les catégories */}
             <TextField
                 label="Filtrer les catégories"
                 value={filterText}
@@ -103,6 +113,7 @@ function CategoryManager() {
                 margin="normal"
             />
 
+            {/* Table des catégories */}
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -135,33 +146,27 @@ function CategoryManager() {
                                 </TableCell>
                                 <TableCell>
                                     {editCategoryId === category.id ? (
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={() => handleUpdateCategory(category.id)}
-                                        >
-                                            Mettre à jour
-                                        </Button>
+                                        <IconButton color="primary" onClick={() => handleUpdateCategory(category.id)}>
+                                            <EditIcon />
+                                        </IconButton>
                                     ) : (
-                                        <Button
-                                            variant="outlined"
+                                        <IconButton
                                             color="primary"
                                             onClick={() => {
                                                 setEditCategoryId(category.id);
                                                 setEditCategoryName(category.name);
                                             }}
                                         >
-                                            Modifier
-                                        </Button>
+                                            <EditIcon />
+                                        </IconButton>
                                     )}
-                                    <Button
-                                        variant="outlined"
+                                    <IconButton
                                         color="secondary"
                                         onClick={() => handleDeleteCategory(category.id)}
                                         sx={{ ml: 1 }}
                                     >
-                                        Supprimer
-                                    </Button>
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -169,6 +174,7 @@ function CategoryManager() {
                 </Table>
             </TableContainer>
 
+            {/* Pagination */}
             <Pagination
                 count={totalPages}
                 page={currentPage}
@@ -176,6 +182,7 @@ function CategoryManager() {
                 sx={{ mt: 2 }}
             />
 
+            {/* Notification Toast */}
             <Toast
                 message={toastMessage}
                 type={toastType}
