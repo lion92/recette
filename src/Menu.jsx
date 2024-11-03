@@ -63,9 +63,9 @@ function Menu() {
 
     return (
         <>
-            <AppBar position="static" color="primary">
-                <h1 className="titreSite" style={{margin:"auto"}}>www.recette.krissclotilde.com</h1>
-                <Toolbar style={{ justifyContent: 'space-between' }}>
+            <AppBar position="static" color="primary" style={{ padding:'0px' }}>
+                <h1 className="titreSite" style={{margin:"auto",padding:'0px'}}>www.recette.krissclotilde.com</h1>
+                <Toolbar style={{ justifyContent: 'space-between' ,padding:'0px' }}>
                     {/* Bouton pour ouvrir le panneau coulissant sur les écrans mobiles */}
                     {isMobile && (
                         <IconButton
@@ -102,7 +102,7 @@ function Menu() {
                         justifyContent="center"
                         alignItems="center"
                         bgcolor="primary.main"
-                        sx={{ padding: 2, width: '100%' }} // Largeur à 100%
+                        sx={{ padding: 0, width: '100%' }} // Largeur à 100%
                     >
                         {/* Boutons de menu avec icônes */}
                         {menuItems.map((item) => (

@@ -6,6 +6,7 @@ import Toast from './Toast.jsx';
 import HomePage from './HomePage.jsx';
 
 const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir la constante pour l'URL de base
+//const API_BASE_URL = 'http://localhost:3007';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
@@ -54,7 +55,7 @@ function LoginPage() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 , marginBottom: 40}}
+            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 , marginBottom: 0}}
         >
             <HomePage />
             <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: 'white', textAlign: 'center', padding: '10px' }}>

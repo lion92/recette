@@ -18,7 +18,7 @@ import LoginGoogle from "./LoginGoogle.jsx";
 function App() {
     return (
         <>
-            <div className="container">
+            <div className="">
                 <Menu></Menu>
                 <div className="app-container">
                     <Routes>
