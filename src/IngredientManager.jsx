@@ -139,7 +139,7 @@ function IngredientManager() {
         );
     });
 
-    return (
+    return (<>
         <Box
             sx={{
                 display: 'flex',
@@ -197,9 +197,24 @@ function IngredientManager() {
             <Button variant="contained" color="primary" onClick={handleAddIngredient} sx={{ mb: 2 }}>
                 Ajouter
             </Button>
+        </Box>
+            <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                padding: 1,
+                backgroundColor: "#f8f8f8",
 
-            {/* Espace visuel entre le formulaire et les filtres */}
-            <Box sx={{ height: '20px' }} />
+                maxWidth: "600px",
+                margin: "30px auto",
+ 
+                borderRadius: 4,
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
+        >
 
             {/* Champs pour filtrer les ingrédients */}
             <Typography variant="h6" gutterBottom>
@@ -393,7 +408,7 @@ function IngredientManager() {
                 onClose={() => setToastMessage('')}
             />
         </Box>
-    );
-}
+        </>);
+    }
 
 export default IngredientManager;
