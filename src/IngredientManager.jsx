@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import useIngredientStore from './IngredientStore.jsx';
 import Toast from "./Toast.jsx";
-import { Table, TableHead, TableBody, TableRow, TableCell, TablePagination, Box, Button, TextField, Typography, TableContainer } from '@mui/material';
+import { Table, TableHead, TableBody, TableRow, TableCell, TablePagination, Box, Button, TextField, Typography, TableContainer, IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function IngredientManager() {
     const { ingredients, fetchIngredients, addIngredient, updateIngredient, deleteIngredient } = useIngredientStore();
@@ -145,13 +147,13 @@ function IngredientManager() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAlign: 'center',
-                padding: 1, // Réduction du padding
+                padding: 1,
                 backgroundColor: "#f8f8f8",
-                marginTop: "10px", // Réduction de la marge supérieure
+                marginTop: "10px",
                 maxWidth: "600px",
-                margin: "10px auto", // Réduction de la marge
+                margin: "10px auto",
                 borderRadius: 4,
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Réduction de l'ombre
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             }}
         >
             <Typography variant="h4" gutterBottom>
@@ -163,38 +165,41 @@ function IngredientManager() {
                 label="Nom de l'ingrédient"
                 value={newIngredientName}
                 onChange={(e) => setNewIngredientName(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }}
             />
             <TextField
                 label="Prix (€)"
                 type="number"
                 value={newIngredientPrice}
                 onChange={(e) => setNewIngredientPrice(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }}
             />
             <TextField
                 label="Calories (kcal)"
                 type="number"
                 value={newIngredientCalories}
                 onChange={(e) => setNewIngredientCalories(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }}
             />
             <TextField
                 label="Quantité"
                 type="number"
                 value={newIngredientQuantity}
                 onChange={(e) => setNewIngredientQuantity(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }}
             />
             <TextField
                 label="Unité"
                 value={newIngredientUnit}
                 onChange={(e) => setNewIngredientUnit(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }}
             />
-            <Button variant="contained" color="primary" onClick={handleAddIngredient} sx={{ mb: 1 }}> {/* Réduction de la marge inférieure */}
+            <Button variant="contained" color="primary" onClick={handleAddIngredient} sx={{ mb: 2 }}>
                 Ajouter
             </Button>
+
+            {/* Espace visuel entre le formulaire et les filtres */}
+            <Box sx={{ height: '20px' }} />
 
             {/* Champs pour filtrer les ingrédients */}
             <Typography variant="h6" gutterBottom>
@@ -204,34 +209,34 @@ function IngredientManager() {
                 label="Nom"
                 value={filterName}
                 onChange={(e) => setFilterName(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }}
             />
             <TextField
                 label="Prix (€)"
                 type="number"
                 value={filterPrice}
                 onChange={(e) => setFilterPrice(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }}
             />
             <TextField
                 label="Calories (kcal)"
                 type="number"
                 value={filterCalories}
                 onChange={(e) => setFilterCalories(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }}
             />
             <TextField
                 label="Quantité"
                 type="number"
                 value={filterQuantity}
                 onChange={(e) => setFilterQuantity(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 0.5 }}
             />
             <TextField
                 label="Unité"
                 value={filterUnit}
                 onChange={(e) => setFilterUnit(e.target.value)}
-                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }} // Réduction de la marge inférieure
+                sx={{ width: '100%', maxWidth: 500, marginBottom: 1 }}
             />
 
             {/* Tableau des ingrédients */}
@@ -240,7 +245,7 @@ function IngredientManager() {
                     width: '100%',
                     maxWidth: '100%',
                     overflowX: 'auto',
-                    marginBottom: 1, // Réduction de la marge inférieure
+                    marginBottom: 1,
                     '@media (max-width: 768px)': {
                         maxWidth: '90%',
                     },
@@ -249,22 +254,22 @@ function IngredientManager() {
                     }
                 }}
             >
-                <Table sx={{ minWidth: 300 , textAlign:"center"}}> {/* Ajout de la largeur minimale */}
+                <Table sx={{ minWidth: 300, textAlign: "center" }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ padding: '4px' }}>Ingrédient</TableCell> {/* Réduction du padding */}
-                            <TableCell align="right" sx={{ padding: '4px' }}>Prix (€)</TableCell> {/* Réduction du padding */}
-                            <TableCell align="right" sx={{ padding: '4px' }}>Calories (kcal)</TableCell> {/* Réduction du padding */}
-                            <TableCell align="right" sx={{ padding: '4px' }}>Quantité</TableCell> {/* Réduction du padding */}
-                            <TableCell align="right" sx={{ padding: '4px' }}>Unité</TableCell> {/* Réduction du padding */}
-                            <TableCell align="right" sx={{ padding: '4px' }}>Actions</TableCell> {/* Réduction du padding */}
+                            <TableCell sx={{ padding: '4px' }}>Ingrédient</TableCell>
+                            <TableCell align="right" sx={{ padding: '4px' }}>Prix (€)</TableCell>
+                            <TableCell align="right" sx={{ padding: '4px' }}>Calories (kcal)</TableCell>
+                            <TableCell align="right" sx={{ padding: '4px' }}>Quantité</TableCell>
+                            <TableCell align="right" sx={{ padding: '4px' }}>Unité</TableCell>
+                            <TableCell align="right" sx={{ padding: '4px' }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {Array.isArray(filteredIngredients) && filteredIngredients.length > 0 ? (
                             filteredIngredients.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((ingredient) => (
                                 <TableRow key={ingredient.id}>
-                                    <TableCell sx={{ padding: '4px' }}> {/* Réduction du padding */}
+                                    <TableCell sx={{ padding: '4px' }}>
                                         {editIngredientId === ingredient.id ? (
                                             <TextField
                                                 label="Nom de l'ingrédient"
@@ -276,7 +281,7 @@ function IngredientManager() {
                                             ingredient.name
                                         )}
                                     </TableCell>
-                                    <TableCell align="right" sx={{ padding: '4px' }}> {/* Réduction du padding */}
+                                    <TableCell align="right" sx={{ padding: '4px' }}>
                                         {editIngredientId === ingredient.id ? (
                                             <TextField
                                                 label="Prix (€)"
@@ -289,7 +294,7 @@ function IngredientManager() {
                                             ingredient.price
                                         )}
                                     </TableCell>
-                                    <TableCell align="right" sx={{ padding: '4px' }}> {/* Réduction du padding */}
+                                    <TableCell align="right" sx={{ padding: '4px' }}>
                                         {editIngredientId === ingredient.id ? (
                                             <TextField
                                                 label="Calories (kcal)"
@@ -302,7 +307,7 @@ function IngredientManager() {
                                             ingredient.caloriesPerUnit
                                         )}
                                     </TableCell>
-                                    <TableCell align="right" sx={{ padding: '4px' }}> {/* Réduction du padding */}
+                                    <TableCell align="right" sx={{ padding: '4px' }}>
                                         {editIngredientId === ingredient.id ? (
                                             <TextField
                                                 label="Quantité"
@@ -315,7 +320,7 @@ function IngredientManager() {
                                             ingredient.defaultQuantity
                                         )}
                                     </TableCell>
-                                    <TableCell align="right" sx={{ padding: '4px' }}> {/* Réduction du padding */}
+                                    <TableCell align="right" sx={{ padding: '4px' }}>
                                         {editIngredientId === ingredient.id ? (
                                             <TextField
                                                 label="Unité"
@@ -327,18 +332,16 @@ function IngredientManager() {
                                             ingredient.unit
                                         )}
                                     </TableCell>
-                                    <TableCell align="right" sx={{ padding: '4px' }}> {/* Réduction du padding */}
+                                    <TableCell align="right" sx={{ padding: '4px' }}>
                                         {editIngredientId === ingredient.id ? (
-                                            <Button
-                                                variant="contained"
+                                            <IconButton
                                                 color="primary"
                                                 onClick={() => handleUpdateIngredient(ingredient.id)}
                                             >
-                                                Mettre à jour
-                                            </Button>
+                                                <EditIcon />
+                                            </IconButton>
                                         ) : (
-                                            <Button
-                                                variant="outlined"
+                                            <IconButton
                                                 color="primary"
                                                 onClick={() => {
                                                     setEditIngredientId(ingredient.id);
@@ -349,16 +352,15 @@ function IngredientManager() {
                                                     setEditIngredientUnit(ingredient.unit);
                                                 }}
                                             >
-                                                Modifier
-                                            </Button>
+                                                <EditIcon />
+                                            </IconButton>
                                         )}
-                                        <Button
-                                            variant="outlined"
+                                        <IconButton
                                             color="secondary"
                                             onClick={() => handleDeleteIngredient(ingredient.id)}
                                         >
-                                            Supprimer
-                                        </Button>
+                                            <DeleteIcon />
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             ))
