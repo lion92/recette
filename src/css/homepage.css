@@ -30,16 +30,20 @@ body {
     color: var(--primary-color);
     font-size: 2.5em;
     margin: 0;
+    text-shadow: 1px 1px 2px black, -1px -1px 2px black; /* Surlignage en noir */
 }
 
 .subtitle {
     font-size: 1.2em;
     color: var(--secondary-color);
+    text-shadow: 1px 1px 2px black, -1px -1px 2px black; /* Surlignage en noir */
 }
 
 .subtitle-white {
-    font-size: 1.2em;
-    color: whitesmoke;
+    font-size: 1.4m;
+    font-weight: bolder;
+    color: white; /* Texte en blanc */
+    text-shadow: 1px 1px 2px black, -1px -1px 2px black; /* Surlignage en noir */
 }
 
 .main-content {
