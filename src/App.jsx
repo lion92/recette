@@ -12,7 +12,6 @@ import AddRecipe from "./AddRecipe.jsx";
 import Logout from "./Logout.jsx";
 import CategoryManager from "./CategoryManager.jsx";
 import IngredientManager from "./IngredientManager.jsx";
-import Footer from "./Footer.jsx";
 import LoginGoogle from "./LoginGoogle.jsx";
 
 
