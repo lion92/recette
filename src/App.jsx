@@ -1,39 +1,79 @@
-
 // App.jsx
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import Menu from './Menu';
-import Recipes from "./Recipe.jsx";
-import LoginPage from "./LoginPage.jsx";
-import SignupPage from "./SignupPage.jsx";
-import Profil from "./Profil.jsx";
-import AddRecipe from "./AddRecipe.jsx";
-import Logout from "./Logout.jsx";
-import CategoryManager from "./CategoryManager.jsx";
-import IngredientManager from "./IngredientManager.jsx";
-import LoginGoogle from "./LoginGoogle.jsx";
-
+import Recipes from './Recipe.jsx';
+import LoginPage from './LoginPage.jsx';
+import SignupPage from './SignupPage.jsx';
+import Profil from './Profil.jsx';
+import AddRecipe from './AddRecipe.jsx';
+import Logout from './Logout.jsx';
+import CategoryManager from './CategoryManager.jsx';
+import IngredientManager from './IngredientManager.jsx';
+import LoginGoogle from './LoginGoogle.jsx';
+import PrivateRoute from './PrivateRoute'; // Importer PrivateRoute
 
 function App() {
     return (
         <>
-            <div className="">
-                <Menu></Menu>
-                <div className="app-container">
-                    <Routes>
-                        <Route path="/" element={<Recipes/>}/>
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/signup" element={<SignupPage/>}/>
-                        <Route path="/createRecette" element={<AddRecipe/>}/>
-                        <Route path="/profil" element={<Profil/>}/>
-                        <Route path="/logout" element={<Logout/>}/>
-                        <Route path="/addCategory" element={<CategoryManager/>}/>
-                        <Route path="/addIngredient" element={<IngredientManager/>}/>
-                        <Route path="/google" element={<LoginGoogle/>}/>
+            <Menu />
+            <div className="app-container">
+                <Routes>
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
 
-                    </Routes>
-                </div>
+                    {/* Routes protégées */}
+                    <Route
+                        path="/createRecette"
+                        element={
+                            <PrivateRoute>
+                                <AddRecipe />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/recipe"
+                        element={
+                            <PrivateRoute>
+                                <Recipes/>
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/profil"
+                        element={
+                            <PrivateRoute>
+                                <Profil />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/logout"
+                        element={
+                            <PrivateRoute>
+                                <Logout />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/addCategory"
+                        element={
+                            <PrivateRoute>
+                                <CategoryManager />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/addIngredient"
+                        element={
+                            <PrivateRoute>
+                                <IngredientManager />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route path="/google" element={<LoginGoogle />} />
+                </Routes>
             </div>
         </>
     );

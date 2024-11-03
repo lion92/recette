@@ -1,12 +1,12 @@
+// LoginPage.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import Toast from './Toast.jsx';
-import HomePage from './HomePage.jsx';
 
 const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir la constante pour l'URL de base
-//const API_BASE_URL = 'http://localhost:3007';
+// const API_BASE_URL = 'http://localhost:3007';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
@@ -17,7 +17,6 @@ function LoginPage() {
 
     // Fonction pour valider l'email
     const isValidEmail = (email) => {
-        // Regex pour vérifier le format d'un email valide
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
@@ -25,7 +24,6 @@ function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Vérifier que l'email est valide
         if (!isValidEmail(username)) {
             setToastType('error');
             setToastMessage('Veuillez entrer un email valide');
@@ -43,7 +41,7 @@ function LoginPage() {
             setToastMessage('Connexion réussie');
             navigate('/recipes'); // Rediriger vers la page des recettes après la connexion
         } catch (error) {
-            console.error(error);
+            console.error('Erreur de connexion:', error);
             setToastType('error');
             setToastMessage('Erreur lors de la connexion');
         }
@@ -55,10 +53,20 @@ function LoginPage() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 , marginBottom: 0}}
+            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 }}
         >
-            <HomePage />
-            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: 'white', textAlign: 'center', padding: '10px' }}>
+            <form
+                onSubmit={handleSubmit}
+                style={{
+                    width: '100%',
+                    maxWidth: 400,
+                    backgroundColor: 'white',
+                    textAlign: 'center',
+                    padding: '20px',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                }}
+            >
                 <Typography variant="h4" gutterBottom>
                     Connexion
                 </Typography>

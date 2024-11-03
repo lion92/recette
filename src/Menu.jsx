@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Box, IconButton, Collapse, Drawer, List, ListItem, ListItemText, ListItemIcon, useMediaQuery } from '@mui/material';
+import {
+    AppBar,
+    Toolbar,
+    Button,
+    Box,
+    IconButton,
+    Collapse,
+    Drawer,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    useMediaQuery,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -18,7 +31,10 @@ import '../src/css/menu.css';
 function Menu() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const isMobile = useMediaQuery('(max-width: 600px)'); // Détection de la taille de l'écran
+    const isMobile = useMediaQuery('(max-width: 600px)');
+
+    // Vérifiez si l'utilisateur est authentifié en utilisant le token
+    const isAuthenticated = !!localStorage.getItem('jwt');
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -31,17 +47,20 @@ function Menu() {
         setDrawerOpen(open);
     };
 
-    // Liste des items avec texte et icônes
-    const menuItems = [
-        { text: 'Connexion', to: '/login', icon: <LoginIcon /> },
-        { text: 'Inscription', to: '/signup', icon: <PersonAddIcon /> },
-        { text: 'Catégorie de Recette', to: '/addCategory', icon: <CategoryIcon /> },
-        { text: 'Ingrédient', to: '/addIngredient', icon: <IngredientIcon /> },
-        { text: 'Recettes', to: '/', icon: <RecipeIcon /> },
-        { text: 'Créer une Recette', to: '/createRecette', icon: <CreateIcon /> },
-        { text: 'Profil', to: '/profil', icon: <ProfileIcon /> },
-        { text: 'Déconnexion', to: '/logout', icon: <LogoutIcon /> },
-    ];
+    // Liste des items de menu avec texte et icônes, en fonction de l'authentification
+    const menuItems = isAuthenticated
+        ? [
+            { text: 'Recettes', to: '/recipe', icon: <RecipeIcon /> },
+            { text: 'Créer une Recette', to: '/createRecette', icon: <CreateIcon /> },
+            { text: 'Catégorie de Recette', to: '/addCategory', icon: <CategoryIcon /> },
+            { text: 'Ingrédient', to: '/addIngredient', icon: <IngredientIcon /> },
+            { text: 'Profil', to: '/profil', icon: <ProfileIcon /> },
+            { text: 'Déconnexion', to: '/logout', icon: <LogoutIcon /> },
+        ]
+        : [
+            { text: 'Connexion', to: '/', icon: <LoginIcon /> },
+            { text: 'Inscription', to: '/signup', icon: <PersonAddIcon /> },
+        ];
 
     const drawerList = () => (
         <Box
@@ -63,17 +82,14 @@ function Menu() {
 
     return (
         <>
-            <AppBar position="static" color="primary" style={{ padding:'0px' }}>
-                <h1 className="titreSite" style={{margin:"auto",padding:'0px'}}>www.recette.krissclotilde.com</h1>
-                <Toolbar style={{ justifyContent: 'space-between' ,padding:'0px' }}>
+            <AppBar position="static" color="primary" style={{ padding: '0px' }}>
+                <h1 className="titreSite" style={{ margin: 'auto', padding: '0px' }}>
+                    www.recette.krissclotilde.com
+                </h1>
+                <Toolbar style={{ justifyContent: 'space-between', padding: '0px' }}>
                     {/* Bouton pour ouvrir le panneau coulissant sur les écrans mobiles */}
                     {isMobile && (
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            onClick={toggleDrawer(true)}
-                        >
+                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
                             <MenuIcon />
                         </IconButton>
                     )}
@@ -81,13 +97,17 @@ function Menu() {
                     {/* Menu déroulant pour les écrans plus grands */}
                     {!isMobile && (
                         <IconButton
-                            className='menu-logo'
+                            className="menu-logo"
                             color="inherit"
                             aria-label="toggle menu"
                             onClick={toggleMenu}
-                            sx={{ fontSize: '2rem', margin:"auto" }} // Agrandit l'icône
+                            sx={{ fontSize: '2rem', margin: 'auto' }}
                         >
-                            {menuOpen ? <ArrowDropUpIcon fontSize="inherit" /> : <ArrowDropDownIcon fontSize="inherit" />}
+                            {menuOpen ? (
+                                <ArrowDropUpIcon fontSize="inherit" />
+                            ) : (
+                                <ArrowDropDownIcon fontSize="inherit" />
+                            )}
                         </IconButton>
                     )}
                 </Toolbar>
@@ -98,11 +118,11 @@ function Menu() {
                 <Collapse in={menuOpen} timeout="auto" unmountOnExit>
                     <Box
                         display="flex"
-                        flexDirection="row" // Menu aligné en ligne
+                        flexDirection="row"
                         justifyContent="center"
                         alignItems="center"
                         bgcolor="primary.main"
-                        sx={{ padding: 0, width: '100%' }} // Largeur à 100%
+                        sx={{ padding: 0, width: '100%' }}
                     >
                         {/* Boutons de menu avec icônes */}
                         {menuItems.map((item) => (
@@ -111,7 +131,7 @@ function Menu() {
                                 color="inherit"
                                 component={Link}
                                 to={item.to}
-                                startIcon={item.icon} // Affiche l'icône au début du bouton
+                                startIcon={item.icon}
                                 sx={{ color: 'white', marginX: 1 }}
                             >
                                 {item.text}
