@@ -1,6 +1,6 @@
 // App.jsx
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 
 import Menu from './Menu';
 import Recipes from './Recipe.jsx';
@@ -12,7 +12,7 @@ import Logout from './Logout.jsx';
 import CategoryManager from './CategoryManager.jsx';
 import IngredientManager from './IngredientManager.jsx';
 import LoginGoogle from './LoginGoogle.jsx';
-import PrivateRoute from './PrivateRoute'; // Importer PrivateRoute
+import PrivateRoute from './PrivateRoute';
 
 function App() {
     return (
