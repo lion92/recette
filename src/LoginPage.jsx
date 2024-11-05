@@ -4,22 +4,21 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import Toast from './Toast.jsx';
-import { motion } from 'framer-motion'; // Import Framer Motion
+import { motion } from 'framer-motion';
 
-const API_BASE_URL = 'http://localhost:3007'; // Définir la constante pour l'URL de base
+const API_BASE_URL = 'http://localhost:3007';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
-    const [isAnimating, setIsAnimating] = useState(false); // État pour lancer l'animation de sortie
-    const [isFirstLoad, setIsFirstLoad] = useState(true); // État pour la rotation au chargement
+    const [isAnimating, setIsAnimating] = useState(false); // Animation pour la redirection
+    const [isFirstLoad, setIsFirstLoad] = useState(true); // Animation de chargement
     const navigate = useNavigate();
 
 
 
-    // Fonction pour valider l'email
     const isValidEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -44,9 +43,10 @@ function LoginPage() {
             setToastType('success');
             setToastMessage(message || 'Connexion réussie');
 
-            // Démarre l'animation avant la redirection
+            // Déclencher l'animation de fondu avec flou
+            setIsFirstLoad(false);
             setIsAnimating(true);
-            setTimeout(() => navigate('/recipes'), 1000);
+            setTimeout(() => navigate('/recipes'), 2000); // Délai de 2 secondes pour laisser l'animation se dérouler
 
         } catch (error) {
             console.error('Erreur de connexion:', error);
@@ -56,14 +56,9 @@ function LoginPage() {
         }
     };
 
-    // Animation de déplacement de l'écran, stabilisation, puis rotation
+    // Variantes d'animation
     const animationVariants = {
-        initial: { x: '-100vh', y: '-100vh', scale: 1 },
-        moveOut: {
-            x: [0, 100, 0, -100, 0],
-            y: [0, -100, 0, 100, 0],
-            transition: { duration: 2, ease: 'easeInOut' },
-        },
+        initial: { x: '-100vw', y: '-100vh', scale: 1 },
         moveAround: {
             x: [0, 100, 0, -100, 0],
             y: [0, -100, 0, 100, 0],
@@ -74,10 +69,17 @@ function LoginPage() {
             y: 0,
             transition: { duration: 0.5 },
         },
+        stabilize2: {
+            x: 0,
+            y: 0,
+            transition: { duration: 0 },
+        },
         rotate: {
             rotate: 360,
             transition: { duration: 1, ease: 'easeInOut' },
         },
+        exitAnimation: { opacity: 0, filter: 'blur(10px)', transition: { duration: 1.5 } },
+
     };
 
     return (
@@ -90,7 +92,11 @@ function LoginPage() {
         >
             <motion.div
                 initial="initial"
-                animate={isFirstLoad ? ["moveAround", "stabilize", "rotate"] : ""}
+                animate={
+                    isFirstLoad ? ["moveAround", "stabilize", "rotate"]
+                    : isAnimating ? ["stabilize2","exitAnimation"]
+                    : "initial"
+                }
                 variants={animationVariants}
                 style={{ width: '100%', maxWidth: 400 }}
             >
