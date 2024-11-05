@@ -15,8 +15,7 @@ import useIngredientStore from "../src/IngredientStore.jsx"; // Vérifiez le che
 import useCategoryStore from "../src/UseCategoryStore.js"; // Vérifiez le chemin correct
 
 const RecipeItem = ({ recipe }) => {
-    const { selectedRecipeId, selectRecipe } = useRecipeIdStore();
-    const { addRecipe, fetchRecipes, updateRecipe } = useRecipeStore();
+    const {selectRecipe, updateRecipe, deleteRecipe } = useRecipeStore();
     const { ingredients, fetchIngredients } = useIngredientStore();
     const { categories, fetchCategories } = useCategoryStore();
 
@@ -221,6 +220,7 @@ const RecipeItem = ({ recipe }) => {
                     <>
                         <h1 className="card--title">{recipe.title}</h1>
                         <p className="card--description">{recipe.description}</p>
+                        <p className="card--description">{recipe.instructions}</p>
                         <p>Prix total : {recipe.totalCost} €</p>
                         <p>Calories totales : {(recipe.totalCalories / 100).toFixed(2)} kCal</p>
                         <h5>Ingrédients :</h5>
