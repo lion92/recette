@@ -129,6 +129,12 @@ const RecipeItem = ({ recipe }) => {
             >
                 {isEditing ? 'Annuler' : 'Modifier'}
             </Button>
+            <div className="card--image-wrapper">
+                <div className="card--view">
+                    <p>Voir la recette</p>
+                </div>
+                <div className="card--image"></div>
+            </div>
             <div className="card--content-wrapper">
                 {isEditing ? (
                     <>
@@ -137,21 +143,21 @@ const RecipeItem = ({ recipe }) => {
                             fullWidth
                             margin="normal"
                             value={updatedRecipe.title}
-                            onChange={(e) => setUpdatedRecipe({ ...updatedRecipe, title: e.target.value })}
+                            onChange={(e) => setUpdatedRecipe({...updatedRecipe, title: e.target.value})}
                         />
                         <TextField
                             label="Description"
                             fullWidth
                             margin="normal"
                             value={updatedRecipe.description}
-                            onChange={(e) => setUpdatedRecipe({ ...updatedRecipe, description: e.target.value })}
+                            onChange={(e) => setUpdatedRecipe({...updatedRecipe, description: e.target.value})}
                         />
                         <TextField
                             label="Instructions"
                             fullWidth
                             margin="normal"
                             value={updatedRecipe.instructions}
-                            onChange={(e) => setUpdatedRecipe({ ...updatedRecipe, instructions: e.target.value })}
+                            onChange={(e) => setUpdatedRecipe({...updatedRecipe, instructions: e.target.value})}
                         />
                         <FormControl fullWidth margin="normal">
                             <InputLabel>Ingrédients</InputLabel>
