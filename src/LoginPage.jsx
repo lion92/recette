@@ -1,5 +1,5 @@
 // LoginPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Box } from '@mui/material';
@@ -13,8 +13,11 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
-    const [isAnimating, setIsAnimating] = useState(false); // État pour lancer l'animation
+    const [isAnimating, setIsAnimating] = useState(false); // État pour lancer l'animation de sortie
+    const [isFirstLoad, setIsFirstLoad] = useState(true); // État pour la rotation au chargement
     const navigate = useNavigate();
+
+
 
     // Fonction pour valider l'email
     const isValidEmail = (email) => {
@@ -43,7 +46,7 @@ function LoginPage() {
 
             // Démarre l'animation avant la redirection
             setIsAnimating(true);
-            setTimeout(() => navigate('/recipes'), 1000); // Redirige après l'animation
+            setTimeout(() => navigate('/recipes'), 1000);
 
         } catch (error) {
             console.error('Erreur de connexion:', error);
@@ -53,24 +56,43 @@ function LoginPage() {
         }
     };
 
-    // Animation pour la page de login
-    const pageVariants = {
-        initial: { opacity: 1, y: 0 },
-        animate: { opacity: 0, y: -50, transition: { duration: 1 } },
+    // Animation de déplacement de l'écran, stabilisation, puis rotation
+    const animationVariants = {
+        initial: { x: '-100vh', y: '-100vh', scale: 1 },
+        moveOut: {
+            x: [0, 100, 0, -100, 0],
+            y: [0, -100, 0, 100, 0],
+            transition: { duration: 2, ease: 'easeInOut' },
+        },
+        moveAround: {
+            x: [0, 100, 0, -100, 0],
+            y: [0, -100, 0, 100, 0],
+            transition: { duration: 2, ease: 'easeInOut' },
+        },
+        stabilize: {
+            x: 0,
+            y: 0,
+            transition: { duration: 0.5 },
+        },
+        rotate: {
+            rotate: 360,
+            transition: { duration: 1, ease: 'easeInOut' },
+        },
     };
 
     return (
-        <motion.div
-            initial="initial"
-            animate={isAnimating ? "animate" : "initial"}
-            variants={pageVariants}
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 }}
         >
-            <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                sx={{ maxWidth: '400px', margin: 'auto', marginTop: 10 }}
+            <motion.div
+                initial="initial"
+                animate={isFirstLoad ? ["moveAround", "stabilize", "rotate"] : ""}
+                variants={animationVariants}
+                style={{ width: '100%', maxWidth: 400 }}
             >
                 <form
                     onSubmit={handleSubmit}
@@ -121,8 +143,8 @@ function LoginPage() {
                     type={toastType}
                     onClose={() => setToastMessage('')}
                 />
-            </Box>
-        </motion.div>
+            </motion.div>
+        </Box>
     );
 }
 
