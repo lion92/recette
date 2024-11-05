@@ -15,8 +15,7 @@ import useIngredientStore from "../src/IngredientStore.jsx"; // Vérifiez le che
 import useCategoryStore from "../src/UseCategoryStore.js"; // Vérifiez le chemin correct
 
 const RecipeItem = ({ recipe }) => {
-    const { selectedRecipeId, selectRecipe } = useRecipeIdStore();
-    const { addRecipe, fetchRecipes, updateRecipe } = useRecipeStore();
+    const { selectRecipe, updateRecipe, deleteRecipe, fetchRecipes } = useRecipeStore();
     const { ingredients, fetchIngredients } = useIngredientStore();
     const { categories, fetchCategories } = useCategoryStore();
 
@@ -46,6 +45,7 @@ const RecipeItem = ({ recipe }) => {
             await deleteRecipe(recipeId, token);
             setToastType('success');
             setToastMessage('Recette supprimée avec succès !');
+            await fetchRecipes(); // Actualise la liste des recettes après la suppression
         } catch (error) {
             setToastType('error');
             setToastMessage("Une erreur s'est produite lors de la suppression de la recette.");
@@ -66,6 +66,7 @@ const RecipeItem = ({ recipe }) => {
             setToastType('success');
             setToastMessage('Recette mise à jour avec succès !');
             setIsEditing(false);
+            await fetchRecipes(); // Actualise la liste des recettes après la mise à jour
         } catch (error) {
             setToastType('error');
             setToastMessage("Une erreur s'est produite lors de la mise à jour de la recette.");
@@ -143,21 +144,21 @@ const RecipeItem = ({ recipe }) => {
                             fullWidth
                             margin="normal"
                             value={updatedRecipe.title}
-                            onChange={(e) => setUpdatedRecipe({...updatedRecipe, title: e.target.value})}
+                            onChange={(e) => setUpdatedRecipe({ ...updatedRecipe, title: e.target.value })}
                         />
                         <TextField
                             label="Description"
                             fullWidth
                             margin="normal"
                             value={updatedRecipe.description}
-                            onChange={(e) => setUpdatedRecipe({...updatedRecipe, description: e.target.value})}
+                            onChange={(e) => setUpdatedRecipe({ ...updatedRecipe, description: e.target.value })}
                         />
                         <TextField
                             label="Instructions"
                             fullWidth
                             margin="normal"
                             value={updatedRecipe.instructions}
-                            onChange={(e) => setUpdatedRecipe({...updatedRecipe, instructions: e.target.value})}
+                            onChange={(e) => setUpdatedRecipe({ ...updatedRecipe, instructions: e.target.value })}
                         />
                         <FormControl fullWidth margin="normal">
                             <InputLabel>Ingrédients</InputLabel>
@@ -221,6 +222,7 @@ const RecipeItem = ({ recipe }) => {
                     <>
                         <h1 className="card--title">{recipe.title}</h1>
                         <p className="card--description">{recipe.description}</p>
+                        <p className="card--description">{recipe.instructions}</p>
                         <p>Prix total : {recipe.totalCost} €</p>
                         <p>Calories totales : {(recipe.totalCalories / 100).toFixed(2)} kCal</p>
                         <h5>Ingrédients :</h5>
