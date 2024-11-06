@@ -8,8 +8,10 @@ import {
     Select,
     TextField,
     Modal,
-    Box
+    Box,
+    IconButton
 } from '@mui/material';
+import { RemoveCircle } from '@mui/icons-material';
 import useRecipeStore from './RecipeStore.js';
 import useIngredientStore from "../src/IngredientStore.jsx";
 import useCategoryStore from "../src/UseCategoryStore.js";
@@ -82,6 +84,18 @@ const RecipeItem = ({ recipe }) => {
         setUpdatedRecipe({ ...updatedRecipe, categories: event.target.value });
     };
 
+    const removeIngredient = (index) => {
+        const newIngredients = [...updatedRecipe.ingredients];
+        newIngredients.splice(index, 1);
+        setUpdatedRecipe({ ...updatedRecipe, ingredients: newIngredients });
+    };
+
+    const removeCategory = (index) => {
+        const newCategories = [...updatedRecipe.categories];
+        newCategories.splice(index, 1);
+        setUpdatedRecipe({ ...updatedRecipe, categories: newCategories });
+    };
+
     return (
         <div className="card">
             <div className="card--image-wrapper" onClick={handleModalOpen}>
@@ -105,6 +119,7 @@ const RecipeItem = ({ recipe }) => {
                     <div className="modal-body">
                         {isEditing ? (
                             <>
+                                <div style={{ height: "150px", position: "relative" }} className="card--image"></div>
                                 <TextField
                                     label="Titre"
                                     fullWidth
@@ -121,6 +136,8 @@ const RecipeItem = ({ recipe }) => {
                                 />
                                 <TextField
                                     label="Instructions"
+                                    multiline
+                                    rows={4}
                                     fullWidth
                                     margin="normal"
                                     value={updatedRecipe.instructions}
@@ -141,6 +158,16 @@ const RecipeItem = ({ recipe }) => {
                                         ))}
                                     </Select>
                                 </FormControl>
+                                <ul>
+                                    {updatedRecipe.ingredients.map((ingredient, index) => (
+                                        <li key={index}>
+                                            {ingredient.name}
+                                            <IconButton onClick={() => removeIngredient(index)} color="error">
+                                                <RemoveCircle />
+                                            </IconButton>
+                                        </li>
+                                    ))}
+                                </ul>
                                 <FormControl fullWidth margin="normal">
                                     <InputLabel>Catégories</InputLabel>
                                     <Select
@@ -156,14 +183,25 @@ const RecipeItem = ({ recipe }) => {
                                         ))}
                                     </Select>
                                 </FormControl>
+                                <ul>
+                                    {updatedRecipe.categories.map((category, index) => (
+                                        <li key={index}>
+                                            {category.name}
+                                            <IconButton onClick={() => removeCategory(index)} color="error">
+                                                <RemoveCircle />
+                                            </IconButton>
+                                        </li>
+                                    ))}
+                                </ul>
                                 <Button onClick={handleUpdate} color="primary">
                                     Enregistrer
                                 </Button>
                             </>
                         ) : (
                             <>
+                                <div style={{ height: "150px", position: "relative" }} className="card--image"></div>
                                 <h1>{recipe?.title}</h1>
-                                <h1>{recipe?.user?.email}</h1>
+                                <p>{recipe?.user?.email}</p>
                                 <p>{recipe?.description}</p>
                                 <p>{recipe?.instructions}</p>
                                 <p>Prix total : {recipe.totalCost} €</p>
