@@ -6,7 +6,7 @@ const API_BASE_URL = 'http://localhost:3007'; // Définir l'URL de base pour l'A
 
 const useRecipeStore = create((set, get) => ({
     recipes: [],
-    filteredRecipes: [], // Ajout d'un état pour stocker les recettes filtrées
+    filteredRecipes: [], // État pour stocker les recettes filtrées
 
     // Récupérer toutes les recettes
     fetchRecipes: async () => {
@@ -100,8 +100,30 @@ const useRecipeStore = create((set, get) => ({
             console.error('Erreur lors du filtrage par catégories et ingrédients', error);
             return [];
         }
-    }
+    },
 
+    // Ajouter une quantité à un ingrédient sélectionné dans une recette
+    updateIngredientQuantity: (recipeId, ingredientId, newQuantity) => {
+        set((state) => {
+            const updatedRecipes = state.recipes.map((recipe) => {
+                if (recipe.id === recipeId) {
+                    const updatedIngredients = recipe.ingredients.map((ingredient) =>
+                        ingredient.id === ingredientId
+                            ? { ...ingredient, quantity: newQuantity }
+                            : ingredient
+                    );
+                    return { ...recipe, ingredients: updatedIngredients };
+                }
+                return recipe;
+            });
+
+            return {
+                recipes: updatedRecipes,
+                filteredRecipes: updatedRecipes,
+            };
+        });
+        Toast.show('Quantité d\'ingrédient mise à jour', 'info');
+    }
 }));
 
 export default useRecipeStore;

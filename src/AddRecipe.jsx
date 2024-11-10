@@ -12,7 +12,7 @@ import Select from 'react-select';
 import useRecipeStore from './recipeStore';
 import useCategoryStore from './useCategoryStore';
 import useIngredientStore from '../src/IngredientStore.jsx';
-import Toast from "./Toast.jsx";
+import Toast from './Toast.jsx';
 
 function AddRecipe() {
     const [title, setTitle] = useState('');
@@ -41,7 +41,7 @@ function AddRecipe() {
             selectedIngredients.forEach((ingredient) => {
                 const ing = ingredients.find((i) => i.id === ingredient.value);
                 if (ing) {
-                    total += ing.caloriesPerUnit * (ing.defaultQuantity || 1);
+                    total += ing.caloriesPerUnit * (ingredient.quantity || 1);
                 }
             });
             setTotalCalories(total);
@@ -49,11 +49,21 @@ function AddRecipe() {
         calculateTotalCalories();
     }, [selectedIngredients, ingredients]);
 
+    const handleQuantityChange = (ingredientId, quantity) => {
+        setSelectedIngredients((prevSelectedIngredients) =>
+            prevSelectedIngredients.map((ingredient) =>
+                ingredient.value === ingredientId
+                    ? { ...ingredient, quantity: parseFloat(quantity) || 1 }
+                    : ingredient
+            )
+        );
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('jwt');
         if (!token) {
-            setToastType("error");
+            setToastType('error');
             setToastMessage('Vous devez être connecté pour ajouter une recette');
             return;
         }
@@ -63,30 +73,31 @@ function AddRecipe() {
             description,
             instructions,
             isPublished,
-            ingredients: selectedIngredients.map((ingredient) => ingredient.value),
-            categories: selectedCategories.map((category) => category.value),
+            ingredients: selectedIngredients.map((ingredient) => ({
+                id: ingredient.value,
+                quantity: ingredient.quantity || 1, // Ajout de la quantité
+            })),
+            categories: selectedCategories.map((category) => ({ id: category.value })),
             totalCalories,
         };
 
-        try {
-            if (recipeData.ingredients.length === 0) {
-                setToastType("error");
-                setToastMessage('Veuillez ajouter des ingrédients');
-                return;
-            }
-            if (recipeData.categories.length === 0) {
-                setToastType("error");
-                setToastMessage('Veuillez ajouter des catégories');
-                return;
-            }
-            await addRecipe(recipeData, token).catch(() => {
-                setToastType("error");
-                setToastMessage('Erreur lors de l’ajout de la recette');
-            }).then(() => {
-                setToastType("success");
-                setToastMessage('Recette ajoutée avec succès');
-            });
+        if (recipeData.ingredients.length === 0) {
+            setToastType('error');
+            setToastMessage('Veuillez ajouter des ingrédients');
+            return;
+        }
+        if (recipeData.categories.length === 0) {
+            setToastType('error');
+            setToastMessage('Veuillez ajouter des catégories');
+            return;
+        }
 
+        try {
+            await addRecipe(recipeData, token);
+            setToastType('success');
+            setToastMessage('Recette ajoutée avec succès');
+
+            // Réinitialisation des champs
             setTitle('');
             setDescription('');
             setInstructions('');
@@ -96,8 +107,9 @@ function AddRecipe() {
             setTotalCalories(0);
             fetchRecipes();
         } catch (error) {
-            setToastType("error");
+            setToastType('error');
             setToastMessage('Erreur lors de l’ajout de la recette');
+            console.error('Erreur lors de l’ajout de la recette:', error);
         }
     };
 
@@ -105,7 +117,7 @@ function AddRecipe() {
     const previousStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
     return (
-        <Box display="flex" sx={{ backgroundColor: "white", padding: "10px", maxWidth: "400px", margin: "auto", marginTop: "20px" }} flexDirection="column" alignItems="center" justifyContent="center">
+        <Box display="flex" sx={{ backgroundColor: 'white', padding: '10px', maxWidth: '600px', margin: 'auto', marginTop: '20px' }} flexDirection="column" alignItems="center" justifyContent="center">
             <Typography variant="h4" gutterBottom>Ajouter une nouvelle recette</Typography>
             <form onSubmit={handleSubmit} style={{ maxWidth: 600, width: '100%' }}>
                 <FormGroup>
@@ -171,7 +183,13 @@ function AddRecipe() {
                                 <Select
                                     isMulti
                                     value={selectedIngredients}
-                                    onChange={setSelectedIngredients}
+                                    onChange={(selected) => {
+                                        const updatedSelection = selected.map((sel) => ({
+                                            ...sel,
+                                            quantity: 1, // Quantité par défaut initialisée
+                                        }));
+                                        setSelectedIngredients(updatedSelection);
+                                    }}
                                     options={ingredients.map((ingredient) => ({
                                         value: ingredient.id,
                                         label: ingredient.name,
@@ -179,6 +197,18 @@ function AddRecipe() {
                                     placeholder="Sélectionnez les ingrédients"
                                 />
                             </div>
+                            {selectedIngredients.map((ingredient) => (
+                                <div key={ingredient.value} style={{ marginBottom: '8px' }}>
+                                    <TextField
+                                        label={`Quantité pour ${ingredient.label}`}
+                                        type="number"
+                                        value={ingredient.quantity || 1}
+                                        onChange={(e) => handleQuantityChange(ingredient.value, e.target.value)}
+                                        variant="outlined"
+                                        fullWidth
+                                    />
+                                </div>
+                            ))}
                             <Button onClick={previousStep}>Précédent</Button>
                             <Button onClick={nextStep} variant="contained" color="primary">Suivant</Button>
                         </>
