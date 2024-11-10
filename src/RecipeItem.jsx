@@ -25,7 +25,18 @@ const RecipeItem = ({ recipe }) => {
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
+    const [updatedRecipe, setUpdatedRecipe] = useState({
+        ...recipe,
+        ingredients: recipe?.recipeIngredients
+            ? recipe.recipeIngredients.map(ri => ({
+                ...ri.ingredient,
+                quantity: ri.quantity // Utilise la quantité depuis recipeIngredients
+            }))
+            : recipe?.ingredients?.map(ing => ({
+            ...ing,
+            quantity: ing.quantity || 1 // Assure une quantité par défaut
+        })) || [] // Valeur par défaut pour éviter les erreurs
+    });
     const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
@@ -80,6 +91,12 @@ const RecipeItem = ({ recipe }) => {
         setUpdatedRecipe({ ...updatedRecipe, ingredients: event.target.value });
     };
 
+    const handleIngredientQuantityChange = (index, quantity) => {
+        const newIngredients = [...updatedRecipe.ingredients];
+        newIngredients[index].quantity = parseFloat(quantity) || 1;
+        setUpdatedRecipe({ ...updatedRecipe, ingredients: newIngredients });
+    };
+
     const handleCategoryChange = (event) => {
         setUpdatedRecipe({ ...updatedRecipe, categories: event.target.value });
     };
@@ -119,6 +136,7 @@ const RecipeItem = ({ recipe }) => {
                     <div className="modal-body">
                         {isEditing ? (
                             <>
+                                {/* Formulaire d'édition */}
                                 <div style={{ height: "150px", position: "relative" }} className="card--image"></div>
                                 <TextField
                                     label="Titre"
@@ -162,6 +180,13 @@ const RecipeItem = ({ recipe }) => {
                                     {updatedRecipe.ingredients.map((ingredient, index) => (
                                         <li key={index}>
                                             {ingredient.name}
+                                            <TextField
+                                                label="Quantité"
+                                                type="number"
+                                                value={ingredient.quantity}
+                                                onChange={(e) => handleIngredientQuantityChange(index, e.target.value)}
+                                                style={{ width: '60px', marginLeft: '10px' }}
+                                            />
                                             <IconButton onClick={() => removeIngredient(index)} color="error">
                                                 <RemoveCircle />
                                             </IconButton>
@@ -208,15 +233,27 @@ const RecipeItem = ({ recipe }) => {
                                 <p>Calories totales : {(recipe.totalCalories / 100).toFixed(2)} kCal</p>
                                 <h5>Ingrédients :</h5>
                                 <ul>
-                                    {recipe.ingredients.map((ingredient, index) => (
-                                        <li key={index}>{ingredient.name} - {ingredient.price} €</li>
-                                    ))}
+                                    {recipe.recipeIngredients && recipe.recipeIngredients.length > 0 ? (
+                                        recipe.recipeIngredients.map((ri, index) => (
+                                            <li key={index}>{ri.ingredient.name} - {ri.ingredient.price} € (Quantité : {ri.quantity})</li>
+                                        ))
+                                    ) : recipe.ingredients && recipe.ingredients.length > 0 ? (
+                                        recipe.ingredients.map((ingredient, index) => (
+                                            <li key={index}>{ingredient.name} - {ingredient.price} € (Quantité : {ingredient.quantity})</li>
+                                        ))
+                                    ) : (
+                                        <li>Aucun ingrédient disponible</li>
+                                    )}
                                 </ul>
                                 <h5>Catégories :</h5>
                                 <ul>
-                                    {recipe.categories.map((category, index) => (
-                                        <li key={index}>{category.name}</li>
-                                    ))}
+                                    {recipe.categories && recipe.categories.length > 0 ? (
+                                        recipe.categories.map((category, index) => (
+                                            <li key={index}>{category.name}</li>
+                                        ))
+                                    ) : (
+                                        <li>Aucune catégorie disponible</li>
+                                    )}
                                 </ul>
                             </>
                         )}
