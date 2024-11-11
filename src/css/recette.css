@@ -24,7 +24,6 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-image: url('../assets/plat.png');
     background-size: cover;
     background-position: center;
     transition: 0.25s ease transform;

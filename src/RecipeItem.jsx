@@ -119,7 +119,16 @@ const RecipeItem = ({ recipe }) => {
                 <div className="card--view">
                     <p>Voir la recette</p>
                 </div>
-                <div className="card--image"></div>
+                {recipe.imagePath ? (
+                    <img
+                        src={`${recipe.imagePath}`}
+                        alt="Recette"
+                        className="card--image"
+                        style={{ width: '100%', height: 'auto' }}
+                    />
+                ) : (
+                    <div className="card--image"></div>
+                )}
             </div>
 
             <Modal open={openModal} onClose={handleModalClose}>
@@ -137,7 +146,13 @@ const RecipeItem = ({ recipe }) => {
                         {isEditing ? (
                             <>
                                 {/* Formulaire d'édition */}
-                                <div style={{ height: "150px", position: "relative" }} className="card--image"></div>
+                                {recipe.imagePath && (
+                                    <img
+                                        src={`${recipe.imagePath}`}
+                                        alt="Recette"
+                                        style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
+                                    />
+                                )}
                                 <TextField
                                     label="Titre"
                                     fullWidth
@@ -224,7 +239,13 @@ const RecipeItem = ({ recipe }) => {
                             </>
                         ) : (
                             <>
-                                <div style={{ height: "150px", position: "relative" }} className="card--image"></div>
+                                {recipe.imagePath && (
+                                    <img
+                                        src={`${recipe.imagePath}`}
+                                        alt="Recette"
+                                        style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
+                                    />
+                                )}
                                 <h1>{recipe?.title}</h1>
                                 <p>{recipe?.user?.email}</p>
                                 <p>{recipe?.description}</p>
