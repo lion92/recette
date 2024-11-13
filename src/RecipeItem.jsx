@@ -30,12 +30,12 @@ const RecipeItem = ({ recipe }) => {
         ingredients: recipe?.recipeIngredients
             ? recipe.recipeIngredients.map(ri => ({
                 ...ri.ingredient,
-                quantity: ri.quantity // Utilise la quantité depuis recipeIngredients
+                quantity: ri.quantity || 1 // Utilise une quantité par défaut de 1 si non définie
             }))
             : recipe?.ingredients?.map(ing => ({
             ...ing,
-            quantity: ing.quantity || 1 // Assure une quantité par défaut
-        })) || [] // Valeur par défaut pour éviter les erreurs
+            quantity: ing.quantity || 1
+        })) || []
     });
     const [openModal, setOpenModal] = useState(false);
 
@@ -93,7 +93,7 @@ const RecipeItem = ({ recipe }) => {
 
     const handleIngredientQuantityChange = (index, quantity) => {
         const newIngredients = [...updatedRecipe.ingredients];
-        newIngredients[index].quantity = parseFloat(quantity) || 1;
+        newIngredients[index].quantity = parseFloat(quantity) || 1; // Valeur par défaut de 1
         setUpdatedRecipe({ ...updatedRecipe, ingredients: newIngredients });
     };
 
