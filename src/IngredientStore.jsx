@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3007'; // Définir la constante pour l'URL de base
+const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir la constante pour l'URL de base
 
 const useIngredientStore = create((set) => ({
     ingredients: [],

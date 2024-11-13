@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Alert, Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Typography } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
 
-const API_BASE_URL = 'http://localhost:3007'; // URL de base pour l'API
+const API_BASE_URL = 'https://www.krisscode.fr/recette'; // URL de base pour l'API
 
 function Profil() {
     const [user, setUser] = useState(null); // État pour stocker les informations de l'utilisateur
