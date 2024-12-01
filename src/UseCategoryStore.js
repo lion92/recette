@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir l'URL de base pour l'API
+const API_BASE_URL = 'http://localhost:3007'; // Définir l'URL de base pour l'API
 
 const useCategoryStore = create((set) => ({
     categories: [],

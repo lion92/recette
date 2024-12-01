@@ -13,22 +13,24 @@ import CategoryManager from './CategoryManager.jsx';
 import IngredientManager from './IngredientManager.jsx';
 import LoginGoogle from './LoginGoogle.jsx';
 import PrivateRoute from './PrivateRoute';
+import AddRecipeToCalendar from "./AddRecipeToCalendar.jsx";
+import IngredientsWithPrices from "./IngredientsWithPrices.jsx";
 
 function App() {
     return (
         <>
-            <Menu />
+            <Menu/>
             <div className="app-container">
                 <Routes>
-                    <Route path="/" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/" element={<LoginPage/>}/>
+                    <Route path="/signup" element={<SignupPage/>}/>
 
                     {/* Routes protégées */}
                     <Route
                         path="/createRecette"
                         element={
                             <PrivateRoute>
-                                <AddRecipe />
+                                <AddRecipe/>
                             </PrivateRoute>
                         }
                     />
@@ -44,7 +46,7 @@ function App() {
                         path="/profil"
                         element={
                             <PrivateRoute>
-                                <Profil />
+                                <Profil/>
                             </PrivateRoute>
                         }
                     />
@@ -52,7 +54,7 @@ function App() {
                         path="/logout"
                         element={
                             <PrivateRoute>
-                                <Logout />
+                                <Logout/>
                             </PrivateRoute>
                         }
                     />
@@ -60,7 +62,7 @@ function App() {
                         path="/addCategory"
                         element={
                             <PrivateRoute>
-                                <CategoryManager />
+                                <CategoryManager/>
                             </PrivateRoute>
                         }
                     />
@@ -68,11 +70,25 @@ function App() {
                         path="/addIngredient"
                         element={
                             <PrivateRoute>
-                                <IngredientManager />
+                                <IngredientManager/>
                             </PrivateRoute>
                         }
-                    />
-                    <Route path="/google" element={<LoginGoogle />} />
+                    /><Route
+                    path="/calendarRecipe"
+                    element={
+                        <PrivateRoute>
+                            <AddRecipeToCalendar/>
+                        </PrivateRoute>
+                    }
+                /><Route
+                    path="/course"
+                    element={
+                        <PrivateRoute>
+                            <IngredientsWithPrices/>
+                        </PrivateRoute>
+                    }
+                />
+                    <Route path="/google" element={<LoginGoogle/>}/>
                 </Routes>
             </div>
         </>
