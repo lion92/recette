@@ -64,7 +64,8 @@ function Menu() {
             { text: 'Catégorie de Recette', to: '/addCategory', icon: <CategoryIcon /> },
             { text: 'Ingrédient', to: '/addIngredient', icon: <IngredientIcon /> },
             { text: 'Profil', to: '/profil', icon: <ProfileIcon /> },
-            { text: 'Calendar', to: '/calendarRecipe', icon: <ProfileIcon /> },
+            { text: 'Calendrier', to: '/calendarRecipe', icon: <ProfileIcon /> },
+            { text: 'Liste de Course', to: '/course', icon: <ProfileIcon /> },
             {
                 text: 'Déconnexion',
                 to: '/',
