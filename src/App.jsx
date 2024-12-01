@@ -13,6 +13,7 @@ import CategoryManager from './CategoryManager.jsx';
 import IngredientManager from './IngredientManager.jsx';
 import LoginGoogle from './LoginGoogle.jsx';
 import PrivateRoute from './PrivateRoute';
+import AddRecipeToCalendar from "./AddRecipeToCalendar.jsx";
 
 function App() {
     return (
@@ -69,6 +70,13 @@ function App() {
                         element={
                             <PrivateRoute>
                                 <IngredientManager />
+                            </PrivateRoute>
+                        }
+                    /><Route
+                        path="/calendarRecipe"
+                        element={
+                            <PrivateRoute>
+                                <AddRecipeToCalendar/>
                             </PrivateRoute>
                         }
                     />

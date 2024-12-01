@@ -6,7 +6,7 @@ import { TextField, Button, Typography, Box } from '@mui/material';
 import Toast from './Toast.jsx';
 import { motion } from 'framer-motion';
 
-const API_BASE_URL = 'https://www.krisscode.fr/recette';
+const API_BASE_URL = 'http://localhost:3007';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
