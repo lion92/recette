@@ -13,7 +13,7 @@ const IngredientsWithPrices = () => {
         setError(null); // Réinitialise l'erreur
         try {
             const token = localStorage.getItem('jwt'); // Récupère le token JWT
-            const response = await axios.get('http://localhost:3007/calendar/ingredients/prices', {
+            const response = await axios.get('https://www.krisscode.fr/recette/calendar/ingredients/prices', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

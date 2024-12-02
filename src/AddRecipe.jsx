@@ -64,11 +64,6 @@ function AddRecipe() {
         const file = e.target.files[0];
         if (file) {
             // Vérification de la taille du fichier (1 Mo = 1 048 576 octets)
-            if (file.size > 1048576) {
-                setToastType('error');
-                setToastMessage('La taille de l\'image ne doit pas dépasser 1 Mo.');
-                return;
-            }
 
             const reader = new FileReader();
             reader.onloadend = () => {

@@ -18,7 +18,7 @@ const useApiStore = create((set, get) => ({
     fetchRecipes: async () => {
         set({ loading: true, error: null });
         try {
-            const response = await axios.get('http://localhost:3007/recipes/all', get().getAuthHeaders());
+            const response = await axios.get('https://www.krisscode.fr/recette/recipes/all', get().getAuthHeaders());
             set({ recipes: response.data, loading: false });
         } catch (error) {
             console.error('Erreur lors du chargement des recettes:', error);
@@ -30,7 +30,7 @@ const useApiStore = create((set, get) => ({
     fetchCalendarEvents: async () => {
         set({ loading: true, error: null });
         try {
-            const response = await axios.get('http://localhost:3007/calendar/user', get().getAuthHeaders());
+            const response = await axios.get('https://www.krisscode.fr/recette/calendar/user', get().getAuthHeaders());
             set({ calendarEvents: response.data, loading: false });
         } catch (error) {
             console.error('Erreur lors du chargement des événements du calendrier:', error);
@@ -43,7 +43,7 @@ const useApiStore = create((set, get) => ({
         set({ loading: true, error: null });
         try {
             await axios.post(
-                'http://localhost:3007/calendar/add',
+                'https://www.krisscode.fr/recette/calendar/add',
                 { recipeId, date },
                 get().getAuthHeaders()
             );
@@ -58,7 +58,7 @@ const useApiStore = create((set, get) => ({
     deleteCalendarEvent: async (eventId) => {
         set({ loading: true, error: null });
         try {
-            await axios.delete(`http://localhost:3007/calendar/delete/${eventId}`, get().getAuthHeaders());
+            await axios.delete(`https://www.krisscode.fr/recette/calendar/delete/${eventId}`, get().getAuthHeaders());
             await get().fetchCalendarEvents(); // Recharger les événements après suppression
         } catch (error) {
             console.error('Erreur lors de la suppression de l\'événement:', error);

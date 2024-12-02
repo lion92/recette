@@ -15,6 +15,7 @@ import LoginGoogle from './LoginGoogle.jsx';
 import PrivateRoute from './PrivateRoute';
 import AddRecipeToCalendar from "./AddRecipeToCalendar.jsx";
 import IngredientsWithPrices from "./IngredientsWithPrices.jsx";
+import CookieBanner from "./CookieBanner.jsx";
 
 function App() {
     return (
@@ -90,6 +91,7 @@ function App() {
                 />
                     <Route path="/google" element={<LoginGoogle/>}/>
                 </Routes>
+                <CookieBanner/>
             </div>
         </>
     );
