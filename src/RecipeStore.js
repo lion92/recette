@@ -1,8 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import Toast from '../src/Toast.jsx'; // Assurez-vous d'importer votre composant Toast
-
-const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir l'URL de base pour l'API
+import Toast from '../src/Toast.jsx';
+import { API_BASE_URL } from './config/api.config.js';
 
 const useRecipeStore = create((set, get) => ({
     recipes: [],

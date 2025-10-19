@@ -7,7 +7,7 @@ import Recipes from './Recipe.jsx';
 import LoginPage from './LoginPage.jsx';
 import SignupPage from './SignupPage.jsx';
 import Profil from './Profil.jsx';
-import AddRecipe from './AddRecipe.jsx';
+import AddRecipe from './AddRecipeImproved.jsx';
 import Logout from './Logout.jsx';
 import CategoryManager from './CategoryManager.jsx';
 import IngredientManager from './IngredientManager.jsx';

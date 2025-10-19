@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f0f0f0"/>
+  <g transform="translate(200, 150)">
+    <!-- Chef hat icon -->
+    <path d="M-40,-20 Q-50,-40 -40,-50 Q-30,-60 -20,-50 Q-10,-60 0,-50 Q10,-60 20,-50 Q30,-60 40,-50 Q50,-40 40,-20 L40,0 L-40,0 Z" fill="#007BFF" opacity="0.3"/>
+    <rect x="-50" y="0" width="100" height="20" rx="5" fill="#007BFF" opacity="0.3"/>
+
+    <!-- Utensils -->
+    <g transform="translate(-20, 30)">
+      <line x1="0" y1="0" x2="0" y2="40" stroke="#666" stroke-width="2"/>
+      <circle cx="0" cy="-5" r="3" fill="#666"/>
+    </g>
+    <g transform="translate(0, 30)">
+      <line x1="0" y1="0" x2="0" y2="40" stroke="#666" stroke-width="2"/>
+      <line x1="-5" y1="0" x2="-5" y2="25" stroke="#666" stroke-width="2"/>
+      <line x1="5" y1="0" x2="5" y2="25" stroke="#666" stroke-width="2"/>
+    </g>
+    <g transform="translate(20, 30)">
+      <line x1="0" y1="0" x2="0" y2="40" stroke="#666" stroke-width="2"/>
+      <ellipse cx="0" cy="-3" rx="4" ry="6" fill="none" stroke="#666" stroke-width="2"/>
+    </g>
+  </g>
+  <text x="200" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#999">Aucune image</text>
+</svg>

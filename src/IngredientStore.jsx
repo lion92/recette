@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
-
-const API_BASE_URL = 'https://www.krisscode.fr/recette'; // Définir la constante pour l'URL de base
+import { API_BASE_URL } from './config/api.config.js';
+import Toast from './Toast.jsx';
 
 const useIngredientStore = create((set) => ({
     ingredients: [],
@@ -10,7 +10,8 @@ const useIngredientStore = create((set) => ({
             const response = await axios.get(`${API_BASE_URL}/ingredients`);
             set({ ingredients: response.data });
         } catch (error) {
-            alert('Erreur lors de la récupération des ingrédients:', error);
+            Toast.show('Erreur lors de la récupération des ingrédients', 'error');
+            console.error('Erreur lors de la récupération des ingrédients:', error);
         }
     },
     addIngredient: async (name, price, caloriesPerUnit, defaultQuantity, unit, token) => {
@@ -38,7 +39,8 @@ const useIngredientStore = create((set) => ({
                 ),
             }));
         } catch (error) {
-            alert("Erreur lors de la mise à jour de l'ingrédient:", error);
+            Toast.show("Erreur lors de la mise à jour de l'ingrédient", 'error');
+            console.error("Erreur lors de la mise à jour de l'ingrédient:", error);
         }
     },
     deleteIngredient: async (id, token) => {
@@ -50,7 +52,8 @@ const useIngredientStore = create((set) => ({
                 ingredients: state.ingredients.filter((ingredient) => ingredient.id !== id),
             }));
         } catch (error) {
-            alert('Erreur lors de la suppression de l\'ingrédient:', error);
+            Toast.show('Erreur lors de la suppression de l\'ingrédient', 'error');
+            console.error('Erreur lors de la suppression de l\'ingrédient:', error);
         }
     },
 }));

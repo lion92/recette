@@ -1,58 +1,56 @@
 // LoginPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box, CircularProgress } from '@mui/material';
 import Toast from './Toast.jsx';
 import { motion } from 'framer-motion';
-
-const API_BASE_URL = 'https://www.krisscode.fr/recette';
+import { API_BASE_URL } from './config/api.config.js';
+import ValidatedTextField from './components/ValidatedTextField.jsx';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
-    const [isAnimating, setIsAnimating] = useState(false); // Animation pour la redirection
-    const [isFirstLoad, setIsFirstLoad] = useState(true); // Animation de chargement
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
     const navigate = useNavigate();
-
-
-
-    const isValidEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!isValidEmail(username)) {
+        if (!isEmailValid || !isPasswordValid) {
             setToastType('error');
-            setToastMessage('Veuillez entrer un email valide');
+            setToastMessage('Veuillez corriger les erreurs dans le formulaire');
             return;
         }
+
+        setIsLoading(true);
 
         try {
             const res = await axios.post(`${API_BASE_URL}/auth/login`, { username, password });
             const { jwt, message } = res.data;
 
-            // Stocker le token JWT dans le localStorage
             localStorage.setItem('jwt', jwt);
 
             setToastType('success');
             setToastMessage(message || 'Connexion réussie');
 
-            // Déclencher l'animation de fondu avec flou
             setIsFirstLoad(false);
             setIsAnimating(true);
-            setTimeout(() => navigate('/recipes'), 2000); // Délai de 2 secondes pour laisser l'animation se dérouler
+            setTimeout(() => navigate('/recipes'), 2000);
 
         } catch (error) {
             console.error('Erreur de connexion:', error);
             const errorMessage = error.response?.data?.message || 'Erreur lors de la connexion';
             setToastType('error');
             setToastMessage(errorMessage);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -115,23 +113,25 @@ function LoginPage() {
                     <Typography variant="h4" gutterBottom>
                         Connexion
                     </Typography>
-                    <TextField
+                    <ValidatedTextField
+                        type="email"
                         label="Email"
                         variant="outlined"
-                        fullWidth
-                        margin="normal"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        onValidation={(result) => setIsEmailValid(result.isValid)}
+                        validateOnBlur={true}
                         required
                     />
-                    <TextField
-                        label="Mot de passe"
+                    <ValidatedTextField
                         type="password"
+                        label="Mot de passe"
                         variant="outlined"
-                        fullWidth
-                        margin="normal"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onValidation={(result) => setIsPasswordValid(result.isValid)}
+                        showPasswordStrength={false}
+                        validateOnBlur={true}
                         required
                     />
                     <Button
@@ -139,9 +139,17 @@ function LoginPage() {
                         variant="contained"
                         color="primary"
                         fullWidth
+                        disabled={isLoading}
                         sx={{ mt: 2 }}
                     >
-                        Se connecter
+                        {isLoading ? (
+                            <>
+                                <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
+                                Connexion...
+                            </>
+                        ) : (
+                            'Se connecter'
+                        )}
                     </Button>
                 </form>
                 <Toast

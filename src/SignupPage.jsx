@@ -1,55 +1,43 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField, Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box, CircularProgress } from '@mui/material';
 import Toast from './Toast.jsx';
-
-const API_BASE_URL = 'https://www.krisscode.fr/recette'; // URL de base pour l'API
+import { API_BASE_URL } from './config/api.config.js';
+import ValidatedTextField from './components/ValidatedTextField.jsx';
 
 function SignupPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState('');
-
-    // Fonction pour valider l'email
-    const isValidEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
+    const [isLoading, setIsLoading] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Vérifier que l'email n'est pas vide
-        if (!email) {
+        if (!isEmailValid || !isPasswordValid) {
             setToastType('error');
-            setToastMessage("L'email ne peut pas être vide");
+            setToastMessage('Veuillez corriger les erreurs dans le formulaire');
             return;
         }
 
-        // Vérifier que l'email est valide
-        if (!isValidEmail(email)) {
-            setToastType('error');
-            setToastMessage('Veuillez entrer un email valide');
-            return;
-        }
-
-        // Vérifier que le mot de passe n'est pas vide
-        if (!password) {
-            setToastType('error');
-            setToastMessage('Le mot de passe ne peut pas être vide');
-            return;
-        }
+        setIsLoading(true);
 
         try {
-            // Envoyer la requête de création de compte
             await axios.post(`${API_BASE_URL}/auth/register`, { email, password });
             setToastType('success');
             setToastMessage('Inscription réussie. Veuillez vérifier votre email pour activer votre compte.');
+
+            // Réinitialiser le formulaire
+            setEmail('');
+            setPassword('');
+            setIsEmailValid(false);
+            setIsPasswordValid(false);
         } catch (error) {
             console.error(error);
 
-            // Gérer les erreurs spécifiques
             if (error.response && error.response.data && error.response.data.message) {
                 setToastType('error');
                 setToastMessage(error.response.data.message);
@@ -57,6 +45,8 @@ function SignupPage() {
                 setToastType('error');
                 setToastMessage("Une erreur s'est produite.");
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -68,27 +58,31 @@ function SignupPage() {
             justifyContent="center"
             sx={{ maxWidth: "400px", margin: "auto", marginTop: 10 }}
         >
-            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: "white", textAlign: "center", padding: "10px" }}>
+            <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 400, backgroundColor: "white", textAlign: "center", padding: "20px", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}>
                 <Typography variant="h4" gutterBottom>
                     Inscription
                 </Typography>
-                <TextField
+                <ValidatedTextField
+                    type="email"
                     label="Email"
                     variant="outlined"
-                    fullWidth
-                    margin="normal"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onValidation={(result) => setIsEmailValid(result.isValid)}
+                    validateOnBlur={true}
+                    helperText="Vous recevrez un email de vérification"
                     required
                 />
-                <TextField
-                    label="Mot de passe"
+                <ValidatedTextField
                     type="password"
+                    label="Mot de passe"
                     variant="outlined"
-                    fullWidth
-                    margin="normal"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onValidation={(result) => setIsPasswordValid(result.isValid)}
+                    showPasswordStrength={true}
+                    validateOnBlur={false}
+                    validationOptions={{ minLength: 6 }}
                     required
                 />
                 <Button
@@ -96,9 +90,17 @@ function SignupPage() {
                     variant="contained"
                     color="primary"
                     fullWidth
+                    disabled={isLoading || !isEmailValid || !isPasswordValid}
                     sx={{ mt: 2 }}
                 >
-                    S'inscrire
+                    {isLoading ? (
+                        <>
+                            <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
+                            Inscription...
+                        </>
+                    ) : (
+                        "S'inscrire"
+                    )}
                 </Button>
             </form>
             <Toast

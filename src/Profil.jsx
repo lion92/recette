@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Alert, Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Typography } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
-
-const API_BASE_URL = 'https://www.krisscode.fr/recette'; // URL de base pour l'API
+import { API_BASE_URL } from './config/api.config.js';
 
 function Profil() {
     const [user, setUser] = useState(null); // État pour stocker les informations de l'utilisateur
